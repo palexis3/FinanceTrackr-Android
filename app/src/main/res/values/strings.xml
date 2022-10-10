@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">FinanceTracker-App</string>
+    <string name="water_count">You\'ve had %1$d glasses.</string>
+    <string name="add_one">Add one</string>
+</resources>
