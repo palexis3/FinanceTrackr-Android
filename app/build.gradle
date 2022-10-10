@@ -3,6 +3,9 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
 android {
     namespace 'com.example.financetracker_app'
     compileSdk 32
@@ -18,6 +21,8 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        buildConfigField("String", "FINANCE_TRACKR_API", "\"" + localProperties['FINANCE_TRACKR_API'] + "\"")
     }
 
     buildTypes {
