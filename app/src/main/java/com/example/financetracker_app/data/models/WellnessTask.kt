@@ -1,4 +1,4 @@
-package com.example.financetracker_app.models
+package com.example.financetracker_app.data.models
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

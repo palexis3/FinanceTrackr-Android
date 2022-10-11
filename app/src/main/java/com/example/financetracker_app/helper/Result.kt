@@ -1,0 +1,32 @@
+package com.example.financetracker_app.helper
+
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.*
+import java.io.IOException
+
+private const val FLOW_RETRY_TIME_IN_MILLIS = 10_000L
+private const val MAX_RETRIES = 3
+
+sealed interface Result<out T> {
+    data class Success<T>(val data: T) : Result<T>
+    data class Error(val exception: Throwable? = null) : Result<Nothing>
+    object Loading : Result<Nothing>
+}
+
+fun <T> Flow<T>.asResult(): Flow<Result<T>> {
+    return this
+        .map<T, Result<T>> {
+            Result.Success(it)
+        }
+        .onStart { emit(Result.Loading) }
+        .retryWhen { cause, attempt ->
+            if (cause is IOException && attempt < MAX_RETRIES) {
+                emit(Result.Error(cause))
+                delay(FLOW_RETRY_TIME_IN_MILLIS)
+                true
+            } else {
+                false
+            }
+        }
+        .catch { emit(Result.Error(it)) }
+}
