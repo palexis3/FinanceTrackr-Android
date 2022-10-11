@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.financetracker_app.models.WellnessTask
+import com.example.financetracker_app.data.models.WellnessTask
 
 @Composable
 fun WellnessTaskItem(
