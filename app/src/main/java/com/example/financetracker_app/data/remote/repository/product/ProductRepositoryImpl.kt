@@ -1,4 +1,4 @@
-package com.example.financetracker_app.data.remote.repository
+package com.example.financetracker_app.data.remote.repository.product
 
 import com.example.financetracker_app.data.models.Product
 import com.example.financetracker_app.data.models.ProductCreate
@@ -20,11 +20,11 @@ class ProductRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override fun deleteProduct(id: String): Flow<Response<String>> {
+    override fun deleteProduct(id: String): Response<Unit> {
         TODO("Not yet implemented")
     }
 
-    override fun updateProduct(productUpdate: ProductUpdate): Flow<Response<String>> {
+    override fun updateProduct(productUpdate: ProductUpdate): Response<Unit> {
         TODO("Not yet implemented")
     }
 

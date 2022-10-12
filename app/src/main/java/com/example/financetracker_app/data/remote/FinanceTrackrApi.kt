@@ -15,10 +15,10 @@ interface FinanceTrackrApi {
     suspend fun getProduct(@Path("id") id: String): Product
 
     @DELETE("product/delete/{id}")
-    suspend fun deleteProduct(@Path("id") id: String): Response<String>
+    suspend fun deleteProduct(@Path("id") id: String): Response<Unit>
 
     @POST("product/update")
-    suspend fun updateProduct(@Body productUpdate: ProductUpdate): Response<String>
+    suspend fun updateProduct(@Body productUpdate: ProductUpdate): Response<Unit>
 
     @POST("product/create")
     suspend fun createProduct(@Body productCreate: ProductCreate): Product
@@ -40,5 +40,5 @@ interface FinanceTrackrApi {
         @Path("type") type: String,
         @Path("id") id: String,
         @Part file: MultipartBody.Part
-    ): Response<String>
+    ): Response<Unit>
 }
