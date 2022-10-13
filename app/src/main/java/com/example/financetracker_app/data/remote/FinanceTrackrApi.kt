@@ -6,7 +6,6 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface FinanceTrackrApi {
-
     // PRODUCTS
     @GET("product")
     suspend fun getAllProducts(): List<Product>
@@ -21,7 +20,7 @@ interface FinanceTrackrApi {
     suspend fun updateProduct(@Body productUpdate: ProductUpdate): Response<Unit>
 
     @POST("product/create")
-    suspend fun createProduct(@Body productCreate: ProductCreate): Product
+    suspend fun createProduct(@Body productCreate: ProductCreate): Response<Product>
 
     // RECEIPTS
     @GET("receipt")
@@ -31,7 +30,7 @@ interface FinanceTrackrApi {
     suspend fun getReceipt(@Path("id") id: String): Receipt
 
     @POST("receipt/create")
-    suspend fun createReceipt(@Body receiptCreate: ReceiptCreate): Receipt
+    suspend fun createReceipt(@Body receiptCreate: ReceiptCreate): Response<Receipt>
 
     // IMAGES
     @Multipart

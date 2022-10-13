@@ -11,5 +11,5 @@ interface ProductRepository {
     fun getProduct(id: String): Flow<Product>
     suspend fun deleteProduct(id: String): Response<Unit>
     suspend fun updateProduct(productUpdate: ProductUpdate): Response<Unit>
-    fun createProduct(productCreate: ProductCreate): Flow<Product>
+    suspend fun createProduct(productCreate: ProductCreate): Response<Product>
 }
