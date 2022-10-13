@@ -15,7 +15,7 @@ class ImageRepositoryImpl @Inject constructor(
     private val api: FinanceTrackrApi
 ): ImageRepository {
 
-    override suspend fun createImage(type: String, id: String, imageUri: Uri): Boolean {
+    override suspend fun createImage(type: String, itemId: String, imageUri: Uri): Boolean {
         val file = Uri.fromFile(
             context.contentResolver.getType(imageUri)?.let {
                 File(
@@ -28,7 +28,7 @@ class ImageRepositoryImpl @Inject constructor(
         val image = MultipartBody.Part.create(
             RequestBody.create(MediaType.parse("image/*"), file)
         )
-        val response = api.uploadImage(type, id, image)
+        val response = api.uploadImage(type, itemId, image)
         return response.isSuccessful
     }
 }
