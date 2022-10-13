@@ -14,7 +14,7 @@ class ImageRepositoryImpl @Inject constructor(
     private val api: FinanceTrackrApi
 ): ImageRepository {
 
-    override fun createImage(type: String, id: String, imageUri: Uri?): Response<Unit> {
+    override suspend fun createImage(type: String, id: String, imageUri: Uri?): Response<Unit> {
         TODO("Not yet implemented")
     }
 }

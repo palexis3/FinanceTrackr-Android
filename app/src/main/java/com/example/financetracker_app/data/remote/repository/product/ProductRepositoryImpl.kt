@@ -20,11 +20,11 @@ class ProductRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override fun deleteProduct(id: String): Response<Unit> {
+    override suspend fun deleteProduct(id: String): Response<Unit> {
         TODO("Not yet implemented")
     }
 
-    override fun updateProduct(productUpdate: ProductUpdate): Response<Unit> {
+    override suspend fun updateProduct(productUpdate: ProductUpdate): Response<Unit> {
         TODO("Not yet implemented")
     }
 
