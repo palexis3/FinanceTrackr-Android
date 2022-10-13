@@ -5,7 +5,6 @@ import com.example.financetracker_app.data.models.ReceiptCreate
 import com.example.financetracker_app.data.remote.FinanceTrackrApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import retrofit2.Response
 import javax.inject.Inject
 
 class ReceiptRepositoryImpl @Inject constructor(
@@ -18,6 +17,9 @@ class ReceiptRepositoryImpl @Inject constructor(
     override fun getReceipt(id: String): Flow<Receipt> =
         flow { api.getReceipt(id) }
 
-    override suspend fun createReceipt(receiptCreate: ReceiptCreate): Response<Receipt> =
-        api.createReceipt(receiptCreate)
+    override suspend fun createReceipt(receiptCreate: ReceiptCreate): Boolean {
+        val response = api.createReceipt(receiptCreate)
+        return response.isSuccessful
+    }
+
 }

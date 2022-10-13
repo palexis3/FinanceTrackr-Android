@@ -9,7 +9,7 @@ import retrofit2.Response
 interface ProductRepository {
     fun getAllProducts(): Flow<List<Product>>
     fun getProduct(id: String): Flow<Product>
-    suspend fun deleteProduct(id: String): Response<Unit>
-    suspend fun updateProduct(productUpdate: ProductUpdate): Response<Unit>
-    suspend fun createProduct(productCreate: ProductCreate): Response<Product>
+    suspend fun deleteProduct(id: String): Boolean
+    suspend fun updateProduct(productUpdate: ProductUpdate): Boolean
+    suspend fun createProduct(productCreate: ProductCreate): Boolean
 }

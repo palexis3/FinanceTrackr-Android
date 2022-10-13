@@ -8,5 +8,5 @@ import retrofit2.Response
 interface ReceiptRepository {
     fun getAllReceipts(): Flow<List<Receipt>>
     fun getReceipt(id: String): Flow<Receipt>
-    suspend fun createReceipt(receiptCreate: ReceiptCreate): Response<Receipt>
+    suspend fun createReceipt(receiptCreate: ReceiptCreate): Boolean
 }
