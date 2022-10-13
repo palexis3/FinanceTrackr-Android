@@ -47,7 +47,7 @@ class ProductViewModel @Inject constructor(
         ProductListScreenUiState(productListState)
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.Lazily,
+        started = SharingStarted.WhileSubscribed(5000),
         initialValue = ProductListScreenUiState(ProductListUiState.Loading)
     )
 
@@ -63,7 +63,7 @@ class ProductViewModel @Inject constructor(
     private val _deleteProductFlow = MutableSharedFlow<Boolean>()
     val deleteProductFlow = _deleteProductFlow.asSharedFlow()
 
-    fun fetchProduct(id: String) {
+    fun getProduct(id: String) {
         viewModelScope.launch {
             productRepository.getProduct(id).asResult()
                 .collect { result ->
