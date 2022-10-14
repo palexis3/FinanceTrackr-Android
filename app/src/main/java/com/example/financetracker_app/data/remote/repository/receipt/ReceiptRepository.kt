@@ -3,7 +3,6 @@ package com.example.financetracker_app.data.remote.repository.receipt
 import com.example.financetracker_app.data.models.Receipt
 import com.example.financetracker_app.data.models.ReceiptCreate
 import kotlinx.coroutines.flow.Flow
-import retrofit2.Response
 
 interface ReceiptRepository {
     fun getAllReceipts(): Flow<List<Receipt>>

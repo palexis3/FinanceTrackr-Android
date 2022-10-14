@@ -6,17 +6,24 @@ import com.example.financetracker_app.data.models.Product
 import com.example.financetracker_app.data.models.ProductCreate
 import com.example.financetracker_app.data.models.ProductUpdate
 import com.example.financetracker_app.data.remote.repository.product.ProductRepository
+import com.example.financetracker_app.helper.Result
 import com.example.financetracker_app.helper.asResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import com.example.financetracker_app.helper.Result
-import kotlinx.coroutines.flow.*
 
 sealed interface ProductListUiState {
-    data class Success(val products: List<Product>): ProductListUiState
-    object Error: ProductListUiState
-    object Loading: ProductListUiState
+    data class Success(val products: List<Product>) : ProductListUiState
+    object Error : ProductListUiState
+    object Loading : ProductListUiState
 }
 
 data class ProductListScreenUiState(
@@ -24,9 +31,9 @@ data class ProductListScreenUiState(
 )
 
 sealed interface ProductUiState {
-    data class Success(val product: Product): ProductUiState
-    object Error: ProductUiState
-    object Loading: ProductUiState
+    data class Success(val product: Product) : ProductUiState
+    object Error : ProductUiState
+    object Loading : ProductUiState
 }
 
 data class ProductScreenUiState(
@@ -36,7 +43,7 @@ data class ProductScreenUiState(
 @HiltViewModel
 class ProductViewModel @Inject constructor(
     private val productRepository: ProductRepository
-): ViewModel() {
+) : ViewModel() {
 
     val productListState: StateFlow<ProductListScreenUiState> = productRepository.getAllProducts().asResult().map { result ->
         val productListState: ProductListUiState = when (result) {

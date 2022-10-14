@@ -21,5 +21,4 @@ class ReceiptRepositoryImpl @Inject constructor(
         val response = api.createReceipt(receiptCreate)
         return response.isSuccessful
     }
-
 }

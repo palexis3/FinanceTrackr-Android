@@ -13,7 +13,7 @@ import javax.inject.Inject
 class ImageRepositoryImpl @Inject constructor(
     private val context: Context,
     private val api: FinanceTrackrApi
-): ImageRepository {
+) : ImageRepository {
 
     override suspend fun createImage(type: String, itemId: String, imageUri: Uri): Boolean {
         val file = Uri.fromFile(
