@@ -37,7 +37,7 @@ interface FinanceTrackrApi {
     @POST("{type}/{id}/image")
     suspend fun uploadImage(
         @Path("type") type: String,
-        @Path("id") id: String,
+        @Path("id") itemId: String,
         @Part file: MultipartBody.Part
     ): Response<Unit>
 }
