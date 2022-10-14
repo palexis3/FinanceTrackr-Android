@@ -1,9 +1,19 @@
 package com.example.financetracker_app.data.remote
 
-import com.example.financetracker_app.data.models.*
+import com.example.financetracker_app.data.models.Product
+import com.example.financetracker_app.data.models.ProductCreate
+import com.example.financetracker_app.data.models.ProductUpdate
+import com.example.financetracker_app.data.models.Receipt
+import com.example.financetracker_app.data.models.ReceiptCreate
 import okhttp3.MultipartBody
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.Multipart
+import retrofit2.http.POST
+import retrofit2.http.Part
+import retrofit2.http.Path
 
 interface FinanceTrackrApi {
     // PRODUCTS

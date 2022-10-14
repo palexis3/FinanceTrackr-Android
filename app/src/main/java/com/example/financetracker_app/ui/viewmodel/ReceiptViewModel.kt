@@ -5,17 +5,24 @@ import androidx.lifecycle.viewModelScope
 import com.example.financetracker_app.data.models.Receipt
 import com.example.financetracker_app.data.models.ReceiptCreate
 import com.example.financetracker_app.data.remote.repository.receipt.ReceiptRepository
+import com.example.financetracker_app.helper.Result
 import com.example.financetracker_app.helper.asResult
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
-import com.example.financetracker_app.helper.Result
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 sealed interface ReceiptListUiState {
-    data class Success(val receipts: List<Receipt>): ReceiptListUiState
-    object Error: ReceiptListUiState
-    object Loading: ReceiptListUiState
+    data class Success(val receipts: List<Receipt>) : ReceiptListUiState
+    object Error : ReceiptListUiState
+    object Loading : ReceiptListUiState
 }
 
 data class ReceiptListScreenUiState(
@@ -23,9 +30,9 @@ data class ReceiptListScreenUiState(
 )
 
 sealed interface ReceiptUiState {
-    data class Success(val receipt: Receipt): ReceiptUiState
-    object Error: ReceiptUiState
-    object Loading: ReceiptUiState
+    data class Success(val receipt: Receipt) : ReceiptUiState
+    object Error : ReceiptUiState
+    object Loading : ReceiptUiState
 }
 
 data class ReceiptScreenUiState(
@@ -35,7 +42,7 @@ data class ReceiptScreenUiState(
 @HiltViewModel
 class ReceiptViewModel @Inject constructor(
     private val receiptRepository: ReceiptRepository
-): ViewModel() {
+) : ViewModel() {
 
     val receiptListState: StateFlow<ReceiptListScreenUiState> = receiptRepository.getAllReceipts().asResult().map { result ->
         val receiptListUiState: ReceiptListUiState = when (result) {

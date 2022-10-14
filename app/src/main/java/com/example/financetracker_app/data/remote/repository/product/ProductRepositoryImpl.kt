@@ -32,5 +32,4 @@ class ProductRepositoryImpl @Inject constructor(
         val response = api.createProduct(productCreate)
         return response.isSuccessful
     }
-
 }
