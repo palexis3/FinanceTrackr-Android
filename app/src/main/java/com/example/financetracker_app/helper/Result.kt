@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.retryWhen
 import java.io.IOException
 
-private const val FLOW_RETRY_TIME_IN_MILLIS = 10_000L
+private const val FLOW_RETRY_TIME_IN_MILLIS = 3_000L
 private const val MAX_RETRIES = 3
 
 sealed interface Result<out T> {
