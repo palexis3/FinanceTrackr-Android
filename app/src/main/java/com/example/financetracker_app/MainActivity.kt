@@ -1,11 +1,11 @@
 package com.example.financetracker_app
 
-import WellnessScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.financetracker_app.ui.composable.HomeScreen
 import com.example.financetracker_app.ui.theme.FinanceTrackerAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -14,100 +14,17 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            FinanceTrackerAppTheme {
-                WellnessScreen()
+            FinanceTrackerAppTheme(darkTheme = true) {
+               HomeScreen()
             }
         }
     }
 }
 
-// @Composable
-// fun MyApp() {
-//    var shouldShowOnboarding by remember { mutableStateOf(true) }
-//
-//    if (shouldShowOnboarding) {
-//        OnboardingScreen(onContinueClicked = { shouldShowOnboarding = false })
-//    } else {
-//        Greetings()
-//    }
-// }
-
-// @Composable
-// fun OnboardingScreen(onContinueClicked: () -> Unit) {
-//    Surface {
-//        Column(
-//            modifier = Modifier.fillMaxSize(),
-//            verticalArrangement = Arrangement.Center,
-//            horizontalAlignment = Alignment.CenterHorizontally
-//        ) {
-//            Text("Welcome to the Basics Codelab!")
-//            Button(
-//                modifier = Modifier.padding(vertical = 24.dp),
-//                onClick = onContinueClicked
-//            ) {
-//                Text("Continue")
-//            }
-//        }
-//    }
-// }
-
-// @Preview(showBackground = true, widthDp = 320, heightDp = 320)
-// @Composable
-// fun OnboardingPreview() {
-//    FinanceTrackerAppTheme {
-//        OnboardingScreen(onContinueClicked = {})
-//    }
-// }
-
-// @Composable
-// private fun Greetings(names: List<String> = List(1000) { "$it" }) {
-//    LazyColumn(modifier = Modifier.padding(vertical = 4.dp)) {
-//        items(items = names) { name ->
-//            Greeting(name = name)
-//        }
-//    }
-// }
-
-// @Composable
-// fun Greeting(name: String) {
-//    var expanded by rememberSaveable { mutableStateOf(false) }
-//    val extraPadding by animateDpAsState(
-//        if (expanded) 48.dp else 0.dp,
-//        animationSpec = spring(
-//            dampingRatio = Spring.DampingRatioMediumBouncy,
-//            stiffness = Spring.StiffnessLow
-//        )
-//    )
-//
-//    Surface(
-//        modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
-//        color = MaterialTheme.colors.primary
-//    ) {
-//        Row(modifier = Modifier.padding(24.dp)) {
-//            Column(
-//                modifier = Modifier
-//                    .weight(1f)
-//                    .padding(bottom = extraPadding.coerceAtLeast(0.dp))
-//            ) {
-//                Text(text = "Hello, ")
-//                Text(text = name)
-//            }
-//            OutlinedButton(onClick = { expanded = !expanded }) {
-//                Text(
-//                    if (expanded) "Show less" else "Show More",
-//                    style = MaterialTheme.typography.h4.copy(
-//                        fontWeight = FontWeight.ExtraBold
-//                    )
-//                )
-//            }
-//        }
-//    }
-// }
-
-@Preview(showBackground = true, widthDp = 320)
+@Preview
 @Composable
 fun DefaultPreview() {
     FinanceTrackerAppTheme {
-        WellnessScreen()
+        HomeScreen()
     }
 }
