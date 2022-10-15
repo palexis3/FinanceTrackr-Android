@@ -17,21 +17,21 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun BaseHomeRow(
     modifier: Modifier = Modifier,
-    color: Color = Color.White,
     title: String,
     onClick: () -> Unit
 ) {
+    CommonDivider()
     Row(
         modifier = modifier
             .height(64.dp)
-            .clickable { onClick() },
+            .clickable { onClick() }
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
             text = title,
-            color = color,
-            style = MaterialTheme.typography.body1,
+            style = MaterialTheme.typography.h4,
         )
         Icon(
             imageVector = Icons.Filled.ArrowForward,
@@ -41,7 +41,6 @@ fun BaseHomeRow(
                 .size(24.dp)
         )
     }
-    CommonDivider()
 }
 
 @Composable

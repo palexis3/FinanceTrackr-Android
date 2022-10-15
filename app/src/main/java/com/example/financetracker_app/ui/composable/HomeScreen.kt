@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import com.example.financetracker_app.R
 
 private val HomeDefaultPadding = 8.dp
-private val HomeLargePadding = 16.dp
 
 @Composable
 fun HomeScreen(
@@ -33,7 +32,8 @@ fun HomeScreen(
             style = MaterialTheme.typography.h2,
             modifier = Modifier.align(Alignment.Start)
         )
-        Spacer(Modifier.height(HomeLargePadding))
+        Spacer(Modifier.height(64.dp))
+
         ProductRow(onClickSeeAllProducts = onClickSeeAllProducts)
         Spacer(Modifier.height(HomeDefaultPadding))
         ReceiptRow(onClickSeeAllReceipts = onClickSeeAllReceipts)
@@ -41,7 +41,7 @@ fun HomeScreen(
 }
 
 @Composable
-private fun ProductRow(
+private fun  ProductRow(
     title: String = stringResource(id = R.string.product),
     onClickSeeAllProducts: () -> Unit
 ) {
