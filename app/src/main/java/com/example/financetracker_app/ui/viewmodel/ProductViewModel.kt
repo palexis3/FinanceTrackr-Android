@@ -26,10 +26,6 @@ sealed interface ProductListUiState {
     object Loading : ProductListUiState
 }
 
-data class ProductListScreenUiState(
-    val productListState: ProductListUiState
-)
-
 sealed interface ProductUiState {
     data class Success(val product: Product) : ProductUiState
     object Error : ProductUiState
@@ -45,17 +41,16 @@ class ProductViewModel @Inject constructor(
     private val productRepository: ProductRepository
 ) : ViewModel() {
 
-    val productListState: StateFlow<ProductListScreenUiState> = productRepository.getAllProducts().asResult().map { result ->
-        val productListState: ProductListUiState = when (result) {
+    val productListState: StateFlow<ProductListUiState> = productRepository.getAllProducts().asResult().map { result ->
+        when (result) {
             is Result.Success -> ProductListUiState.Success(result.data)
             is Result.Loading -> ProductListUiState.Loading
             is Result.Error -> ProductListUiState.Error
         }
-        ProductListScreenUiState(productListState)
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = ProductListScreenUiState(ProductListUiState.Loading)
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = ProductListUiState.Loading
     )
 
     private val _productState = MutableStateFlow(ProductScreenUiState(ProductUiState.Loading))

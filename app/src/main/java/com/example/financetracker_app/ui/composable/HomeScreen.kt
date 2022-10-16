@@ -4,12 +4,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
@@ -27,22 +24,18 @@ fun HomeScreen(
             .padding(HomeDefaultPadding)
             .semantics { contentDescription = "Home Screen" }
     ) {
-        Text(
-            text = stringResource(R.string.finance_trackr),
-            style = MaterialTheme.typography.h2,
-            modifier = Modifier.align(Alignment.Start)
-        )
-        Spacer(Modifier.height(64.dp))
-
+        ScreenTitle(title = R.string.finance_trackr)
+        Spacer(Modifier.height(24.dp))
         ProductRow(onClickSeeAllProducts = onClickSeeAllProducts)
-        Spacer(Modifier.height(HomeDefaultPadding))
+        Divider(Modifier.height(2.dp))
         ReceiptRow(onClickSeeAllReceipts = onClickSeeAllReceipts)
+        Divider(Modifier.height(2.dp))
     }
 }
 
 @Composable
-private fun  ProductRow(
-    title: String = stringResource(id = R.string.product),
+private fun ProductRow(
+    title: Int = R.string.product,
     onClickSeeAllProducts: () -> Unit
 ) {
     BaseHomeRow(title = title, onClick = onClickSeeAllProducts)
@@ -50,7 +43,7 @@ private fun  ProductRow(
 
 @Composable
 private fun ReceiptRow(
-    title: String = stringResource(id = R.string.receipt),
+    title: Int = R.string.receipt,
     onClickSeeAllReceipts: () -> Unit
 ) {
     BaseHomeRow(title = title, onClick = onClickSeeAllReceipts)
