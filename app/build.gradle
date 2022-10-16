@@ -73,8 +73,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-compose:$lifecycle_compose_version"
 
     // Moshi Serialization
-    implementation "com.squareup.retrofit2:converter-moshi:$moshi_version"
-    implementation "com.squareup.moshi:moshi:$moshi_codegen_version"
+    implementation "com.squareup.retrofit2:converter-moshi:$moshi_converter_version"
+    implementation "com.squareup.moshi:moshi:$moshi_version"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
 
     // Dagger Hilt
     implementation "com.google.dagger:hilt-android:$dagger_hilt_version"
@@ -83,6 +84,7 @@ dependencies {
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$logging_interceptor"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

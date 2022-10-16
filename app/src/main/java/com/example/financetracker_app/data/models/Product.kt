@@ -36,3 +36,8 @@ data class ProductExpiration(
     val quantity: Int,
     val expirationFromNow: FromNow
 )
+
+data class ProductListResponse(
+    val items: List<Product>,
+    val total: Int
+)
