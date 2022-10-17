@@ -19,7 +19,6 @@ fun BaseHomeRow(
     @StringRes title: Int,
     onClick: () -> Unit
 ) {
-    CommonDivider()
     Row(
         modifier = modifier
             .height(64.dp)
@@ -61,7 +60,7 @@ fun ErrorTitle(
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier =  modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         Text(
             text = stringResource(id = title),
@@ -83,5 +82,5 @@ fun LoadingIcon(modifier: Modifier = Modifier) {
 
 @Composable
 fun CommonDivider(modifier: Modifier = Modifier) {
-    Divider(color = MaterialTheme.colors.background, thickness = 1.dp, modifier = modifier)
+    Divider(modifier = modifier.height(2.dp))
 }
