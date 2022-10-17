@@ -1,4 +1,4 @@
-package com.example.financetracker_app.ui.navigation
+package com.example.financetracker_app.navigation
 
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
@@ -15,11 +15,11 @@ object ProductList : ScreenDestination {
     override val route = "products"
 }
 
-object Product : ScreenDestination {
+object ProductDetails : ScreenDestination {
     override val route = "product"
-    const val productNameArg = "product_name"
-    val routeWithArgs = "$route/{$productNameArg}"
+    const val productIdArg = "product_id"
+    val routeWithArgs = "$route/{$productIdArg}"
     val arguments = listOf(
-        navArgument(productNameArg) { type = NavType.StringType }
+        navArgument(productIdArg) { type = NavType.StringType }
     )
 }

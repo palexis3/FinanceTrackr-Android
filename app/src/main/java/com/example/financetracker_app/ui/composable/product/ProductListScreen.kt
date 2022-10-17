@@ -1,6 +1,7 @@
-package com.example.financetracker_app.ui.composable
+package com.example.financetracker_app.ui.composable.product
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -17,6 +18,10 @@ import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.financetracker_app.R
 import com.example.financetracker_app.data.models.Product
+import com.example.financetracker_app.ui.composable.CommonDivider
+import com.example.financetracker_app.ui.composable.ErrorTitle
+import com.example.financetracker_app.ui.composable.LoadingIcon
+import com.example.financetracker_app.ui.composable.ScreenTitle
 import com.example.financetracker_app.ui.theme.LightBlue
 import com.example.financetracker_app.ui.viewmodel.ProductListUiState
 import com.example.financetracker_app.ui.viewmodel.ProductViewModel
@@ -27,19 +32,23 @@ private val MediumPadding = 16.dp
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun ProductListScreen(
-    viewModel: ProductViewModel = hiltViewModel()
+    viewModel: ProductViewModel = hiltViewModel(),
+    onClickSeeProductDetailsScreen: (String) -> Unit
 ) {
     val uiState: ProductListUiState by viewModel.productListState.collectAsStateWithLifecycle()
 
     Column {
         ScreenTitle(title = R.string.product_list)
         Divider(Modifier.height(1.dp))
-        ProductStateItem(uiState = uiState)
+        ProductStateItem(uiState = uiState, onClickSeeProductDetailsScreen)
     }
 }
 
 @Composable
-private fun ProductStateItem(uiState: ProductListUiState) {
+private fun ProductStateItem(
+    uiState: ProductListUiState,
+    onClickSeeProductDetailsScreen: (String) -> Unit
+) {
     LazyColumn(
         verticalArrangement = Arrangement.SpaceEvenly,
         contentPadding = PaddingValues(
@@ -61,7 +70,7 @@ private fun ProductStateItem(uiState: ProductListUiState) {
             }
             is ProductListUiState.Success -> {
                 items(uiState.products) { product ->
-                    ProductCard(product)
+                    ProductCard(product, onClickSeeProductDetailsScreen)
                 }
             }
         }
@@ -70,10 +79,15 @@ private fun ProductStateItem(uiState: ProductListUiState) {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun ProductCard(product: Product, modifier: Modifier = Modifier) {
+private fun ProductCard(
+    product: Product,
+    onClickSeeProductDetailsScreen: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier
             .padding(DefaultPadding)
+            .clickable { onClickSeeProductDetailsScreen(product.id) }
     ) {
         Row(
             modifier

@@ -29,7 +29,11 @@ class ProductRepositoryImpl @Inject constructor(
         }
 
     override fun getProduct(id: String): Flow<Product> =
-        flow { api.getProduct(id) }
+        flow {
+            emit(api.getProduct(id))
+        }.catch { exception ->
+            Log.d(TAG, "$TAG getProduct($id) exception:$exception")
+        }
 
     override suspend fun deleteProduct(id: String): Boolean {
         val response = api.deleteProduct(id)
