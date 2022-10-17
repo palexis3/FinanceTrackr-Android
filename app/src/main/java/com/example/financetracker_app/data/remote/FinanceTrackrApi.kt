@@ -29,18 +29,18 @@ interface FinanceTrackrApi {
     suspend fun createProduct(@Body productCreate: ProductCreate): Response<Product>
 
     // RECEIPTS
-    @GET("receipt")
+    @GET("/receipt")
     suspend fun getAllReceipts(): List<Receipt>
 
-    @GET("receipt/{id}")
+    @GET("/receipt/{id}")
     suspend fun getReceipt(@Path("id") id: String): Receipt
 
-    @POST("receipt/create")
+    @POST("/receipt/create")
     suspend fun createReceipt(@Body receiptCreate: ReceiptCreate): Response<Receipt>
 
     // IMAGES
     @Multipart
-    @POST("{type}/{id}/image")
+    @POST("/{type}/{id}/image")
     suspend fun uploadImage(
         @Path("type") type: String,
         @Path("id") itemId: String,

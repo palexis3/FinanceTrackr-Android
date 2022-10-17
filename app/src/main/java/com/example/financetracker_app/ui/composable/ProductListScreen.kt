@@ -1,14 +1,7 @@
 package com.example.financetracker_app.ui.composable
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
@@ -17,8 +10,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -26,6 +21,7 @@ import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.financetracker_app.R
 import com.example.financetracker_app.data.models.Product
+import com.example.financetracker_app.ui.theme.Teal
 import com.example.financetracker_app.ui.viewmodel.ProductListUiState
 import com.example.financetracker_app.ui.viewmodel.ProductViewModel
 
@@ -42,12 +38,12 @@ fun ProductListScreen(
     Column {
         ScreenTitle(title = R.string.product_list)
         Divider(Modifier.height(1.dp))
-        ProductStateReducer(uiState = uiState)
+        ProductStateItem(uiState = uiState)
     }
 }
 
 @Composable
-private fun ProductStateReducer(uiState: ProductListUiState) {
+private fun ProductStateItem(uiState: ProductListUiState) {
     LazyColumn(
         verticalArrangement = Arrangement.SpaceEvenly,
         contentPadding = PaddingValues(
@@ -76,18 +72,27 @@ private fun ProductStateReducer(uiState: ProductListUiState) {
 }
 
 @Composable
-private fun ProductCard(product: Product) {
-    Card(elevation = 2.dp) {
+private fun ProductCard(product: Product, modifier: Modifier = Modifier) {
+    Card(modifier.padding(DefaultPadding)) {
         Column {
             Row(
-                Modifier
-                    .padding(DefaultPadding)
+                modifier
                     .fillMaxWidth()
             ) {
                 // Todo: Add image from imageUrl parameter
-                Text(text = product.name, style = MaterialTheme.typography.body2)
-                Box(modifier = Modifier.clip(RectangleShape)) {
-                    Text(text = product.category, style = MaterialTheme.typography.caption)
+                Text(text = product.name,  style = MaterialTheme.typography.subtitle2)
+                Spacer(modifier = Modifier.size(4.dp))
+                Box(
+                    modifier = modifier
+                        .clip(RectangleShape)
+                        .background(color = Teal),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = product.category,
+                        style = MaterialTheme.typography.caption,
+                        color = Color.White
+                    )
                 }
             }
             Spacer(Modifier.height(2.dp))
@@ -97,10 +102,10 @@ private fun ProductCard(product: Product) {
 
             Row(
                 Modifier
-                    .padding(DefaultPadding)
                     .fillMaxWidth()
             ) {
                 Text(text = formattedAmount, style = MaterialTheme.typography.subtitle2)
+                Spacer(modifier = Modifier.size(4.dp))
                 Text(text = expirationDate, style = MaterialTheme.typography.subtitle2)
             }
         }

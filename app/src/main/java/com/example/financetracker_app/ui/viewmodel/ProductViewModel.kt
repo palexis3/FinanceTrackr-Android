@@ -41,19 +41,22 @@ class ProductViewModel @Inject constructor(
     private val productRepository: ProductRepository
 ) : ViewModel() {
 
-    val productListState: StateFlow<ProductListUiState> = productRepository.getAllProducts().asResult().map { result ->
-        when (result) {
-            is Result.Success -> ProductListUiState.Success(result.data)
-            is Result.Loading -> ProductListUiState.Loading
-            is Result.Error -> ProductListUiState.Error
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = ProductListUiState.Loading
-    )
+    val productListState: StateFlow<ProductListUiState> = productRepository
+        .getAllProducts()
+        .asResult()
+        .map { result ->
+            when (result) {
+                is Result.Success -> ProductListUiState.Success(result.data)
+                is Result.Loading -> ProductListUiState.Loading
+                is Result.Error -> ProductListUiState.Error
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = ProductListUiState.Loading
+        )
 
-    private val _productState = MutableStateFlow(ProductScreenUiState(ProductUiState.Loading))
+    private val _productState = MutableStateFlow<ProductUiState>(ProductUiState.Loading)
     val productState = _productState.asStateFlow()
 
     private val _createProductFlow = MutableSharedFlow<Boolean>()
@@ -74,7 +77,7 @@ class ProductViewModel @Inject constructor(
                         is Result.Loading -> ProductUiState.Loading
                         is Result.Error -> ProductUiState.Error
                     }
-                    _productState.value = ProductScreenUiState(productState)
+                    _productState.value = productState
                 }
         }
     }

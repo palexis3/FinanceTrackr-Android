@@ -24,7 +24,9 @@ class ProductRepositoryImpl @Inject constructor(
                 emit(productItems)
                 delay(20_000)
             }
-        }.catch { exception -> Log.d(TAG,"$TAG getAllProducts() exception:$exception") }
+        }.catch { exception ->
+            Log.d(TAG, "$TAG getAllProducts() exception:$exception")
+        }
 
     override fun getProduct(id: String): Flow<Product> =
         flow { api.getProduct(id) }
