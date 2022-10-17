@@ -35,7 +35,6 @@ class ProductRepositoryImpl @Inject constructor(
             Log.d(TAG, "$TAG getProduct($id) exception:$exception")
         }
 
-
     override suspend fun deleteProduct(id: String): Boolean {
         val response = api.deleteProduct(id)
         return response.isSuccessful

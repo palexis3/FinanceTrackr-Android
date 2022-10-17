@@ -46,7 +46,6 @@ private fun ShowProductDetailsUiState(uiState: ProductDetailsUiState) {
             ) {
                 ErrorTitle(title = R.string.product_details_error)
             }
-
         }
         ProductDetailsUiState.Loading -> {
             Column(

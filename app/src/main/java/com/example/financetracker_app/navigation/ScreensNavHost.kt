@@ -5,11 +5,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.financetracker_app.navigation.extensions.navigateSingleTopTo
+import com.example.financetracker_app.navigation.extensions.navigateToProductDetails
 import com.example.financetracker_app.ui.composable.HomeScreen
 import com.example.financetracker_app.ui.composable.product.ProductDetailsScreen
 import com.example.financetracker_app.ui.composable.product.ProductListScreen
-import com.example.financetracker_app.navigation.extensions.navigateSingleTopTo
-import com.example.financetracker_app.navigation.extensions.navigateToProductDetails
 
 @Composable
 fun ScreenNavHost(
