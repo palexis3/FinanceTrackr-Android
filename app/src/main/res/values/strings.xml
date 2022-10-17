@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">FinanceTracker-App</string>
+    <string name="finance_trackr">Finance Trackr</string>
     <string name="receipt">Receipt</string>
+
     <string name="product">Product</string>
     <string name="product_list">Product List</string>
     <string name="product_list_error">Could not fetch product list. Try again</string>
-    <string name="finance_trackr">Finance Trackr</string>
+    <string name="product_details_error">Could not fetch product details. Try again</string>
 </resources>

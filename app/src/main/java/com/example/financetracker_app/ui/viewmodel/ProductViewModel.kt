@@ -26,15 +26,11 @@ sealed interface ProductListUiState {
     object Loading : ProductListUiState
 }
 
-sealed interface ProductUiState {
-    data class Success(val product: Product) : ProductUiState
-    object Error : ProductUiState
-    object Loading : ProductUiState
+sealed interface ProductDetailsUiState {
+    data class Success(val product: Product) : ProductDetailsUiState
+    object Error : ProductDetailsUiState
+    object Loading : ProductDetailsUiState
 }
-
-data class ProductScreenUiState(
-    val productState: ProductUiState
-)
 
 @HiltViewModel
 class ProductViewModel @Inject constructor(
@@ -56,8 +52,8 @@ class ProductViewModel @Inject constructor(
             initialValue = ProductListUiState.Loading
         )
 
-    private val _productState = MutableStateFlow<ProductUiState>(ProductUiState.Loading)
-    val productState = _productState.asStateFlow()
+    private val _productDetailsState = MutableStateFlow<ProductDetailsUiState>(ProductDetailsUiState.Loading)
+    val productDetailsState = _productDetailsState.asStateFlow()
 
     private val _createProductFlow = MutableSharedFlow<Boolean>()
     val createProductFlow = _createProductFlow.asSharedFlow()
@@ -73,11 +69,11 @@ class ProductViewModel @Inject constructor(
             productRepository.getProduct(id).asResult()
                 .collect { result ->
                     val productState = when (result) {
-                        is Result.Success -> ProductUiState.Success(result.data)
-                        is Result.Loading -> ProductUiState.Loading
-                        is Result.Error -> ProductUiState.Error
+                        is Result.Success -> ProductDetailsUiState.Success(result.data)
+                        is Result.Loading -> ProductDetailsUiState.Loading
+                        is Result.Error -> ProductDetailsUiState.Error
                     }
-                    _productState.value = productState
+                    _productDetailsState.value = productState
                 }
         }
     }
