@@ -26,10 +26,6 @@ sealed interface ProductListUiState {
     object Loading : ProductListUiState
 }
 
-data class ProductListScreenUiState(
-    val productListState: ProductListUiState
-)
-
 sealed interface ProductUiState {
     data class Success(val product: Product) : ProductUiState
     object Error : ProductUiState
@@ -45,20 +41,22 @@ class ProductViewModel @Inject constructor(
     private val productRepository: ProductRepository
 ) : ViewModel() {
 
-    val productListState: StateFlow<ProductListScreenUiState> = productRepository.getAllProducts().asResult().map { result ->
-        val productListState: ProductListUiState = when (result) {
-            is Result.Success -> ProductListUiState.Success(result.data)
-            is Result.Loading -> ProductListUiState.Loading
-            is Result.Error -> ProductListUiState.Error
-        }
-        ProductListScreenUiState(productListState)
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = ProductListScreenUiState(ProductListUiState.Loading)
-    )
+    val productListState: StateFlow<ProductListUiState> = productRepository
+        .getAllProducts()
+        .asResult()
+        .map { result ->
+            when (result) {
+                is Result.Success -> ProductListUiState.Success(result.data)
+                is Result.Loading -> ProductListUiState.Loading
+                is Result.Error -> ProductListUiState.Error
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = ProductListUiState.Loading
+        )
 
-    private val _productState = MutableStateFlow(ProductScreenUiState(ProductUiState.Loading))
+    private val _productState = MutableStateFlow<ProductUiState>(ProductUiState.Loading)
     val productState = _productState.asStateFlow()
 
     private val _createProductFlow = MutableSharedFlow<Boolean>()
@@ -79,7 +77,7 @@ class ProductViewModel @Inject constructor(
                         is Result.Loading -> ProductUiState.Loading
                         is Result.Error -> ProductUiState.Error
                     }
-                    _productState.value = ProductScreenUiState(productState)
+                    _productState.value = productState
                 }
         }
     }

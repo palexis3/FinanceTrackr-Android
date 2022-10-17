@@ -4,9 +4,9 @@ import android.content.Context
 import android.net.Uri
 import androidx.core.net.toFile
 import com.example.financetracker_app.data.remote.FinanceTrackrApi
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import javax.inject.Inject
 
@@ -26,7 +26,7 @@ class ImageRepositoryImpl @Inject constructor(
         ).toFile()
 
         val image = MultipartBody.Part.create(
-            RequestBody.create(MediaType.parse("image/*"), file)
+            file.asRequestBody("image/*".toMediaTypeOrNull())
         )
         val response = api.uploadImage(type, itemId, image)
         return response.isSuccessful

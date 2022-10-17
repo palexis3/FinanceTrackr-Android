@@ -53,7 +53,7 @@ class ReceiptViewModel @Inject constructor(
         ReceiptListScreenUiState(receiptListUiState)
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
+        started = SharingStarted.WhileSubscribed(5_000),
         initialValue = ReceiptListScreenUiState(ReceiptListUiState.Loading)
     )
 
