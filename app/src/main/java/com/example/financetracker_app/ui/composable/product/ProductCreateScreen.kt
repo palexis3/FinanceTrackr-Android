@@ -12,6 +12,7 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -33,6 +34,12 @@ fun ProductCreateScreen(
     productViewModel: ProductViewModel = hiltViewModel(),
     inputValidationViewModel: ProductCreateValidationViewModel = hiltViewModel()
 ) {
+
+    LaunchedEffect(Unit) {
+    }
+
+    LaunchedEffect(Unit) {
+    }
 
     val name by inputValidationViewModel.nameInput.collectAsStateWithLifecycle()
     val price by inputValidationViewModel.priceInput.collectAsStateWithLifecycle()

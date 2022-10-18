@@ -4,12 +4,19 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.financetracker_app.R
+import com.example.financetracker_app.data.models.ProductCreate
+import com.example.financetracker_app.data.models.StoreCreate
+import com.example.financetracker_app.helper.ScreenEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 
 data class InputData(
     val item: String = "",
     @StringRes val errorId: Int? = null
+)
+
+data class ProductCreateUiState(
+    val screenEvent: ScreenEvent<ProductCreate>? = null
 )
 
 @HiltViewModel
@@ -27,35 +34,49 @@ class ProductCreateValidationViewModel : ViewModel() {
     private val _storeInput = MutableStateFlow(InputData())
     val storeInput = _storeInput.asStateFlow()
 
-    val inputDataValid = combine(_nameInput, _priceInput, _categoryInput, _storeInput) { name, price, category, store ->
-        val nameValid = name.item.isNotEmpty() && name.errorId == null
-        val priceValid = price.item.toDoubleOrNull() != null && name.errorId == null
-        val categoryValid = category.item.isNotEmpty() && category.errorId == null
-        val storeValid = store.item.isNotEmpty() && store.errorId == null
+    private val _screenEvent = MutableStateFlow(ProductCreateUiState())
+    val screenEvent = _screenEvent.asStateFlow()
 
-        nameValid && priceValid && categoryValid && storeValid
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
+    val inputDataValid =
+        combine(nameInput, priceInput, categoryInput, storeInput) { name, price, category, store ->
+            val nameValid = name.item.isNotEmpty() && name.errorId == null
+            val priceValid = price.item.toDoubleOrNull() != null && name.errorId == null
+            val categoryValid = category.item.isNotEmpty() && category.errorId == null
+            val storeValid = store.item.isNotEmpty() && store.errorId == null
+
+            nameValid && priceValid && categoryValid && storeValid
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
     fun onNameChange(input: String) {
         val errorId = if (input.length < 2) null else R.string.name_input_error
-        _nameInput.value = _nameInput.value.copy(item = input, errorId = errorId)
+        _nameInput.update { inputData -> inputData.copy(item = input, errorId = errorId) }
     }
 
     fun onPriceChange(input: String) {
         val isPriceValid = input.toDoubleOrNull() != null
         val errorId = if (isPriceValid) null else R.string.price_input_error
-        _priceInput.value = _priceInput.value.copy(item = input, errorId = errorId)
+        _priceInput.update { inputData -> inputData.copy(item = input, errorId = errorId) }
     }
 
     fun onCategoryInput(input: String) {
         val errorId = if (input.length < 2) null else R.string.category_input_error
-        _categoryInput.value = _categoryInput.value.copy(item = input, errorId = errorId)
+        _categoryInput.update { inputData -> inputData.copy(item = input, errorId = errorId) }
     }
 
     fun onStoreInput(input: String) {
         val errorId = if (input.length < 2) null else R.string.store_input_error
-        _storeInput.value = _storeInput.value.copy(item = input, errorId = errorId)
+        _storeInput.update { inputData -> inputData.copy(item = input, errorId = errorId) }
     }
 
-    fun onContinueClick() {}
+    fun onContinueClick() {
+        val screenEvent = ScreenEvent.ScreenEventWithContent(
+            ProductCreate(
+                name = nameInput.value.item,
+                price = priceInput.value.item.toFloat(),
+                category = categoryInput.value.item,
+                store = StoreCreate(name = storeInput.value.item)
+            )
+        )
+        _screenEvent.update { eventUiState -> eventUiState.copy(screenEvent = screenEvent) }
+    }
 }

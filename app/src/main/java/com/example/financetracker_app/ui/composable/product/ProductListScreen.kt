@@ -23,8 +23,8 @@ import com.example.financetracker_app.ui.composable.ErrorTitle
 import com.example.financetracker_app.ui.composable.LoadingIcon
 import com.example.financetracker_app.ui.composable.ScreenTitle
 import com.example.financetracker_app.ui.theme.LightBlue
-import com.example.financetracker_app.ui.viewmodel.ProductListUiState
-import com.example.financetracker_app.ui.viewmodel.ProductViewModel
+import com.example.financetracker_app.ui.viewmodel.product.ProductListUiState
+import com.example.financetracker_app.ui.viewmodel.product.ProductViewModel
 
 private val DefaultPadding = 12.dp
 private val MediumPadding = 16.dp

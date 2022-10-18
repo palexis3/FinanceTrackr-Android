@@ -8,6 +8,7 @@
     <string name="product_create">Product Create</string>
     <string name="product_list_error">Could not fetch product list. Try again</string>
     <string name="product_details_error">Could not fetch product details. Try again</string>
+    <string name="product_create_error">Error creating product. Try again</string>
 
     <string name="name_input_error">Name entered is incorrect.</string>
     <string name="category_input_error">Category entered is incorrect.</string>
