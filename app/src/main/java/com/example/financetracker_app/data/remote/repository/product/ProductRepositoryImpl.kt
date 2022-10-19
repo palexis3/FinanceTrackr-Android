@@ -22,7 +22,7 @@ class ProductRepositoryImpl @Inject constructor(
             while (true) {
                 val productItems = api.getAllProducts().items
                 emit(productItems)
-                delay(20_000)
+                delay(5_000)
             }
         }.catch { exception ->
             Log.d(TAG, "$TAG getAllProducts() exception:$exception")

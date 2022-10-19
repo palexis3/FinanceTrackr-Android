@@ -7,15 +7,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.Divider
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -23,22 +22,52 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.financetracker_app.R
+import com.example.financetracker_app.helper.ScreenEvent
 import com.example.financetracker_app.ui.composable.ScreenTitle
 import com.example.financetracker_app.ui.viewmodel.product.InputData
 import com.example.financetracker_app.ui.viewmodel.product.ProductCreateValidationViewModel
 import com.example.financetracker_app.ui.viewmodel.product.ProductViewModel
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
+@OptIn(ExperimentalLifecycleComposeApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun ProductCreateScreen(
+    closeScreen: () -> Unit,
     productViewModel: ProductViewModel = hiltViewModel(),
-    inputValidationViewModel: ProductCreateValidationViewModel = hiltViewModel()
+    inputValidationViewModel: ProductCreateValidationViewModel = hiltViewModel(),
+    scaffoldState: ScaffoldState = rememberScaffoldState()
 ) {
 
-    LaunchedEffect(Unit) {
+    val context = LocalContext.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    val productCreateInputScreenEvent by inputValidationViewModel.screenEvent.collectAsStateWithLifecycle()
+    val productCreateApiScreenEvent by productViewModel.createProductScreenEvent.collectAsStateWithLifecycle()
+
+    LaunchedEffect(productCreateInputScreenEvent) {
+        productCreateInputScreenEvent.screenEvent?.let { screenEventWrapper ->
+            // hide the keyboard when we know the screen event has been changed from the `continue` button
+            keyboardController?.hide()
+
+            // Note: it's okay to cast as ScreenEvent.ScreenEventWithContent type since it's the only
+            // one being used in the input validation view-model
+            val product = (screenEventWrapper as ScreenEvent.ScreenEventWithContent).item
+            productViewModel.createProduct(product)
+        }
     }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(productCreateApiScreenEvent) {
+        when (val screenEvent = productCreateApiScreenEvent.screenEvent) {
+            is ScreenEvent.ShowSnackbar -> {
+                scaffoldState.snackbarHostState.showSnackbar(
+                    message = context.getString(screenEvent.stringId),
+                    actionLabel = context.getString(R.string.ok)
+                )
+            }
+            ScreenEvent.CloseScreen -> {
+                closeScreen()
+            }
+            else -> {}
+        }
     }
 
     val name by inputValidationViewModel.nameInput.collectAsStateWithLifecycle()

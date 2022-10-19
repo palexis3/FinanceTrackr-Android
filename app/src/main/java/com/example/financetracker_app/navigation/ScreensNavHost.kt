@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import com.example.financetracker_app.navigation.extensions.navigateSingleTopTo
 import com.example.financetracker_app.navigation.extensions.navigateToProductDetails
 import com.example.financetracker_app.ui.composable.HomeScreen
+import com.example.financetracker_app.ui.composable.product.ProductCreateScreen
 import com.example.financetracker_app.ui.composable.product.ProductDetailsScreen
 import com.example.financetracker_app.ui.composable.product.ProductListScreen
 
@@ -34,6 +35,9 @@ fun ScreenNavHost(
             ProductListScreen(
                 onClickSeeProductDetailsScreen = { id ->
                     navController.navigateToProductDetails(id)
+                },
+                onClickCreateProduct = {
+                    navController.navigate(ProductCreate.route)
                 }
             )
         }
@@ -46,6 +50,10 @@ fun ScreenNavHost(
             if (productId != null) {
                 ProductDetailsScreen(id = productId)
             }
+        }
+
+        composable(route = ProductCreate.route) {
+            ProductCreateScreen(closeScreen = { navController.popBackStack() })
         }
     }
 }

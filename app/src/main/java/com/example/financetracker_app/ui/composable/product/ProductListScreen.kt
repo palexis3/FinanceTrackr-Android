@@ -33,12 +33,25 @@ private val MediumPadding = 16.dp
 @Composable
 fun ProductListScreen(
     viewModel: ProductViewModel = hiltViewModel(),
-    onClickSeeProductDetailsScreen: (String) -> Unit
+    onClickSeeProductDetailsScreen: (String) -> Unit,
+    onClickCreateProduct: () -> Unit
 ) {
     val uiState: ProductListUiState by viewModel.productListState.collectAsStateWithLifecycle()
 
     Column {
-        ScreenTitle(title = R.string.product_list)
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(4.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ScreenTitle(title = R.string.product_list)
+            ExtendedFloatingActionButton(
+                onClick = onClickCreateProduct,
+                text = { Text("Add") }
+            )
+        }
         Divider(Modifier.height(1.dp))
         ProductStateItem(uiState = uiState, onClickSeeProductDetailsScreen)
     }

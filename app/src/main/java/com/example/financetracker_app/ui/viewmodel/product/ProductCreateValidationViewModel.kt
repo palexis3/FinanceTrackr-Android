@@ -9,18 +9,19 @@ import com.example.financetracker_app.data.models.StoreCreate
 import com.example.financetracker_app.helper.ScreenEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
+import javax.inject.Inject
 
 data class InputData(
     val item: String = "",
     @StringRes val errorId: Int? = null
 )
 
-data class ProductCreateUiState(
+data class ProductCreateInputScreenEventWrapper(
     val screenEvent: ScreenEvent<ProductCreate>? = null
 )
 
 @HiltViewModel
-class ProductCreateValidationViewModel : ViewModel() {
+class ProductCreateValidationViewModel @Inject constructor(): ViewModel() {
 
     private val _nameInput = MutableStateFlow(InputData())
     val nameInput = _nameInput.asStateFlow()
@@ -34,7 +35,7 @@ class ProductCreateValidationViewModel : ViewModel() {
     private val _storeInput = MutableStateFlow(InputData())
     val storeInput = _storeInput.asStateFlow()
 
-    private val _screenEvent = MutableStateFlow(ProductCreateUiState())
+    private val _screenEvent = MutableStateFlow(ProductCreateInputScreenEventWrapper())
     val screenEvent = _screenEvent.asStateFlow()
 
     val inputDataValid =
@@ -48,7 +49,7 @@ class ProductCreateValidationViewModel : ViewModel() {
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
     fun onNameChange(input: String) {
-        val errorId = if (input.length < 2) null else R.string.name_input_error
+        val errorId = if (input.length < 2) R.string.name_input_error else null
         _nameInput.update { inputData -> inputData.copy(item = input, errorId = errorId) }
     }
 
@@ -59,12 +60,12 @@ class ProductCreateValidationViewModel : ViewModel() {
     }
 
     fun onCategoryInput(input: String) {
-        val errorId = if (input.length < 2) null else R.string.category_input_error
+        val errorId = if (input.length < 2) R.string.category_input_error else null
         _categoryInput.update { inputData -> inputData.copy(item = input, errorId = errorId) }
     }
 
     fun onStoreInput(input: String) {
-        val errorId = if (input.length < 2) null else R.string.store_input_error
+        val errorId = if (input.length < 2) R.string.store_input_error else null
         _storeInput.update { inputData -> inputData.copy(item = input, errorId = errorId) }
     }
 
@@ -77,6 +78,6 @@ class ProductCreateValidationViewModel : ViewModel() {
                 store = StoreCreate(name = storeInput.value.item)
             )
         )
-        _screenEvent.update { eventUiState -> eventUiState.copy(screenEvent = screenEvent) }
+        _screenEvent.update { screenEventWrapper -> screenEventWrapper.copy(screenEvent = screenEvent) }
     }
 }

@@ -23,3 +23,7 @@ object ProductDetails : ScreenDestination {
         navArgument(productIdArg) { type = NavType.StringType }
     )
 }
+
+object ProductCreate : ScreenDestination {
+    override val route = "productCreate"
+}

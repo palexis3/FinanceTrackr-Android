@@ -2,11 +2,13 @@ package com.example.financetracker_app.ui.viewmodel.product
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.financetracker_app.R
 import com.example.financetracker_app.data.models.Product
 import com.example.financetracker_app.data.models.ProductCreate
 import com.example.financetracker_app.data.models.ProductUpdate
 import com.example.financetracker_app.data.remote.repository.product.ProductRepository
 import com.example.financetracker_app.helper.Result
+import com.example.financetracker_app.helper.ScreenEvent
 import com.example.financetracker_app.helper.asResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -24,6 +26,10 @@ sealed interface ProductDetailsUiState {
     object Error : ProductDetailsUiState
     object Loading : ProductDetailsUiState
 }
+
+data class ProductCreateScreenEventWrapper(
+    val screenEvent: ScreenEvent<Nothing>? = null
+)
 
 @HiltViewModel
 class ProductViewModel @Inject constructor(
@@ -45,11 +51,12 @@ class ProductViewModel @Inject constructor(
             initialValue = ProductListUiState.Loading
         )
 
-    private val _productDetailsState = MutableStateFlow<ProductDetailsUiState>(ProductDetailsUiState.Loading)
+    private val _productDetailsState =
+        MutableStateFlow<ProductDetailsUiState>(ProductDetailsUiState.Loading)
     val productDetailsState = _productDetailsState.asStateFlow()
 
-    private val _createProductFlow = MutableSharedFlow<Boolean>()
-    val createProductFlow = _createProductFlow.asSharedFlow()
+    private val _createProductScreenEvent = MutableStateFlow(ProductCreateScreenEventWrapper())
+    val createProductScreenEvent = _createProductScreenEvent.asStateFlow()
 
     private val _updateProductFlow = MutableSharedFlow<Boolean>()
     val updateProductFlow = _updateProductFlow.asSharedFlow()
@@ -73,8 +80,13 @@ class ProductViewModel @Inject constructor(
 
     fun createProduct(productCreate: ProductCreate) {
         viewModelScope.launch {
-            val response = productRepository.createProduct(productCreate)
-            _createProductFlow.emit(response)
+            val wasCreateProductSuccessful = productRepository.createProduct(productCreate)
+            val screenEvent = if (wasCreateProductSuccessful) {
+                ScreenEvent.CloseScreen
+            } else {
+                ScreenEvent.ShowSnackbar(stringId = R.string.product_create_error)
+            }
+            _createProductScreenEvent.update { screenEventWrapper -> screenEventWrapper.copy(screenEvent = screenEvent) }
         }
     }
 
