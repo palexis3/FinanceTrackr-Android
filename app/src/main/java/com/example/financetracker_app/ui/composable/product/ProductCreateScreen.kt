@@ -1,16 +1,14 @@
 package com.example.financetracker_app.ui.composable.product
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -32,9 +30,9 @@ import com.example.financetracker_app.ui.viewmodel.product.ProductViewModel
 @Composable
 fun ProductCreateScreen(
     closeScreen: () -> Unit,
+    showSnackbar: (String, String) -> Unit,
     productViewModel: ProductViewModel = hiltViewModel(),
     inputValidationViewModel: ProductCreateValidationViewModel = hiltViewModel(),
-    scaffoldState: ScaffoldState = rememberScaffoldState()
 ) {
 
     val context = LocalContext.current
@@ -47,7 +45,6 @@ fun ProductCreateScreen(
         productCreateInputScreenEvent.screenEvent?.let { screenEventWrapper ->
             // hide the keyboard when we know the screen event has been changed from the `continue` button
             keyboardController?.hide()
-
             // Note: it's okay to cast as ScreenEvent.ScreenEventWithContent type since it's the only
             // one being used in the input validation view-model
             val product = (screenEventWrapper as ScreenEvent.ScreenEventWithContent).item
@@ -58,10 +55,9 @@ fun ProductCreateScreen(
     LaunchedEffect(productCreateApiScreenEvent) {
         when (val screenEvent = productCreateApiScreenEvent.screenEvent) {
             is ScreenEvent.ShowSnackbar -> {
-                scaffoldState.snackbarHostState.showSnackbar(
-                    message = context.getString(screenEvent.stringId),
-                    actionLabel = context.getString(R.string.ok)
-                )
+                val message = context.getString(screenEvent.stringId)
+                val actionLabel = context.getString(R.string.ok)
+                showSnackbar(message, actionLabel)
             }
             ScreenEvent.CloseScreen -> {
                 closeScreen()
@@ -81,7 +77,16 @@ fun ProductCreateScreen(
             .padding(12.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        ScreenTitle(title = R.string.product_create)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = closeScreen) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = "Back"
+                )
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            ScreenTitle(title = R.string.product_create)
+        }
         Divider(Modifier.height(1.dp))
 
         CustomTextField(

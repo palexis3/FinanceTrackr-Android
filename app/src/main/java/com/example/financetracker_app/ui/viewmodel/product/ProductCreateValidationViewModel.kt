@@ -21,7 +21,7 @@ data class ProductCreateInputScreenEventWrapper(
 )
 
 @HiltViewModel
-class ProductCreateValidationViewModel @Inject constructor(): ViewModel() {
+class ProductCreateValidationViewModel @Inject constructor() : ViewModel() {
 
     private val _nameInput = MutableStateFlow(InputData())
     val nameInput = _nameInput.asStateFlow()

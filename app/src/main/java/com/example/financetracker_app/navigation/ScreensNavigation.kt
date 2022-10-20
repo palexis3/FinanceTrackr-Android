@@ -13,19 +13,20 @@ import com.example.financetracker_app.ui.composable.product.ProductDetailsScreen
 import com.example.financetracker_app.ui.composable.product.ProductListScreen
 
 @Composable
-fun ScreenNavHost(
-    navController: NavHostController,
-    modifier: Modifier = Modifier
+fun ScreensNavigation(
+    navHostController: NavHostController,
+    modifier: Modifier = Modifier,
+    showSnackbar: (String, String) -> Unit
 ) {
     NavHost(
-        navController = navController,
+        navController = navHostController,
         startDestination = Home.route,
         modifier = modifier
     ) {
         composable(route = Home.route) {
             HomeScreen(
                 onClickSeeAllProducts = {
-                    navController.navigateSingleTopTo(ProductList.route)
+                    navHostController.navigateSingleTopTo(ProductList.route)
                 },
                 onClickSeeAllReceipts = {}
             )
@@ -34,10 +35,10 @@ fun ScreenNavHost(
         composable(route = ProductList.route) {
             ProductListScreen(
                 onClickSeeProductDetailsScreen = { id ->
-                    navController.navigateToProductDetails(id)
+                    navHostController.navigateToProductDetails(id)
                 },
                 onClickCreateProduct = {
-                    navController.navigate(ProductCreate.route)
+                    navHostController.navigateSingleTopTo(ProductCreate.route)
                 }
             )
         }
@@ -53,7 +54,10 @@ fun ScreenNavHost(
         }
 
         composable(route = ProductCreate.route) {
-            ProductCreateScreen(closeScreen = { navController.popBackStack() })
+            ProductCreateScreen(
+                closeScreen = { navHostController.popBackStack() },
+                showSnackbar = showSnackbar
+            )
         }
     }
 }
