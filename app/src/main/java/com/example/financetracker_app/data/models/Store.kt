@@ -12,5 +12,5 @@ data class Store(
 @JsonClass(generateAdapter = true)
 data class StoreCreate(
     val name: String,
-    val category: String = "GROCERY"
+    val category: String
 )

@@ -18,7 +18,7 @@ data class Product(
 data class ProductCreate(
     val name: String,
     val price: Float,
-    val productExpiration: ProductExpiration? = null,
+    val productExpiration: ProductExpiration,
     val store: StoreCreate,
     val category: String
 )

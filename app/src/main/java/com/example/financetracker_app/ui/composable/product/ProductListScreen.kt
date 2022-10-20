@@ -18,10 +18,10 @@ import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.financetracker_app.R
 import com.example.financetracker_app.data.models.Product
-import com.example.financetracker_app.ui.composable.CommonDivider
-import com.example.financetracker_app.ui.composable.ErrorTitle
-import com.example.financetracker_app.ui.composable.LoadingIcon
-import com.example.financetracker_app.ui.composable.ScreenTitle
+import com.example.financetracker_app.ui.composable.common.CommonDivider
+import com.example.financetracker_app.ui.composable.common.ErrorTitle
+import com.example.financetracker_app.ui.composable.common.LoadingIcon
+import com.example.financetracker_app.ui.composable.common.ScreenTitle
 import com.example.financetracker_app.ui.theme.LightBlue
 import com.example.financetracker_app.ui.viewmodel.product.ProductListUiState
 import com.example.financetracker_app.ui.viewmodel.product.ProductViewModel

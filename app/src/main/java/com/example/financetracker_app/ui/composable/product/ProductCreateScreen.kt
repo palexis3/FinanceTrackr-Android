@@ -13,7 +13,6 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -21,8 +20,9 @@ import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.financetracker_app.R
 import com.example.financetracker_app.helper.ScreenEvent
-import com.example.financetracker_app.ui.composable.ScreenTitle
-import com.example.financetracker_app.ui.viewmodel.product.InputData
+import com.example.financetracker_app.ui.composable.common.EmittableDropDownMenu
+import com.example.financetracker_app.ui.composable.common.EmittableTextField
+import com.example.financetracker_app.ui.composable.common.ScreenTitle
 import com.example.financetracker_app.ui.viewmodel.product.ProductCreateValidationViewModel
 import com.example.financetracker_app.ui.viewmodel.product.ProductViewModel
 
@@ -32,7 +32,7 @@ fun ProductCreateScreen(
     closeScreen: () -> Unit,
     showSnackbar: (String, String) -> Unit,
     productViewModel: ProductViewModel = hiltViewModel(),
-    inputValidationViewModel: ProductCreateValidationViewModel = hiltViewModel(),
+    inputValidationViewModel: ProductCreateValidationViewModel = hiltViewModel()
 ) {
 
     val context = LocalContext.current
@@ -40,6 +40,11 @@ fun ProductCreateScreen(
 
     val productCreateInputScreenEvent by inputValidationViewModel.screenEvent.collectAsStateWithLifecycle()
     val productCreateApiScreenEvent by productViewModel.createProductScreenEvent.collectAsStateWithLifecycle()
+
+    val productCategoryList = listOf("FRUITS", "BEAUTY", "DAIRY", "POULTRY", "DEODORANT", "SOAP", "VEGETABLES", "SEAFOOD", "CLOTHING", "PANTRY")
+    val storeCategoryList = listOf("GROCERY", "SPECIALTY", "DEPARTMENT", "WAREHOUSE", "DISCOUNT", "CONVENIENCE", "RESTAURANT")
+    val quantityList = listOf("1", "2", "3", "4", "5")
+    val timeIntervalList = listOf("DAY", "WEEK", "MONTH", "YEAR")
 
     LaunchedEffect(productCreateInputScreenEvent) {
         productCreateInputScreenEvent.screenEvent?.let { screenEventWrapper ->
@@ -68,8 +73,13 @@ fun ProductCreateScreen(
 
     val name by inputValidationViewModel.nameInput.collectAsStateWithLifecycle()
     val price by inputValidationViewModel.priceInput.collectAsStateWithLifecycle()
-    val category by inputValidationViewModel.categoryInput.collectAsStateWithLifecycle()
     val store by inputValidationViewModel.storeInput.collectAsStateWithLifecycle()
+    val storeCategory by inputValidationViewModel.storeCategoryInput.collectAsStateWithLifecycle()
+    val productCategory by inputValidationViewModel.productCategoryInput.collectAsStateWithLifecycle()
+    val quantity by inputValidationViewModel.productQuantityInput.collectAsStateWithLifecycle()
+    val timeIntervalType by inputValidationViewModel.timeIntervalTypeInput.collectAsStateWithLifecycle()
+    val timeIntervalNum by inputValidationViewModel.timeIntervalNumInput.collectAsStateWithLifecycle()
+
     val inputsValid by inputValidationViewModel.inputDataValid.collectAsStateWithLifecycle()
 
     Column(
@@ -89,57 +99,71 @@ fun ProductCreateScreen(
         }
         Divider(Modifier.height(1.dp))
 
-        CustomTextField(
+        EmittableTextField(
             inputData = name,
             onValueChange = inputValidationViewModel::onNameChange,
             label = "Name"
         )
         Spacer(Modifier.height(8.dp))
-        CustomTextField(
+
+        EmittableTextField(
             inputData = price,
             onValueChange = inputValidationViewModel::onPriceChange,
             label = "Price",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
-        Spacer(Modifier.height(8.dp))
-        // TODO: Convert category into some type of dropdown selection
-        CustomTextField(
-            inputData = category,
-            onValueChange = inputValidationViewModel::onCategoryInput,
-            label = "Category"
-        )
-        Spacer(Modifier.height(8.dp))
-        CustomTextField(
-            inputData = store,
-            onValueChange = inputValidationViewModel::onStoreInput,
-            label = "Store"
+        Spacer(modifier = Modifier.height(8.dp))
+        EmittableDropDownMenu(
+            inputData = quantity,
+            label = "Quantity",
+            listOfOptions = quantityList,
+            onValueChange = inputValidationViewModel::onQuantityChange
         )
 
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(8.dp))
+
+        EmittableDropDownMenu(
+            inputData = productCategory,
+            label = "Product Category",
+            listOfOptions = productCategoryList,
+            onValueChange = inputValidationViewModel::onProductCategoryChange
+        )
+        Spacer(Modifier.height(8.dp))
+
+        EmittableTextField(
+            inputData = store,
+            onValueChange = inputValidationViewModel::onStoreChange,
+            label = "Store"
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        EmittableDropDownMenu(
+            inputData = storeCategory,
+            label = "Store Category",
+            listOfOptions = storeCategoryList,
+            onValueChange = inputValidationViewModel::onStoreCategoryChange
+        )
+
+        Spacer(Modifier.height(8.dp))
+
+        Text("Expiration from now", style = MaterialTheme.typography.caption)
+        EmittableTextField(
+            inputData = timeIntervalNum,
+            onValueChange = inputValidationViewModel::onTimeIntervalNumChange,
+            label = "Num",
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        )
+        Spacer(Modifier.height(8.dp))
+        EmittableDropDownMenu(
+            inputData = timeIntervalType,
+            label = "Time Interval Type",
+            listOfOptions = timeIntervalList,
+            onValueChange = inputValidationViewModel::onTimeIntervalTypeChange
+        )
+
+        Spacer(Modifier.height(28.dp))
 
         Button(onClick = inputValidationViewModel::onContinueClick, enabled = inputsValid) {
             Text("Continue")
-        }
-    }
-}
-
-@Composable
-fun CustomTextField(
-    inputData: InputData,
-    onValueChange: (String) -> Unit,
-    label: String,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
-) {
-    Column {
-        TextField(
-            value = inputData.item,
-            onValueChange = { onValueChange(it) },
-            isError = inputData.errorId != null,
-            label = { Text(label) },
-            keyboardOptions = keyboardOptions
-        )
-        inputData.errorId?.let {
-            Text(text = stringResource(id = it))
         }
     }
 }

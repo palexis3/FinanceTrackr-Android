@@ -15,4 +15,5 @@
     <string name="category_input_error">Category entered is incorrect.</string>
     <string name="price_input_error">Price entered is incorrect.</string>
     <string name="store_input_error">Store entered is incorrect.</string>
+    <string name="dropdown_selection_error">Dropdown item has error.</string>
 </resources>
