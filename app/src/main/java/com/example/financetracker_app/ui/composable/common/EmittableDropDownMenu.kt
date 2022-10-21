@@ -19,7 +19,6 @@ fun EmittableDropDownMenu(
     onValueChange: (String) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedOptionText by remember { mutableStateOf(listOfOptions[0]) }
 
     ExposedDropdownMenuBox(
         expanded = expanded,
@@ -30,9 +29,7 @@ fun EmittableDropDownMenu(
         TextField(
             modifier = modifier,
             value = inputData.item,
-            onValueChange = {
-                onValueChange(selectedOptionText)
-            },
+            onValueChange = {},
             label = { Text(label) },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
@@ -46,7 +43,7 @@ fun EmittableDropDownMenu(
             listOfOptions.forEach { option ->
                 DropdownMenuItem(
                     onClick = {
-                        selectedOptionText = option
+                        onValueChange(option)
                         expanded = false
                     }
                 ) {

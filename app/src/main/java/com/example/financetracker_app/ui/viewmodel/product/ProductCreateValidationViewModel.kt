@@ -44,7 +44,7 @@ class ProductCreateValidationViewModel @Inject constructor() : ViewModel() {
     val timeIntervalTypeInput = _timeIntervalTypeInput.asStateFlow()
 
     private val _timeIntervalNumInput = MutableStateFlow(InputData())
-    val timeIntervalNumInput = _timeIntervalTypeInput.asStateFlow()
+    val timeIntervalNumInput = _timeIntervalNumInput.asStateFlow()
 
     private val _screenEvent = MutableStateFlow(ProductCreateInputScreenEventWrapper())
     val screenEvent = _screenEvent.asStateFlow()
@@ -72,7 +72,7 @@ class ProductCreateValidationViewModel @Inject constructor() : ViewModel() {
             val timeIntervalTypeValid =
                 timeIntervalType.item.isNotEmpty() && timeIntervalType.errorId == null
             val timeIntervalNumValid =
-                timeIntervalNum.item.toIntOrNull() != null && timeIntervalNum.errorId == null
+                timeIntervalNum.item.toLongOrNull() != null && timeIntervalNum.errorId == null
 
             nameValid && priceValid && productCategoryValid && storeValid && storeCategoryValid && productQuantityValid && timeIntervalTypeValid && timeIntervalNumValid
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
@@ -129,7 +129,7 @@ class ProductCreateValidationViewModel @Inject constructor() : ViewModel() {
     }
 
     fun onTimeIntervalNumChange(input: String) {
-        val errorId = if (input.toIntOrNull() == null) R.string.dropdown_selection_error else null
+        val errorId = if (input.toLongOrNull() == null) R.string.dropdown_selection_error else null
         _timeIntervalNumInput.update { inputData ->
             inputData.copy(
                 item = input,

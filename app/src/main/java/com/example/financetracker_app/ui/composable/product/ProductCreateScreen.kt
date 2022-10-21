@@ -149,7 +149,7 @@ fun ProductCreateScreen(
         EmittableTextField(
             inputData = timeIntervalNum,
             onValueChange = inputValidationViewModel::onTimeIntervalNumChange,
-            label = "Num",
+            label = "Time Interval Num",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
         Spacer(Modifier.height(8.dp))
