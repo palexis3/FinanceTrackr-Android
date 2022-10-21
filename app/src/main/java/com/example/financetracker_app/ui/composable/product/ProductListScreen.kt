@@ -18,13 +18,13 @@ import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.financetracker_app.R
 import com.example.financetracker_app.data.models.Product
-import com.example.financetracker_app.ui.composable.CommonDivider
-import com.example.financetracker_app.ui.composable.ErrorTitle
-import com.example.financetracker_app.ui.composable.LoadingIcon
-import com.example.financetracker_app.ui.composable.ScreenTitle
+import com.example.financetracker_app.ui.composable.common.CommonDivider
+import com.example.financetracker_app.ui.composable.common.ErrorTitle
+import com.example.financetracker_app.ui.composable.common.LoadingIcon
+import com.example.financetracker_app.ui.composable.common.ScreenTitle
 import com.example.financetracker_app.ui.theme.LightBlue
-import com.example.financetracker_app.ui.viewmodel.ProductListUiState
-import com.example.financetracker_app.ui.viewmodel.ProductViewModel
+import com.example.financetracker_app.ui.viewmodel.product.ProductListUiState
+import com.example.financetracker_app.ui.viewmodel.product.ProductViewModel
 
 private val DefaultPadding = 12.dp
 private val MediumPadding = 16.dp
@@ -33,12 +33,25 @@ private val MediumPadding = 16.dp
 @Composable
 fun ProductListScreen(
     viewModel: ProductViewModel = hiltViewModel(),
-    onClickSeeProductDetailsScreen: (String) -> Unit
+    onClickSeeProductDetailsScreen: (String) -> Unit,
+    onClickCreateProduct: () -> Unit
 ) {
     val uiState: ProductListUiState by viewModel.productListState.collectAsStateWithLifecycle()
 
     Column {
-        ScreenTitle(title = R.string.product_list)
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(4.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ScreenTitle(title = R.string.product_list)
+            ExtendedFloatingActionButton(
+                onClick = onClickCreateProduct,
+                text = { Text("Add") }
+            )
+        }
         Divider(Modifier.height(1.dp))
         ProductStateItem(uiState = uiState, onClickSeeProductDetailsScreen)
     }

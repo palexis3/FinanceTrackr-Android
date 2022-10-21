@@ -1,4 +1,4 @@
-package com.example.financetracker_app.ui.composable
+package com.example.financetracker_app.ui.composable.common
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable

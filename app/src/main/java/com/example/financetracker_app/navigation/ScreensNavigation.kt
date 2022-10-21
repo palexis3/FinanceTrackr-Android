@@ -8,23 +8,25 @@ import androidx.navigation.compose.composable
 import com.example.financetracker_app.navigation.extensions.navigateSingleTopTo
 import com.example.financetracker_app.navigation.extensions.navigateToProductDetails
 import com.example.financetracker_app.ui.composable.HomeScreen
+import com.example.financetracker_app.ui.composable.product.ProductCreateScreen
 import com.example.financetracker_app.ui.composable.product.ProductDetailsScreen
 import com.example.financetracker_app.ui.composable.product.ProductListScreen
 
 @Composable
-fun ScreenNavHost(
-    navController: NavHostController,
-    modifier: Modifier = Modifier
+fun ScreensNavigation(
+    navHostController: NavHostController,
+    modifier: Modifier = Modifier,
+    showSnackbar: (String, String) -> Unit
 ) {
     NavHost(
-        navController = navController,
+        navController = navHostController,
         startDestination = Home.route,
         modifier = modifier
     ) {
         composable(route = Home.route) {
             HomeScreen(
                 onClickSeeAllProducts = {
-                    navController.navigateSingleTopTo(ProductList.route)
+                    navHostController.navigateSingleTopTo(ProductList.route)
                 },
                 onClickSeeAllReceipts = {}
             )
@@ -33,7 +35,10 @@ fun ScreenNavHost(
         composable(route = ProductList.route) {
             ProductListScreen(
                 onClickSeeProductDetailsScreen = { id ->
-                    navController.navigateToProductDetails(id)
+                    navHostController.navigateToProductDetails(id)
+                },
+                onClickCreateProduct = {
+                    navHostController.navigateSingleTopTo(ProductCreate.route)
                 }
             )
         }
@@ -46,6 +51,13 @@ fun ScreenNavHost(
             if (productId != null) {
                 ProductDetailsScreen(id = productId)
             }
+        }
+
+        composable(route = ProductCreate.route) {
+            ProductCreateScreen(
+                closeScreen = { navHostController.popBackStack() },
+                showSnackbar = showSnackbar
+            )
         }
     }
 }

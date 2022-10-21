@@ -8,8 +8,9 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
-import com.example.financetracker_app.navigation.ScreenNavHost
+import com.example.financetracker_app.navigation.FinanceTrackrAppState
+import com.example.financetracker_app.navigation.ScreensNavigation
+import com.example.financetracker_app.navigation.rememberFinanceTrackrAppState
 import com.example.financetracker_app.ui.theme.FinanceTrackerAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -18,20 +19,24 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ShowHomeScreen()
+            ShowApp()
         }
     }
 }
 
 @Preview
 @Composable
-fun ShowHomeScreen() {
+fun ShowApp() {
     FinanceTrackerAppTheme {
-        val navController = rememberNavController()
-        Scaffold { innerPadding ->
-            ScreenNavHost(
-                navController = navController,
-                modifier = Modifier.padding(innerPadding)
+        val appState: FinanceTrackrAppState = rememberFinanceTrackrAppState()
+
+        Scaffold(scaffoldState = appState.scaffoldState) { innerPadding ->
+            ScreensNavigation(
+                navHostController = appState.navHostController,
+                modifier = Modifier.padding(innerPadding),
+                showSnackbar = { message, actionLabel ->
+                    appState.showSnackBar(message, actionLabel)
+                }
             )
         }
     }

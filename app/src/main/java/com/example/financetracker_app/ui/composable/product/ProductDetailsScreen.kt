@@ -15,11 +15,11 @@ import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.financetracker_app.R
 import com.example.financetracker_app.data.models.Product
-import com.example.financetracker_app.ui.composable.ErrorTitle
-import com.example.financetracker_app.ui.composable.LoadingIcon
-import com.example.financetracker_app.ui.composable.SubScreenTitle
-import com.example.financetracker_app.ui.viewmodel.ProductDetailsUiState
-import com.example.financetracker_app.ui.viewmodel.ProductViewModel
+import com.example.financetracker_app.ui.composable.common.ErrorTitle
+import com.example.financetracker_app.ui.composable.common.LoadingIcon
+import com.example.financetracker_app.ui.composable.common.SubScreenTitle
+import com.example.financetracker_app.ui.viewmodel.product.ProductDetailsUiState
+import com.example.financetracker_app.ui.viewmodel.product.ProductViewModel
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
@@ -70,18 +70,20 @@ fun ProductDetailsCard(product: Product) {
             Column(Modifier.padding(12.dp)) {
                 Row(
                     Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    SubScreenTitle(product.name)
-                    val amountText = "$${product.price}"
-                    Text(
-                        text = amountText,
-                        style = MaterialTheme.typography.subtitle1
-                    )
+                    Box {
+                        SubScreenTitle(product.name)
+                        val amountText = "$${product.price}"
+                        Text(
+                            text = amountText,
+                            style = MaterialTheme.typography.subtitle1,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
                 }
 
-                Spacer(Modifier.height(16.dp))
+                Spacer(Modifier.height(12.dp))
 
                 val createdAt = "Created at: ${product.createdAt}"
                 val category = "Category: ${product.category}"
