@@ -10,6 +10,7 @@ buildscript {
         hilt_navigation_version = '1.0.0'
         lifecycle_compose_version = '2.6.0-alpha02'
         logging_interceptor = '4.10.0'
+        coil_compose_version = '2.2.2'
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.1.3'

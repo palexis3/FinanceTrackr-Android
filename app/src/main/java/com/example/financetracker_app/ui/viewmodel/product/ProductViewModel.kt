@@ -80,6 +80,8 @@ class ProductViewModel @Inject constructor(
 
     fun createProduct(productCreate: ProductCreate) {
         viewModelScope.launch {
+            // TODO: Return a Product model to get id so that the user can navigate to the
+            // ScreenEvent.nextScreen(id) which would be Product Image Screen
             val wasCreateProductSuccessful = productRepository.createProduct(productCreate)
             val screenEvent = if (wasCreateProductSuccessful) {
                 ScreenEvent.CloseScreen

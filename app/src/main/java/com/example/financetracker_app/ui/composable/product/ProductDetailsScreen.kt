@@ -72,15 +72,12 @@ fun ProductDetailsCard(product: Product) {
                     Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Box {
-                        SubScreenTitle(product.name)
-                        val amountText = "$${product.price}"
-                        Text(
-                            text = amountText,
-                            style = MaterialTheme.typography.subtitle1,
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
+                    SubScreenTitle(product.name)
+                    val amountText = "$${product.price}"
+                    Text(
+                        text = amountText,
+                        style = MaterialTheme.typography.subtitle1
+                    )
                 }
 
                 Spacer(Modifier.height(12.dp))

@@ -31,6 +31,7 @@ import com.example.financetracker_app.ui.viewmodel.product.ProductViewModel
 fun ProductCreateScreen(
     closeScreen: () -> Unit,
     showSnackbar: (String, String) -> Unit,
+    goToImageScreen: (String) -> Unit,
     productViewModel: ProductViewModel = hiltViewModel(),
     inputValidationViewModel: ProductCreateValidationViewModel = hiltViewModel()
 ) {

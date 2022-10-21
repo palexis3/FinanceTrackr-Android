@@ -14,8 +14,6 @@ import com.example.financetracker_app.ui.composable.common.BaseHomeRow
 import com.example.financetracker_app.ui.composable.common.CommonDivider
 import com.example.financetracker_app.ui.composable.common.ScreenTitle
 
-private val HomeDefaultPadding = 8.dp
-
 @Composable
 fun HomeScreen(
     onClickSeeAllProducts: () -> Unit = {},
@@ -23,7 +21,7 @@ fun HomeScreen(
 ) {
     Column(
         modifier = Modifier
-            .padding(HomeDefaultPadding)
+            .padding(8.dp)
             .semantics { contentDescription = "Home Screen" }
     ) {
         ScreenTitle(title = R.string.finance_trackr)

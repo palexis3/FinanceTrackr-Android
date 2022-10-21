@@ -27,3 +27,12 @@ object ProductDetails : ScreenDestination {
 object ProductCreate : ScreenDestination {
     override val route = "productCreate"
 }
+
+object ProductImage : ScreenDestination {
+    override val route = "productImage"
+    const val productIdArg = "product_id"
+    val routeWithArgs = "$route/{$productIdArg}"
+    val arguments = listOf(
+        navArgument(productIdArg) { type = NavType.StringType }
+    )
+}
