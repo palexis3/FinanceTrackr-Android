@@ -51,7 +51,10 @@ fun ScreensNavigation(
         ) { navBackStackEntry ->
             val productId = navBackStackEntry.arguments?.getString(ProductDetails.productIdArg)
             if (productId != null) {
-                ProductDetailsScreen(id = productId)
+                ProductDetailsScreen(
+                    id = productId,
+                    goToUpdateScreen = {}
+                )
             }
         }
 

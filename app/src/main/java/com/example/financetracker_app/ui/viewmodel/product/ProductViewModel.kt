@@ -27,11 +27,11 @@ sealed interface ProductDetailsUiState {
     object Loading : ProductDetailsUiState
 }
 
-data class ProductCreateScreenEventWrapper(
+data class ProductCreateApiScreenEventWrapper(
     val screenEvent: ScreenEvent<Nothing>? = null
 )
 
-data class ProductUpdateScreenEventWrapper(
+data class ProductUpdateApiScreenEventWrapper(
     val screenEvent: ScreenEvent<Nothing>? = null
 )
 
@@ -59,11 +59,11 @@ class ProductViewModel @Inject constructor(
         MutableStateFlow<ProductDetailsUiState>(ProductDetailsUiState.Loading)
     val productDetailsState = _productDetailsState.asStateFlow()
 
-    private val _createProductScreenEvent = MutableStateFlow(ProductCreateScreenEventWrapper())
-    val createProductScreenEvent = _createProductScreenEvent.asStateFlow()
+    private val _productCreateApiScreenEvent = MutableStateFlow(ProductCreateApiScreenEventWrapper())
+    val productCreateApiScreenEvent = _productCreateApiScreenEvent.asStateFlow()
 
-    private val _updateProductFlow = MutableStateFlow(ProductUpdateScreenEventWrapper())
-    val updateProductFlow = _updateProductFlow.asStateFlow()
+    private val _productUpdateApiScreenEvent = MutableStateFlow(ProductUpdateApiScreenEventWrapper())
+    val productUpdateApiScreenEvent = _productUpdateApiScreenEvent.asStateFlow()
 
     private val _deleteProductFlow = MutableSharedFlow<Boolean>()
     val deleteProductFlow = _deleteProductFlow.asSharedFlow()
@@ -90,7 +90,7 @@ class ProductViewModel @Inject constructor(
             } else {
                 ScreenEvent.ShowSnackbar(stringId = R.string.product_create_error)
             }
-            _createProductScreenEvent.update { screenEventWrapper -> screenEventWrapper.copy(screenEvent = screenEvent) }
+            _productCreateApiScreenEvent.update { screenEventWrapper -> screenEventWrapper.copy(screenEvent = screenEvent) }
         }
     }
 
@@ -102,7 +102,7 @@ class ProductViewModel @Inject constructor(
             } else {
                 ScreenEvent.ShowSnackbar(stringId = R.string.product_update_error)
             }
-            _updateProductFlow.update { screenEventWrapper -> screenEventWrapper.copy(screenEvent = screenEvent) }
+            _productUpdateApiScreenEvent.update { screenEventWrapper -> screenEventWrapper.copy(screenEvent = screenEvent) }
         }
     }
 

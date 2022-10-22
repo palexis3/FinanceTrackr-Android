@@ -1,8 +1,11 @@
 package com.example.financetracker_app.data.models
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @JsonClass(generateAdapter = true)
 data class Product(
     val id: String,
@@ -12,7 +15,7 @@ data class Product(
     val createdAt: String,
     @Json(name = "productCategory")
     val category: String
-)
+) : Parcelable
 
 @JsonClass(generateAdapter = true)
 data class ProductCreate(

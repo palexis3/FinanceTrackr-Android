@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.financetracker_app.R
@@ -25,6 +26,8 @@ import com.example.financetracker_app.ui.viewmodel.product.ProductViewModel
 @Composable
 fun ProductDetailsScreen(
     id: String,
+    goToUpdateScreen: () -> Unit,
+    savedStateHandle: SavedStateHandle,
     viewModel: ProductViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
@@ -32,11 +35,15 @@ fun ProductDetailsScreen(
     }
 
     val uiState: ProductDetailsUiState by viewModel.productDetailsState.collectAsStateWithLifecycle()
-    ShowProductDetailsUiState(uiState = uiState)
+    ShowProductDetailsUiState(uiState = uiState, goToUpdateScreen, savedStateHandle)
 }
 
 @Composable
-private fun ShowProductDetailsUiState(uiState: ProductDetailsUiState) {
+private fun ShowProductDetailsUiState(
+    uiState: ProductDetailsUiState,
+    goToUpdateScreen: () -> Unit,
+    savedStateHandle: SavedStateHandle
+) {
     when (uiState) {
         ProductDetailsUiState.Error -> {
             Column(
@@ -57,19 +64,26 @@ private fun ShowProductDetailsUiState(uiState: ProductDetailsUiState) {
             }
         }
         is ProductDetailsUiState.Success -> {
-            ProductDetailsCard(product = uiState.product)
+            ProductDetailsCard(product = uiState.product, goToUpdateScreen, savedStateHandle)
         }
     }
 }
 
 @Composable
-fun ProductDetailsCard(product: Product) {
+fun ProductDetailsCard(
+    product: Product,
+    goToUpdateScreen: () -> Unit,
+    savedStateHandle: SavedStateHandle
+) {
     // TODO: Add an image above the details card
     Card {
         Column {
             Box(modifier = Modifier, contentAlignment = Alignment.TopEnd) {
                 Row(modifier = Modifier.padding(end = 8.dp)) {
-                    Button(onClick = {}) {
+                    Button(onClick = {
+                        savedStateHandle["product"] = product
+                        goToUpdateScreen()
+                    }) {
                         Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Product")
                     }
                 }

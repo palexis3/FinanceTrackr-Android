@@ -40,7 +40,7 @@ fun ProductCreateScreen(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     val productCreateInputScreenEvent by inputValidationViewModel.screenEvent.collectAsStateWithLifecycle()
-    val productCreateApiScreenEvent by productViewModel.createProductScreenEvent.collectAsStateWithLifecycle()
+    val productCreateApiScreenEvent by productViewModel.productCreateApiScreenEvent.collectAsStateWithLifecycle()
 
     val productCategoryList = listOf("FRUITS", "BEAUTY", "DAIRY", "POULTRY", "DEODORANT", "SOAP", "VEGETABLES", "SEAFOOD", "CLOTHING", "PANTRY")
     val storeCategoryList = listOf("GROCERY", "SPECIALTY", "DEPARTMENT", "WAREHOUSE", "DISCOUNT", "CONVENIENCE", "RESTAURANT")
