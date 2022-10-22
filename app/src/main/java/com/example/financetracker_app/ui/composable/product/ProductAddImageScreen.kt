@@ -14,7 +14,7 @@ import com.example.financetracker_app.ui.viewmodel.ImagesViewModel
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
-fun ProductImageScreen(
+fun ProductAddImageScreen(
     closeScreen: () -> Unit,
     showSnackbar: (String, String) -> Unit,
     productId: String,

@@ -31,6 +31,10 @@ data class ProductCreateScreenEventWrapper(
     val screenEvent: ScreenEvent<Nothing>? = null
 )
 
+data class ProductUpdateScreenEventWrapper(
+    val screenEvent: ScreenEvent<Nothing>? = null
+)
+
 @HiltViewModel
 class ProductViewModel @Inject constructor(
     private val productRepository: ProductRepository
@@ -58,8 +62,8 @@ class ProductViewModel @Inject constructor(
     private val _createProductScreenEvent = MutableStateFlow(ProductCreateScreenEventWrapper())
     val createProductScreenEvent = _createProductScreenEvent.asStateFlow()
 
-    private val _updateProductFlow = MutableSharedFlow<Boolean>()
-    val updateProductFlow = _updateProductFlow.asSharedFlow()
+    private val _updateProductFlow = MutableStateFlow(ProductUpdateScreenEventWrapper())
+    val updateProductFlow = _updateProductFlow.asStateFlow()
 
     private val _deleteProductFlow = MutableSharedFlow<Boolean>()
     val deleteProductFlow = _deleteProductFlow.asSharedFlow()
@@ -92,8 +96,13 @@ class ProductViewModel @Inject constructor(
 
     fun updateProduct(productUpdate: ProductUpdate) {
         viewModelScope.launch {
-            val response = productRepository.updateProduct(productUpdate)
-            _updateProductFlow.emit(response)
+            val wasProductUpdateSuccessful = productRepository.updateProduct(productUpdate)
+            val screenEvent = if (wasProductUpdateSuccessful) {
+                ScreenEvent.CloseScreen
+            } else {
+                ScreenEvent.ShowSnackbar(stringId = R.string.product_update_error)
+            }
+            _updateProductFlow.update { screenEventWrapper -> screenEventWrapper.copy(screenEvent = screenEvent) }
         }
     }
 

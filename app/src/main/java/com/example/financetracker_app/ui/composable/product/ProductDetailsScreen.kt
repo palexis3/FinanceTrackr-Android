@@ -1,9 +1,9 @@
 package com.example.financetracker_app.ui.composable.product
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -67,10 +67,18 @@ fun ProductDetailsCard(product: Product) {
     // TODO: Add an image above the details card
     Card {
         Column {
+            Box(modifier = Modifier, contentAlignment = Alignment.TopEnd) {
+                Row(modifier = Modifier.padding(end = 8.dp)) {
+                    Button(onClick = {}) {
+                        Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Product")
+                    }
+                }
+            }
             Column(Modifier.padding(12.dp)) {
                 Row(
                     Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     SubScreenTitle(product.name)
                     val amountText = "$${product.price}"

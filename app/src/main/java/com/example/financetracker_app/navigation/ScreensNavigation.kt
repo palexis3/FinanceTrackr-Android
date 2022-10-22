@@ -9,9 +9,9 @@ import com.example.financetracker_app.navigation.extensions.navigateSingleTopTo
 import com.example.financetracker_app.navigation.extensions.navigateToProductDetails
 import com.example.financetracker_app.navigation.extensions.navigateToProductImage
 import com.example.financetracker_app.ui.composable.HomeScreen
+import com.example.financetracker_app.ui.composable.product.ProductAddImageScreen
 import com.example.financetracker_app.ui.composable.product.ProductCreateScreen
 import com.example.financetracker_app.ui.composable.product.ProductDetailsScreen
-import com.example.financetracker_app.ui.composable.product.ProductImageScreen
 import com.example.financetracker_app.ui.composable.product.ProductListScreen
 
 @Composable
@@ -71,7 +71,7 @@ fun ScreensNavigation(
         ) { navBackStackEntry ->
             val productId = navBackStackEntry.arguments?.getString(ProductImage.productIdArg)
             if (productId != null) {
-                ProductImageScreen(
+                ProductAddImageScreen(
                     closeScreen = { navHostController.popBackStack() },
                     showSnackbar = showSnackbar,
                     productId = productId
