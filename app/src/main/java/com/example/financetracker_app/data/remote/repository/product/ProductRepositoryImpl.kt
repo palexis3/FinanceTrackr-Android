@@ -45,8 +45,12 @@ class ProductRepositoryImpl @Inject constructor(
         return response.isSuccessful
     }
 
-    override suspend fun createProduct(productCreate: ProductCreate): Boolean {
+    override suspend fun createProduct(productCreate: ProductCreate): Product? {
         val response = api.createProduct(productCreate)
-        return response.isSuccessful
+        return if (response.isSuccessful) {
+            response.body()
+        } else {
+            null
+        }
     }
 }

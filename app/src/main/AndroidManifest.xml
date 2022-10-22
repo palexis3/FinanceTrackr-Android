@@ -15,6 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FinanceTrackerApp"
         tools:targetApi="31">
+        <provider
+            android:authorities="com.example.financetracker_app.fileProvider"
+            android:name=".helper.ComposeFileProvider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+        </provider>
         <activity
             android:name=".MainActivity"
             android:exported="true"

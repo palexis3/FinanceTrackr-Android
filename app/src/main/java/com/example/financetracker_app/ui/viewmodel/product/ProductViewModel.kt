@@ -80,9 +80,9 @@ class ProductViewModel @Inject constructor(
 
     fun createProduct(productCreate: ProductCreate) {
         viewModelScope.launch {
-            val wasCreateProductSuccessful = productRepository.createProduct(productCreate)
-            val screenEvent = if (wasCreateProductSuccessful) {
-                ScreenEvent.CloseScreen
+            val product = productRepository.createProduct(productCreate)
+            val screenEvent = if (product != null) {
+                ScreenEvent.GoToNextScreen(listOf(product.id))
             } else {
                 ScreenEvent.ShowSnackbar(stringId = R.string.product_create_error)
             }

@@ -31,6 +31,7 @@ import com.example.financetracker_app.ui.viewmodel.product.ProductViewModel
 fun ProductCreateScreen(
     closeScreen: () -> Unit,
     showSnackbar: (String, String) -> Unit,
+    goToImageScreen: (String) -> Unit,
     productViewModel: ProductViewModel = hiltViewModel(),
     inputValidationViewModel: ProductCreateValidationViewModel = hiltViewModel()
 ) {
@@ -64,8 +65,9 @@ fun ProductCreateScreen(
                 val actionLabel = context.getString(R.string.ok)
                 showSnackbar(message, actionLabel)
             }
-            ScreenEvent.CloseScreen -> {
-                closeScreen()
+            is ScreenEvent.GoToNextScreen -> {
+                val productId = screenEvent.args[0]
+                goToImageScreen(productId)
             }
             else -> {}
         }
