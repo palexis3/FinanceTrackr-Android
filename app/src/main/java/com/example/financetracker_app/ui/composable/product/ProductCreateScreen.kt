@@ -65,8 +65,9 @@ fun ProductCreateScreen(
                 val actionLabel = context.getString(R.string.ok)
                 showSnackbar(message, actionLabel)
             }
-            ScreenEvent.CloseScreen -> {
-                closeScreen()
+            is ScreenEvent.GoToNextScreen -> {
+                val productId = screenEvent.args[0]
+                goToImageScreen(productId)
             }
             else -> {}
         }

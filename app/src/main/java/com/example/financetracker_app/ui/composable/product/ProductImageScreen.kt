@@ -21,7 +21,6 @@ fun ProductImageScreen(
     imageViewModel: ImagesViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-
     val imageUploadScreeEvent by imageViewModel.uploadImageScreenEvent.collectAsStateWithLifecycle()
 
     LaunchedEffect(imageUploadScreeEvent) {
@@ -39,6 +38,7 @@ fun ProductImageScreen(
     ImagePicker(
         uriSelected = { uri ->
             imageViewModel.uploadImage(ImagesViewModel.PRODUCT_TYPE, productId, uri)
-        }
+        },
+        onCloseScreen = closeScreen
     )
 }

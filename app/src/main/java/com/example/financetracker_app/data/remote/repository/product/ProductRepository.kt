@@ -10,5 +10,5 @@ interface ProductRepository {
     fun getProduct(id: String): Flow<Product>
     suspend fun deleteProduct(id: String): Boolean
     suspend fun updateProduct(productUpdate: ProductUpdate): Boolean
-    suspend fun createProduct(productCreate: ProductCreate): Boolean
+    suspend fun createProduct(productCreate: ProductCreate): Product?
 }
