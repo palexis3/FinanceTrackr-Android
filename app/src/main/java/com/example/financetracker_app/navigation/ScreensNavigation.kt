@@ -9,10 +9,7 @@ import com.example.financetracker_app.navigation.extensions.navigateSingleTopTo
 import com.example.financetracker_app.navigation.extensions.navigateToProductDetails
 import com.example.financetracker_app.navigation.extensions.navigateToProductImage
 import com.example.financetracker_app.ui.composable.HomeScreen
-import com.example.financetracker_app.ui.composable.product.ProductAddImageScreen
-import com.example.financetracker_app.ui.composable.product.ProductCreateScreen
-import com.example.financetracker_app.ui.composable.product.ProductDetailsScreen
-import com.example.financetracker_app.ui.composable.product.ProductListScreen
+import com.example.financetracker_app.ui.composable.product.*
 
 @Composable
 fun ScreensNavigation(
@@ -53,7 +50,9 @@ fun ScreensNavigation(
             if (productId != null) {
                 ProductDetailsScreen(
                     id = productId,
-                    goToUpdateScreen = {}
+                    goToUpdateScreen = {
+                        navHostController.navigateSingleTopTo(ProductUpdate.route)
+                    }
                 )
             }
         }
@@ -80,6 +79,13 @@ fun ScreensNavigation(
                     productId = productId
                 )
             }
+        }
+
+        composable(route = ProductUpdate.route) {
+            ProductUpdateScreen(
+                closeScreen = { navHostController.popBackStack() },
+                showSnackbar = showSnackbar
+            )
         }
     }
 }

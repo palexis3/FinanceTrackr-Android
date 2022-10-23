@@ -7,6 +7,7 @@
     <string name="product">Product</string>
     <string name="product_list">Product List</string>
     <string name="product_create">Product Create</string>
+    <string name="product_update">Product Update</string>
     <string name="product_create_error">Error creating product. Try again</string>
     <string name="product_list_error">Could not fetch product list. Try again</string>
     <string name="product_details_error">Could not fetch product details. Try again</string>

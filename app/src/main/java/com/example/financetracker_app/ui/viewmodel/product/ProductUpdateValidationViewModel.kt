@@ -21,6 +21,7 @@ class ProductUpdateValidationViewModel @Inject constructor(
 
     private val product: StateFlow<Product?> = savedStateHandle.getStateFlow("product", null)
     private val productId = product.value?.id
+
     private val initialName = product.value?.name ?: ""
     private val initialPrice = product.value?.price ?: ""
 
@@ -48,6 +49,8 @@ class ProductUpdateValidationViewModel @Inject constructor(
         val nameValid = name.item.isNotEmpty() && name.errorId == null
         val priceValid = price.item.toDoubleOrNull() != null && price.errorId == null
 
+        // Note: product expiration is calculated with a quantity and duration that each product
+        // is expected to expire, so they're all required to be entered
         val quantityValid = quantity.item.toIntOrNull() != null && quantity.errorId == null
         val timeIntervalNumValid = timeIntervalNum.item.toIntOrNull() != null && timeIntervalNum.errorId == null
         val timeIntervalTypeValid = timeIntervalType.item.isNotEmpty() != null && timeIntervalType.errorId == null

@@ -81,7 +81,6 @@ fun ProductCreateScreen(
     val quantity by inputValidationViewModel.productQuantityInput.collectAsStateWithLifecycle()
     val timeIntervalType by inputValidationViewModel.timeIntervalTypeInput.collectAsStateWithLifecycle()
     val timeIntervalNum by inputValidationViewModel.timeIntervalNumInput.collectAsStateWithLifecycle()
-
     val inputsValid by inputValidationViewModel.inputDataValid.collectAsStateWithLifecycle()
 
     Column(

@@ -36,3 +36,7 @@ object ProductImage : ScreenDestination {
         navArgument(productIdArg) { type = NavType.StringType }
     )
 }
+
+object ProductUpdate : ScreenDestination {
+    override val route = "productUpdate"
+}

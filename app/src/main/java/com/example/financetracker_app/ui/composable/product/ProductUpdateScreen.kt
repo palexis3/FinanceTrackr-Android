@@ -1,14 +1,149 @@
 package com.example.financetracker_app.ui.composable.product
 
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.financetracker_app.R
+import com.example.financetracker_app.helper.ScreenEvent
+import com.example.financetracker_app.ui.composable.common.EmittableDropDownMenu
+import com.example.financetracker_app.ui.composable.common.EmittableTextField
 import com.example.financetracker_app.ui.viewmodel.product.ProductUpdateValidationViewModel
 import com.example.financetracker_app.ui.viewmodel.product.ProductViewModel
 
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalLifecycleComposeApi::class)
 @Composable
 fun ProductUpdateScreen(
     closeScreen: () -> Unit,
+    showSnackbar: (String, String) -> Unit,
     inputValidationViewModel: ProductUpdateValidationViewModel = hiltViewModel(),
-    viewModel: ProductViewModel = hiltViewModel()
+    productViewModel: ProductViewModel = hiltViewModel()
 ) {
+
+    val context = LocalContext.current
+    val keyboard = LocalSoftwareKeyboardController.current
+
+    val timeIntervalList = listOf("DAY", "WEEK", "MONTH", "YEAR")
+
+    val productUpdateInputScreenEvent by inputValidationViewModel.screenEvent.collectAsStateWithLifecycle()
+    val productUpdateApiScreenEvent by productViewModel.productUpdateApiScreenEvent.collectAsStateWithLifecycle()
+
+    LaunchedEffect(productUpdateInputScreenEvent) {
+        keyboard?.hide()
+        when (val screenEvent = productUpdateInputScreenEvent.screenEvent) {
+            is ScreenEvent.ShowSnackbar -> {
+                val message = context.getString(screenEvent.stringId)
+                val actionLabel = context.getString(R.string.ok)
+                showSnackbar(message, actionLabel)
+            }
+            is ScreenEvent.ScreenEventWithContent -> {
+                val productUpdate = screenEvent.item
+                productViewModel.updateProduct(productUpdate)
+            }
+            else -> {}
+        }
+    }
+
+    LaunchedEffect(productUpdateApiScreenEvent) {
+        when (val screenEvent = productUpdateApiScreenEvent.screenEvent) {
+            is ScreenEvent.ShowSnackbar -> {
+                val message = context.getString(screenEvent.stringId)
+                val actionLabel = context.getString(R.string.ok)
+                showSnackbar(message, actionLabel)
+            }
+            ScreenEvent.CloseScreen -> closeScreen()
+            else -> {}
+        }
+    }
+
+    val name by inputValidationViewModel.nameInput.collectAsStateWithLifecycle()
+    val price by inputValidationViewModel.priceInput.collectAsStateWithLifecycle()
+    val quantity by inputValidationViewModel.quantityInput.collectAsStateWithLifecycle()
+    val timeIntervalType by inputValidationViewModel.timeIntervalTypeInput.collectAsStateWithLifecycle()
+    val timeIntervalNum by inputValidationViewModel.timeIntervalNumInput.collectAsStateWithLifecycle()
+    val inputsValid by inputValidationViewModel.inputDataValid.collectAsStateWithLifecycle()
+
+    Column(
+        Modifier
+            .padding(12.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = closeScreen) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = "Back"
+                )
+                Spacer(Modifier.width(8.dp))
+                Text(stringResource(id = R.string.product_update))
+            }
+        }
+        Divider(Modifier.height(1.dp))
+
+        EmittableTextField(
+            inputData = name,
+            onValueChange = inputValidationViewModel::onNameChange,
+            label = "Name"
+        )
+        Spacer(Modifier.height(8.dp))
+
+        EmittableTextField(
+            inputData = price,
+            onValueChange = inputValidationViewModel::onPriceChange,
+            label = "Price",
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        )
+        Spacer(Modifier.height(8.dp))
+
+        Text(
+            "Product Expiration section - All below must be entered together",
+            style = MaterialTheme.typography.caption
+        )
+        Spacer(Modifier.height(2.dp))
+
+        EmittableTextField(
+            inputData = quantity,
+            onValueChange = inputValidationViewModel::onQuantityChange,
+            label = "Quantity",
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        )
+        Spacer(Modifier.height(8.dp))
+
+        EmittableTextField(
+            inputData = timeIntervalNum,
+            onValueChange = inputValidationViewModel::onTimeIntervalNumChange,
+            label = "Time Interval Num"
+        )
+        Spacer(Modifier.height(8.dp))
+
+        EmittableDropDownMenu(
+            inputData = timeIntervalType,
+            label = "Time Interval Type",
+            listOfOptions = timeIntervalList,
+            onValueChange = inputValidationViewModel::onTimeIntervalTypeChange
+        )
+
+        Spacer(Modifier.height(28.dp))
+
+        Button(onClick = inputValidationViewModel::onContinueClick, enabled = inputsValid) {
+            Text("Continue")
+        }
+    }
 }
