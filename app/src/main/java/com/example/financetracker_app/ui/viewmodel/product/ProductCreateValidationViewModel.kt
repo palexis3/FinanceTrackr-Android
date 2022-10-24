@@ -55,17 +55,17 @@ class ProductCreateValidationViewModel @Inject constructor() : ViewModel() {
             timeIntervalTypeInput,
             timeIntervalNumInput
         ) { name, price, productCategory, store, storeCategory, productQuantity, timeIntervalType, timeIntervalNum ->
-            val nameValid = name.item?.isEmpty() == false && name.errorId == null
+            val nameValid = !name.item.isNullOrEmpty() && name.errorId == null
             val priceValid = price.item != null && price.errorId == null
             val productCategoryValid =
-                productCategory.item?.isEmpty() == false && productCategory.errorId == null
-            val storeValid = store.item?.isEmpty() == false && store.errorId == null
+                !productCategory.item.isNullOrEmpty() && productCategory.errorId == null
+            val storeValid = !store.item.isNullOrEmpty() && store.errorId == null
             val storeCategoryValid =
-                storeCategory.item?.isEmpty() == false && storeCategory.errorId == null
+                !storeCategory.item.isNullOrEmpty() && storeCategory.errorId == null
             val productQuantityValid =
                 productQuantity.item != null && productQuantity.errorId == null
             val timeIntervalTypeValid =
-                timeIntervalType.item?.isEmpty() == false && timeIntervalType.errorId == null
+                !timeIntervalType.item.isNullOrEmpty() && timeIntervalType.errorId == null
             val timeIntervalNumValid =
                 timeIntervalNum.item != null && timeIntervalNum.errorId == null
 
@@ -78,9 +78,13 @@ class ProductCreateValidationViewModel @Inject constructor() : ViewModel() {
     }
 
     fun onPriceChange(input: String) {
-        val isPriceValid = input.toDoubleOrNull() != null
-        val errorId = if (isPriceValid) null else R.string.price_input_error
-        _priceInput.update { inputData -> inputData.copy(item = input.toFloat(), errorId = errorId) }
+        val errorId = if (input.toDoubleOrNull() == null) R.string.price_input_error else null
+        _priceInput.update { inputData ->
+            inputData.copy(
+                item = input.toFloat(),
+                errorId = errorId
+            )
+        }
     }
 
     fun onStoreCategoryChange(input: String) {
@@ -134,24 +138,50 @@ class ProductCreateValidationViewModel @Inject constructor() : ViewModel() {
     }
 
     fun onContinueClick() {
-        val screenEvent = ScreenEvent.ScreenEventWithContent(
+        val screenEvent = when (val productCreate = getProductCreateModel()) {
+            null -> ScreenEvent.ShowSnackbar(R.string.product_create_error)
+            else -> ScreenEvent.ScreenEventWithContent(productCreate)
+        }
+        _screenEvent.update { screenEventWrapper -> screenEventWrapper.copy(screenEvent = screenEvent) }
+    }
+
+    private fun getProductCreateModel(): ProductCreate? {
+        val name = nameInput.value.item
+        val price = priceInput.value.item
+        val category = productCategoryInput.value.item
+        val storeName = storeInput.value.item
+        val storeCategory = storeCategoryInput.value.item
+        val quantity = productQuantityInput.value.item
+        val timeIntervalNum = timeIntervalNumInput.value.item
+        val timeIntervalType = timeIntervalTypeInput.value.item
+
+        return if (name != null &&
+            price != null &&
+            category != null &&
+            storeName != null &&
+            storeCategory != null &&
+            quantity != null &&
+            timeIntervalNum != null &&
+            timeIntervalType != null
+        ) {
             ProductCreate(
-                name = nameInput.value.item ?: return,
-                price = priceInput.value.item ?: return,
-                category = productCategoryInput.value.item ?: return,
+                name = name,
+                price = price,
+                category = category,
                 store = StoreCreate(
-                    name = storeInput.value.item ?: return,
-                    category = storeCategoryInput.value.item ?: return
+                    name = storeName,
+                    category = storeCategory
                 ),
                 productExpiration = ProductExpiration(
-                    quantity = productQuantityInput.value.item ?: return,
+                    quantity = quantity,
                     expirationFromNow = FromNow(
-                        numOf = timeIntervalNumInput.value.item ?: return,
-                        timeInterval = TimeInterval.valueOf(timeIntervalTypeInput.value.item ?: return)
+                        numOf = timeIntervalNum,
+                        timeInterval = TimeInterval.valueOf(timeIntervalType)
                     )
                 )
             )
-        )
-        _screenEvent.update { screenEventWrapper -> screenEventWrapper.copy(screenEvent = screenEvent) }
+        } else {
+            null
+        }
     }
 }
