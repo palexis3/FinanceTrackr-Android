@@ -48,20 +48,18 @@ fun ProductCreateScreen(
     val timeIntervalList = listOf("DAY", "WEEK", "MONTH", "YEAR")
 
     LaunchedEffect(productCreateInputScreenEvent) {
-        productCreateInputScreenEvent.screenEvent?.let { screenEventWrapper ->
-            // hide the keyboard when we know the screen event has been changed from the `continue` button
-            keyboardController?.hide()
-            when (val screenEvent = productCreateInputScreenEvent.screenEvent) {
-                is ScreenEvent.ShowSnackbar -> {
-                    val message = context.getString(screenEvent.stringId)
-                    val actionLabel = context.getString(R.string.ok)
-                    showSnackbar(message, actionLabel)
-                }
-                is ScreenEvent.ScreenEventWithContent -> {
-                    productViewModel.createProduct(screenEvent.item)
-                }
-                else -> {}
+        // hide the keyboard when we know the screen event has been changed from the `continue` button
+        keyboardController?.hide()
+        when (val screenEvent = productCreateInputScreenEvent.screenEvent) {
+            is ScreenEvent.ShowSnackbar -> {
+                val message = context.getString(screenEvent.stringId)
+                val actionLabel = context.getString(R.string.ok)
+                showSnackbar(message, actionLabel)
             }
+            is ScreenEvent.ScreenEventWithContent -> {
+                productViewModel.createProduct(screenEvent.item)
+            }
+            else -> {}
         }
     }
 

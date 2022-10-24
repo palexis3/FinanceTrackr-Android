@@ -35,6 +35,10 @@ data class ProductUpdateApiScreenEventWrapper(
     val screenEvent: ScreenEvent<Nothing>? = null
 )
 
+data class ProductDeleteApiScreenEventWrapper(
+    val screenEvent: ScreenEvent<Nothing>? = null
+)
+
 @HiltViewModel
 class ProductViewModel @Inject constructor(
     private val productRepository: ProductRepository
@@ -65,8 +69,8 @@ class ProductViewModel @Inject constructor(
     private val _productUpdateApiScreenEvent = MutableStateFlow(ProductUpdateApiScreenEventWrapper())
     val productUpdateApiScreenEvent = _productUpdateApiScreenEvent.asStateFlow()
 
-    private val _deleteProductFlow = MutableSharedFlow<Boolean>()
-    val deleteProductFlow = _deleteProductFlow.asSharedFlow()
+    private val _productDeleteApiScreenEvent = MutableStateFlow(ProductDeleteApiScreenEventWrapper())
+    val productDeleteApiScreenEvent = _productDeleteApiScreenEvent.asStateFlow()
 
     fun getProduct(id: String) {
         viewModelScope.launch {
@@ -108,8 +112,13 @@ class ProductViewModel @Inject constructor(
 
     fun deleteProduct(id: String) {
         viewModelScope.launch {
-            val response = productRepository.deleteProduct(id)
-            _deleteProductFlow.emit(response)
+            val wasProductDeleteSuccessful = productRepository.deleteProduct(id)
+            val screenEvent = if (wasProductDeleteSuccessful) {
+                ScreenEvent.CloseScreen
+            } else {
+                ScreenEvent.ShowSnackbar(stringId = R.string.product_delete_error)
+            }
+            _productDeleteApiScreenEvent.update { screenEventWrapper -> screenEventWrapper.copy(screenEvent = screenEvent) }
         }
     }
 }

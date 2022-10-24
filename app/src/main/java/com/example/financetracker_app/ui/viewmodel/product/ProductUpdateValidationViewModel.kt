@@ -20,7 +20,7 @@ class ProductUpdateValidationViewModel @Inject constructor() : ViewModel() {
     private val _nameInput = MutableStateFlow(InputData<String>())
     val nameInput = _nameInput.asStateFlow()
 
-    private val _priceInput = MutableStateFlow(InputData<String>())
+    private val _priceInput = MutableStateFlow(InputData<Float>())
     val priceInput = _priceInput.asStateFlow()
 
     private val _quantityInput = MutableStateFlow(InputData<Int>())
@@ -61,7 +61,7 @@ class ProductUpdateValidationViewModel @Inject constructor() : ViewModel() {
         val errorId = if (input.toFloatOrNull() == null) R.string.price_input_error else null
         _priceInput.update { inputData ->
             inputData.copy(
-                item = input,
+                item = input.toFloat(),
                 errorId = errorId
             )
         }
@@ -117,7 +117,7 @@ class ProductUpdateValidationViewModel @Inject constructor() : ViewModel() {
             ProductUpdate(
                 id = productId,
                 name = nameInput.value.item,
-                price = priceInput.value.item?.toFloat(),
+                price = priceInput.value.item,
                 productExpiration = productExpiration
             )
         )
