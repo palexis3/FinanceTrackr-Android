@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import com.example.financetracker_app.navigation.extensions.navigateSingleTopTo
 import com.example.financetracker_app.navigation.extensions.navigateToProductDetails
 import com.example.financetracker_app.navigation.extensions.navigateToProductImage
+import com.example.financetracker_app.navigation.extensions.navigateToProductUpdate
 import com.example.financetracker_app.ui.composable.HomeScreen
 import com.example.financetracker_app.ui.composable.product.*
 
@@ -33,10 +34,10 @@ fun ScreensNavigation(
 
         composable(route = ProductList.route) {
             ProductListScreen(
-                onClickSeeProductDetailsScreen = { id ->
+                goToProductDetailsScreen = { id ->
                     navHostController.navigateToProductDetails(id)
                 },
-                onClickCreateProduct = {
+                goToProductCreateScreen = {
                     navHostController.navigateSingleTopTo(ProductCreate.route)
                 }
             )
@@ -51,7 +52,7 @@ fun ScreensNavigation(
                 ProductDetailsScreen(
                     id = productId,
                     goToUpdateScreen = {
-                        navHostController.navigateSingleTopTo(ProductUpdate.route)
+                        navHostController.navigateToProductUpdate(productId)
                     }
                 )
             }
@@ -81,11 +82,18 @@ fun ScreensNavigation(
             }
         }
 
-        composable(route = ProductUpdate.route) {
-            ProductUpdateScreen(
-                closeScreen = { navHostController.popBackStack() },
-                showSnackbar = showSnackbar
-            )
+        composable(
+            route = ProductUpdate.routeWithArgs,
+            arguments = ProductUpdate.arguments
+        ) { navBackStackEntry ->
+            val productId = navBackStackEntry.arguments?.getString(ProductUpdate.productIdArg)
+            if (productId != null) {
+                ProductUpdateScreen(
+                    productId = productId,
+                    closeScreen = { navHostController.popBackStack() },
+                    showSnackbar = showSnackbar
+                )
+            }
         }
     }
 }

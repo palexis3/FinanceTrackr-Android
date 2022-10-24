@@ -1,10 +1,10 @@
 package com.example.financetracker_app.ui.viewmodel.product
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.financetracker_app.R
 import com.example.financetracker_app.data.models.*
+import com.example.financetracker_app.helper.InputData
 import com.example.financetracker_app.helper.ScreenEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -15,29 +15,21 @@ data class ProductUpdateInputScreenEventWrapper(
 )
 
 @HiltViewModel
-class ProductUpdateValidationViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle
-) : ViewModel() {
+class ProductUpdateValidationViewModel @Inject constructor() : ViewModel() {
 
-    private val product: StateFlow<Product?> = savedStateHandle.getStateFlow("product", null)
-    private val productId = product.value?.id
-
-    private val initialName = product.value?.name ?: ""
-    private val initialPrice = product.value?.price ?: ""
-
-    private val _nameInput = MutableStateFlow(InputData(item = initialName))
+    private val _nameInput = MutableStateFlow(InputData<String>())
     val nameInput = _nameInput.asStateFlow()
 
-    private val _priceInput = MutableStateFlow(InputData(item = initialPrice))
+    private val _priceInput = MutableStateFlow(InputData<Float>())
     val priceInput = _priceInput.asStateFlow()
 
-    private val _quantityInput = MutableStateFlow(InputData())
+    private val _quantityInput = MutableStateFlow(InputData<Int>())
     val quantityInput = _quantityInput.asStateFlow()
 
-    private val _timeIntervalNumInput = MutableStateFlow(InputData())
+    private val _timeIntervalNumInput = MutableStateFlow(InputData<Long>())
     val timeIntervalNumInput = _timeIntervalNumInput.asStateFlow()
 
-    private val _timeIntervalTypeInput = MutableStateFlow(InputData())
+    private val _timeIntervalTypeInput = MutableStateFlow(InputData<String>())
     val timeIntervalTypeInput = _timeIntervalTypeInput.asStateFlow()
 
     private val _screenEvent = MutableStateFlow(ProductUpdateInputScreenEventWrapper())
@@ -46,14 +38,15 @@ class ProductUpdateValidationViewModel @Inject constructor(
     val inputDataValid = combine(
         nameInput, priceInput, quantityInput, timeIntervalNumInput, timeIntervalTypeInput
     ) { name, price, quantity, timeIntervalNum, timeIntervalType ->
-        val nameValid = name.item.isNotEmpty() && name.errorId == null
-        val priceValid = price.item.toDoubleOrNull() != null && price.errorId == null
+        val nameValid = name.item?.isEmpty() == false && name.errorId == null
+        val priceValid = price.item != null && price.errorId == null
 
         // Note: product expiration is calculated with a quantity and duration that each product
         // is expected to expire, so they're all required to be entered
-        val quantityValid = quantity.item.toIntOrNull() != null && quantity.errorId == null
-        val timeIntervalNumValid = timeIntervalNum.item.toIntOrNull() != null && timeIntervalNum.errorId == null
-        val timeIntervalTypeValid = timeIntervalType.item.isNotEmpty() != null && timeIntervalType.errorId == null
+        val quantityValid = quantity.item != null && quantity.errorId == null
+        val timeIntervalNumValid = timeIntervalNum.item != null && timeIntervalNum.errorId == null
+        val timeIntervalTypeValid =
+            timeIntervalType.item?.isEmpty() == false && timeIntervalType.errorId == null
         val productExpirationValid = quantityValid && timeIntervalNumValid && timeIntervalTypeValid
 
         nameValid || priceValid || productExpirationValid
@@ -65,44 +58,69 @@ class ProductUpdateValidationViewModel @Inject constructor(
     }
 
     fun onPriceChange(input: String) {
-        val errorId = if (input.toDoubleOrNull() == null) R.string.price_input_error else null
-        _priceInput.update { inputData -> inputData.copy(item = input, errorId = errorId) }
+        val errorId = if (input.toFloatOrNull() == null) R.string.price_input_error else null
+        _priceInput.update { inputData ->
+            inputData.copy(
+                item = input.toFloat(),
+                errorId = errorId
+            )
+        }
     }
 
     fun onQuantityChange(input: String) {
         val errorId = if (input.toIntOrNull() == null) R.string.dropdown_selection_error else null
-        _quantityInput.update { inputData -> inputData.copy(item = input, errorId = errorId) }
+        _quantityInput.update { inputData ->
+            inputData.copy(
+                item = input.toInt(),
+                errorId = errorId
+            )
+        }
     }
 
     fun onTimeIntervalTypeChange(input: String) {
         val errorId = if (input.isEmpty()) R.string.dropdown_selection_error else null
-        _timeIntervalTypeInput.update { inputData -> inputData.copy(item = input, errorId = errorId) }
+        _timeIntervalTypeInput.update { inputData ->
+            inputData.copy(
+                item = input,
+                errorId = errorId
+            )
+        }
     }
 
     fun onTimeIntervalNumChange(input: String) {
-        val errorId = if (input.toIntOrNull() == null) R.string.dropdown_selection_error else null
-        _timeIntervalNumInput.update { inputData -> inputData.copy(item = input, errorId = errorId) }
-    }
-
-    fun onContinueClick() {
-        val screenEvent = if (productId == null) {
-            ScreenEvent.ShowSnackbar(stringId = R.string.product_update_error)
-        } else {
-            ScreenEvent.ScreenEventWithContent(
-                ProductUpdate(
-                    id = productId,
-                    name = nameInput.value.item,
-                    price = priceInput.value.item.toFloatOrNull(),
-                    productExpiration = ProductExpiration(
-                        quantity = quantityInput.value.item.toInt(),
-                        expirationFromNow = FromNow(
-                            numOf = timeIntervalNumInput.value.item.toLong(),
-                            timeInterval = TimeInterval.valueOf(timeIntervalTypeInput.value.item)
-                        )
-                    )
-                )
+        val errorId = if (input.toLongOrNull() == null) R.string.dropdown_selection_error else null
+        _timeIntervalNumInput.update { inputData ->
+            inputData.copy(
+                item = input.toLong(),
+                errorId = errorId
             )
         }
+    }
+
+    fun onContinueClick(productId: String) {
+        val quantity = quantityInput.value.item
+        val timeIntervalNum = timeIntervalNumInput.value.item
+        val timeIntervalType = timeIntervalTypeInput.value.item
+
+        val productExpiration =
+            if (quantity != null && timeIntervalNum != null && timeIntervalType != null) {
+                ProductExpiration(
+                    quantity = quantity,
+                    expirationFromNow = FromNow(
+                        numOf = timeIntervalNum,
+                        timeInterval = TimeInterval.valueOf(timeIntervalType)
+                    )
+                )
+            } else null
+
+        val screenEvent = ScreenEvent.ScreenEventWithContent(
+            ProductUpdate(
+                id = productId,
+                name = nameInput.value.item,
+                price = priceInput.value.item,
+                productExpiration = productExpiration
+            )
+        )
         _screenEvent.update { screenEventWrapper -> screenEventWrapper.copy(screenEvent = screenEvent) }
     }
 }

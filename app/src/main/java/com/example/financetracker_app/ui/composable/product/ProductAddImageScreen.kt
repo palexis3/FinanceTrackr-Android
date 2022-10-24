@@ -30,7 +30,7 @@ fun ProductAddImageScreen(
                 val actionLabel = context.getString(R.string.ok)
                 showSnackbar(message, actionLabel)
             }
-            ScreenEvent.CloseScreen -> closeScreen()
+            ScreenEvent.CloseScreen -> closeScreen.invoke()
             else -> {}
         }
     }

@@ -7,13 +7,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.example.financetracker_app.ui.viewmodel.product.InputData
+import com.example.financetracker_app.helper.InputData
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun EmittableDropDownMenu(
+fun <T> EmittableDropDownMenu(
     modifier: Modifier = Modifier,
-    inputData: InputData,
+    inputData: InputData<T>,
     label: String,
     listOfOptions: List<String>,
     onValueChange: (String) -> Unit
@@ -28,7 +28,7 @@ fun EmittableDropDownMenu(
     ) {
         TextField(
             modifier = modifier,
-            value = inputData.item,
+            value = inputData.item?.toString() ?: "",
             onValueChange = {},
             label = { Text(label) },
             trailingIcon = {

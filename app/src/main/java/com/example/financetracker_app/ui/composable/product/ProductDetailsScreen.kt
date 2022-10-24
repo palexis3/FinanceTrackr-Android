@@ -36,16 +36,14 @@ fun ProductDetailsScreen(
 
     ShowProductDetailsUiState(
         uiState = uiState,
-        goToUpdateScreenWithProduct = { product ->
-            goToUpdateScreen()
-        }
+        goToUpdateScreen = goToUpdateScreen
     )
 }
 
 @Composable
 private fun ShowProductDetailsUiState(
     uiState: ProductDetailsUiState,
-    goToUpdateScreenWithProduct: (Product) -> Unit
+    goToUpdateScreen: () -> Unit,
 ) {
     when (uiState) {
         ProductDetailsUiState.Error -> {
@@ -67,7 +65,7 @@ private fun ShowProductDetailsUiState(
             }
         }
         is ProductDetailsUiState.Success -> {
-            ProductDetailsCard(product = uiState.product, goToUpdateScreenWithProduct)
+            ProductDetailsCard(product = uiState.product, goToUpdateScreen)
         }
     }
 }
@@ -75,18 +73,16 @@ private fun ShowProductDetailsUiState(
 @Composable
 fun ProductDetailsCard(
     product: Product,
-    goToUpdateScreenWithProduct: (Product) -> Unit
+    goToUpdateScreen: () -> Unit
 ) {
     // TODO: Add an image above the details card
     Card {
         Column {
-            Box {
-                Row(modifier = Modifier.padding(end = 8.dp)) {
-                    Button(onClick = {
-                        goToUpdateScreenWithProduct(product)
-                    }) {
-                        Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Product")
-                    }
+            Row(modifier = Modifier.padding(end = 8.dp)) {
+                Button(onClick = {
+                    goToUpdateScreen.invoke()
+                }) {
+                    Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Product")
                 }
             }
             Column(Modifier.padding(12.dp)) {

@@ -39,4 +39,9 @@ object ProductImage : ScreenDestination {
 
 object ProductUpdate : ScreenDestination {
     override val route = "productUpdate"
+    const val productIdArg = "product_id"
+    val routeWithArgs = "$route/{$productIdArg}"
+    val arguments = listOf(
+        navArgument(productIdArg) { type = NavType.StringType }
+    )
 }

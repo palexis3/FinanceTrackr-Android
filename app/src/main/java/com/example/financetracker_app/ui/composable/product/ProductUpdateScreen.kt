@@ -31,9 +31,10 @@ import com.example.financetracker_app.ui.viewmodel.product.ProductViewModel
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalLifecycleComposeApi::class)
 @Composable
 fun ProductUpdateScreen(
+    productId: String,
     closeScreen: () -> Unit,
     showSnackbar: (String, String) -> Unit,
-    inputValidationViewModel: ProductUpdateValidationViewModel = hiltViewModel(),
+    updateValidationViewModel: ProductUpdateValidationViewModel = hiltViewModel(),
     productViewModel: ProductViewModel = hiltViewModel()
 ) {
 
@@ -42,17 +43,12 @@ fun ProductUpdateScreen(
 
     val timeIntervalList = listOf("DAY", "WEEK", "MONTH", "YEAR")
 
-    val productUpdateInputScreenEvent by inputValidationViewModel.screenEvent.collectAsStateWithLifecycle()
+    val productUpdateInputScreenEvent by updateValidationViewModel.screenEvent.collectAsStateWithLifecycle()
     val productUpdateApiScreenEvent by productViewModel.productUpdateApiScreenEvent.collectAsStateWithLifecycle()
 
     LaunchedEffect(productUpdateInputScreenEvent) {
         keyboard?.hide()
         when (val screenEvent = productUpdateInputScreenEvent.screenEvent) {
-            is ScreenEvent.ShowSnackbar -> {
-                val message = context.getString(screenEvent.stringId)
-                val actionLabel = context.getString(R.string.ok)
-                showSnackbar(message, actionLabel)
-            }
             is ScreenEvent.ScreenEventWithContent -> {
                 val productUpdate = screenEvent.item
                 productViewModel.updateProduct(productUpdate)
@@ -68,17 +64,17 @@ fun ProductUpdateScreen(
                 val actionLabel = context.getString(R.string.ok)
                 showSnackbar(message, actionLabel)
             }
-            ScreenEvent.CloseScreen -> closeScreen()
+            ScreenEvent.CloseScreen -> closeScreen.invoke()
             else -> {}
         }
     }
 
-    val name by inputValidationViewModel.nameInput.collectAsStateWithLifecycle()
-    val price by inputValidationViewModel.priceInput.collectAsStateWithLifecycle()
-    val quantity by inputValidationViewModel.quantityInput.collectAsStateWithLifecycle()
-    val timeIntervalType by inputValidationViewModel.timeIntervalTypeInput.collectAsStateWithLifecycle()
-    val timeIntervalNum by inputValidationViewModel.timeIntervalNumInput.collectAsStateWithLifecycle()
-    val inputsValid by inputValidationViewModel.inputDataValid.collectAsStateWithLifecycle()
+    val name by updateValidationViewModel.nameInput.collectAsStateWithLifecycle()
+    val price by updateValidationViewModel.priceInput.collectAsStateWithLifecycle()
+    val quantity by updateValidationViewModel.quantityInput.collectAsStateWithLifecycle()
+    val timeIntervalType by updateValidationViewModel.timeIntervalTypeInput.collectAsStateWithLifecycle()
+    val timeIntervalNum by updateValidationViewModel.timeIntervalNumInput.collectAsStateWithLifecycle()
+    val inputsValid by updateValidationViewModel.inputDataValid.collectAsStateWithLifecycle()
 
     Column(
         Modifier
@@ -91,22 +87,22 @@ fun ProductUpdateScreen(
                     imageVector = Icons.Filled.ArrowBack,
                     contentDescription = "Back"
                 )
-                Spacer(Modifier.width(8.dp))
-                Text(stringResource(id = R.string.product_update))
             }
+            Spacer(Modifier.width(8.dp))
+            Text(stringResource(id = R.string.product_update))
         }
         Divider(Modifier.height(1.dp))
 
         EmittableTextField(
             inputData = name,
-            onValueChange = inputValidationViewModel::onNameChange,
+            onValueChange = updateValidationViewModel::onNameChange,
             label = "Name"
         )
         Spacer(Modifier.height(8.dp))
 
         EmittableTextField(
             inputData = price,
-            onValueChange = inputValidationViewModel::onPriceChange,
+            onValueChange = updateValidationViewModel::onPriceChange,
             label = "Price",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
@@ -120,7 +116,7 @@ fun ProductUpdateScreen(
 
         EmittableTextField(
             inputData = quantity,
-            onValueChange = inputValidationViewModel::onQuantityChange,
+            onValueChange = updateValidationViewModel::onQuantityChange,
             label = "Quantity",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
@@ -128,7 +124,7 @@ fun ProductUpdateScreen(
 
         EmittableTextField(
             inputData = timeIntervalNum,
-            onValueChange = inputValidationViewModel::onTimeIntervalNumChange,
+            onValueChange = updateValidationViewModel::onTimeIntervalNumChange,
             label = "Time Interval Num"
         )
         Spacer(Modifier.height(8.dp))
@@ -137,12 +133,12 @@ fun ProductUpdateScreen(
             inputData = timeIntervalType,
             label = "Time Interval Type",
             listOfOptions = timeIntervalList,
-            onValueChange = inputValidationViewModel::onTimeIntervalTypeChange
+            onValueChange = updateValidationViewModel::onTimeIntervalTypeChange
         )
 
         Spacer(Modifier.height(28.dp))
 
-        Button(onClick = inputValidationViewModel::onContinueClick, enabled = inputsValid) {
+        Button(onClick = { updateValidationViewModel.onContinueClick(productId) }, enabled = inputsValid) {
             Text("Continue")
         }
     }
