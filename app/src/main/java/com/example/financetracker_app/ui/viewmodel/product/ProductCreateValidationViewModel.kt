@@ -78,7 +78,7 @@ class ProductCreateValidationViewModel @Inject constructor() : ViewModel() {
     }
 
     fun onPriceChange(input: String) {
-        val errorId = if (input.toDoubleOrNull() == null) R.string.price_input_error else null
+        val errorId = if (input.toFloatOrNull() == null) R.string.price_input_error else null
         _priceInput.update { inputData ->
             inputData.copy(
                 item = input.toFloat(),

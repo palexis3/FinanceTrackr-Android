@@ -26,7 +26,6 @@ import com.example.financetracker_app.ui.theme.LightBlue
 import com.example.financetracker_app.ui.viewmodel.product.ProductListUiState
 import com.example.financetracker_app.ui.viewmodel.product.ProductViewModel
 
-private val DefaultPadding = 12.dp
 private val MediumPadding = 16.dp
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
@@ -99,7 +98,7 @@ private fun ProductCard(
 ) {
     Column(
         modifier
-            .padding(DefaultPadding)
+            .padding(12.dp)
             .clickable { goToProductDetailsScreen(product.id) }
     ) {
         Row(

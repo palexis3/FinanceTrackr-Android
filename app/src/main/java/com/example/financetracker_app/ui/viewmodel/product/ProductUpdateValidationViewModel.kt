@@ -38,7 +38,7 @@ class ProductUpdateValidationViewModel @Inject constructor() : ViewModel() {
     val inputDataValid = combine(
         nameInput, priceInput, quantityInput, timeIntervalNumInput, timeIntervalTypeInput
     ) { name, price, quantity, timeIntervalNum, timeIntervalType ->
-        val nameValid = name.item?.isEmpty() == false && name.errorId == null
+        val nameValid = !name.item.isNullOrEmpty() && name.errorId == null
         val priceValid = price.item != null && price.errorId == null
 
         // Note: product expiration is calculated with a quantity and duration that each product
@@ -46,7 +46,7 @@ class ProductUpdateValidationViewModel @Inject constructor() : ViewModel() {
         val quantityValid = quantity.item != null && quantity.errorId == null
         val timeIntervalNumValid = timeIntervalNum.item != null && timeIntervalNum.errorId == null
         val timeIntervalTypeValid =
-            timeIntervalType.item?.isEmpty() == false && timeIntervalType.errorId == null
+            !timeIntervalType.item.isNullOrEmpty() && timeIntervalType.errorId == null
         val productExpirationValid = quantityValid && timeIntervalNumValid && timeIntervalTypeValid
 
         nameValid || priceValid || productExpirationValid
