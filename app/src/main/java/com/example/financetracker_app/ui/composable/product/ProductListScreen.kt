@@ -26,15 +26,14 @@ import com.example.financetracker_app.ui.theme.LightBlue
 import com.example.financetracker_app.ui.viewmodel.product.ProductListUiState
 import com.example.financetracker_app.ui.viewmodel.product.ProductViewModel
 
-private val DefaultPadding = 12.dp
 private val MediumPadding = 16.dp
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun ProductListScreen(
     viewModel: ProductViewModel = hiltViewModel(),
-    onClickSeeProductDetailsScreen: (String) -> Unit,
-    onClickCreateProduct: () -> Unit
+    goToProductDetailsScreen: (String) -> Unit,
+    goToProductCreateScreen: () -> Unit
 ) {
     val uiState: ProductListUiState by viewModel.productListState.collectAsStateWithLifecycle()
 
@@ -48,19 +47,19 @@ fun ProductListScreen(
         ) {
             ScreenTitle(title = R.string.product_list)
             ExtendedFloatingActionButton(
-                onClick = onClickCreateProduct,
+                onClick = goToProductCreateScreen,
                 text = { Text("Add") }
             )
         }
         Divider(Modifier.height(1.dp))
-        ProductStateItem(uiState = uiState, onClickSeeProductDetailsScreen)
+        ProductStateItem(uiState = uiState, goToProductDetailsScreen)
     }
 }
 
 @Composable
 private fun ProductStateItem(
     uiState: ProductListUiState,
-    onClickSeeProductDetailsScreen: (String) -> Unit
+    goToProductDetailsScreen: (String) -> Unit
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.SpaceEvenly,
@@ -83,7 +82,7 @@ private fun ProductStateItem(
             }
             is ProductListUiState.Success -> {
                 items(uiState.products) { product ->
-                    ProductCard(product, onClickSeeProductDetailsScreen)
+                    ProductCard(product, goToProductDetailsScreen)
                 }
             }
         }
@@ -94,13 +93,13 @@ private fun ProductStateItem(
 @Composable
 private fun ProductCard(
     product: Product,
-    onClickSeeProductDetailsScreen: (String) -> Unit,
+    goToProductDetailsScreen: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier
-            .padding(DefaultPadding)
-            .clickable { onClickSeeProductDetailsScreen(product.id) }
+            .padding(12.dp)
+            .clickable { goToProductDetailsScreen(product.id) }
     ) {
         Row(
             modifier

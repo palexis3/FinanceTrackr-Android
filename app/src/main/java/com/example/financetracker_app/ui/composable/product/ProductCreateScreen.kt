@@ -40,7 +40,7 @@ fun ProductCreateScreen(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     val productCreateInputScreenEvent by inputValidationViewModel.screenEvent.collectAsStateWithLifecycle()
-    val productCreateApiScreenEvent by productViewModel.createProductScreenEvent.collectAsStateWithLifecycle()
+    val productCreateApiScreenEvent by productViewModel.productCreateApiScreenEvent.collectAsStateWithLifecycle()
 
     val productCategoryList = listOf("FRUITS", "BEAUTY", "DAIRY", "POULTRY", "DEODORANT", "SOAP", "VEGETABLES", "SEAFOOD", "CLOTHING", "PANTRY")
     val storeCategoryList = listOf("GROCERY", "SPECIALTY", "DEPARTMENT", "WAREHOUSE", "DISCOUNT", "CONVENIENCE", "RESTAURANT")
@@ -51,10 +51,17 @@ fun ProductCreateScreen(
         productCreateInputScreenEvent.screenEvent?.let { screenEventWrapper ->
             // hide the keyboard when we know the screen event has been changed from the `continue` button
             keyboardController?.hide()
-            // Note: it's okay to cast as ScreenEvent.ScreenEventWithContent type since it's the only
-            // one being used in the input validation view-model
-            val product = (screenEventWrapper as ScreenEvent.ScreenEventWithContent).item
-            productViewModel.createProduct(product)
+            when (val screenEvent = productCreateInputScreenEvent.screenEvent) {
+                is ScreenEvent.ShowSnackbar -> {
+                    val message = context.getString(screenEvent.stringId)
+                    val actionLabel = context.getString(R.string.ok)
+                    showSnackbar(message, actionLabel)
+                }
+                is ScreenEvent.ScreenEventWithContent -> {
+                    productViewModel.createProduct(screenEvent.item)
+                }
+                else -> {}
+            }
         }
     }
 
@@ -81,7 +88,6 @@ fun ProductCreateScreen(
     val quantity by inputValidationViewModel.productQuantityInput.collectAsStateWithLifecycle()
     val timeIntervalType by inputValidationViewModel.timeIntervalTypeInput.collectAsStateWithLifecycle()
     val timeIntervalNum by inputValidationViewModel.timeIntervalNumInput.collectAsStateWithLifecycle()
-
     val inputsValid by inputValidationViewModel.inputDataValid.collectAsStateWithLifecycle()
 
     Column(

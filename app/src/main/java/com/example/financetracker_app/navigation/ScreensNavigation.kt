@@ -8,11 +8,9 @@ import androidx.navigation.compose.composable
 import com.example.financetracker_app.navigation.extensions.navigateSingleTopTo
 import com.example.financetracker_app.navigation.extensions.navigateToProductDetails
 import com.example.financetracker_app.navigation.extensions.navigateToProductImage
+import com.example.financetracker_app.navigation.extensions.navigateToProductUpdate
 import com.example.financetracker_app.ui.composable.HomeScreen
-import com.example.financetracker_app.ui.composable.product.ProductCreateScreen
-import com.example.financetracker_app.ui.composable.product.ProductDetailsScreen
-import com.example.financetracker_app.ui.composable.product.ProductImageScreen
-import com.example.financetracker_app.ui.composable.product.ProductListScreen
+import com.example.financetracker_app.ui.composable.product.*
 
 @Composable
 fun ScreensNavigation(
@@ -36,10 +34,10 @@ fun ScreensNavigation(
 
         composable(route = ProductList.route) {
             ProductListScreen(
-                onClickSeeProductDetailsScreen = { id ->
+                goToProductDetailsScreen = { id ->
                     navHostController.navigateToProductDetails(id)
                 },
-                onClickCreateProduct = {
+                goToProductCreateScreen = {
                     navHostController.navigateSingleTopTo(ProductCreate.route)
                 }
             )
@@ -51,7 +49,12 @@ fun ScreensNavigation(
         ) { navBackStackEntry ->
             val productId = navBackStackEntry.arguments?.getString(ProductDetails.productIdArg)
             if (productId != null) {
-                ProductDetailsScreen(id = productId)
+                ProductDetailsScreen(
+                    id = productId,
+                    goToUpdateScreen = {
+                        navHostController.navigateToProductUpdate(productId)
+                    }
+                )
             }
         }
 
@@ -71,10 +74,24 @@ fun ScreensNavigation(
         ) { navBackStackEntry ->
             val productId = navBackStackEntry.arguments?.getString(ProductImage.productIdArg)
             if (productId != null) {
-                ProductImageScreen(
+                ProductAddImageScreen(
                     closeScreen = { navHostController.popBackStack() },
                     showSnackbar = showSnackbar,
                     productId = productId
+                )
+            }
+        }
+
+        composable(
+            route = ProductUpdate.routeWithArgs,
+            arguments = ProductUpdate.arguments
+        ) { navBackStackEntry ->
+            val productId = navBackStackEntry.arguments?.getString(ProductUpdate.productIdArg)
+            if (productId != null) {
+                ProductUpdateScreen(
+                    productId = productId,
+                    closeScreen = { navHostController.popBackStack() },
+                    showSnackbar = showSnackbar
                 )
             }
         }

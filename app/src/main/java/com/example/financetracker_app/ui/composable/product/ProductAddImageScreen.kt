@@ -14,7 +14,7 @@ import com.example.financetracker_app.ui.viewmodel.ImagesViewModel
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
-fun ProductImageScreen(
+fun ProductAddImageScreen(
     closeScreen: () -> Unit,
     showSnackbar: (String, String) -> Unit,
     productId: String,
@@ -30,7 +30,7 @@ fun ProductImageScreen(
                 val actionLabel = context.getString(R.string.ok)
                 showSnackbar(message, actionLabel)
             }
-            ScreenEvent.CloseScreen -> closeScreen()
+            ScreenEvent.CloseScreen -> closeScreen.invoke()
             else -> {}
         }
     }

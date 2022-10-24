@@ -1,9 +1,9 @@
 package com.example.financetracker_app.ui.composable.product
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -25,6 +25,7 @@ import com.example.financetracker_app.ui.viewmodel.product.ProductViewModel
 @Composable
 fun ProductDetailsScreen(
     id: String,
+    goToUpdateScreen: () -> Unit,
     viewModel: ProductViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
@@ -32,11 +33,18 @@ fun ProductDetailsScreen(
     }
 
     val uiState: ProductDetailsUiState by viewModel.productDetailsState.collectAsStateWithLifecycle()
-    ShowProductDetailsUiState(uiState = uiState)
+
+    ShowProductDetailsUiState(
+        uiState = uiState,
+        goToUpdateScreen = goToUpdateScreen
+    )
 }
 
 @Composable
-private fun ShowProductDetailsUiState(uiState: ProductDetailsUiState) {
+private fun ShowProductDetailsUiState(
+    uiState: ProductDetailsUiState,
+    goToUpdateScreen: () -> Unit,
+) {
     when (uiState) {
         ProductDetailsUiState.Error -> {
             Column(
@@ -57,20 +65,31 @@ private fun ShowProductDetailsUiState(uiState: ProductDetailsUiState) {
             }
         }
         is ProductDetailsUiState.Success -> {
-            ProductDetailsCard(product = uiState.product)
+            ProductDetailsCard(product = uiState.product, goToUpdateScreen)
         }
     }
 }
 
 @Composable
-fun ProductDetailsCard(product: Product) {
+fun ProductDetailsCard(
+    product: Product,
+    goToUpdateScreen: () -> Unit
+) {
     // TODO: Add an image above the details card
     Card {
         Column {
+            Row(modifier = Modifier.padding(end = 8.dp)) {
+                Button(onClick = {
+                    goToUpdateScreen.invoke()
+                }) {
+                    Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Product")
+                }
+            }
             Column(Modifier.padding(12.dp)) {
                 Row(
                     Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     SubScreenTitle(product.name)
                     val amountText = "$${product.price}"

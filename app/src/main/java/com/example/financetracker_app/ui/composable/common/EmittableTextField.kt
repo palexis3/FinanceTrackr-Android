@@ -6,18 +6,18 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import com.example.financetracker_app.ui.viewmodel.product.InputData
+import com.example.financetracker_app.helper.InputData
 
 @Composable
-fun EmittableTextField(
-    inputData: InputData,
+fun <T> EmittableTextField(
+    inputData: InputData<T>,
     onValueChange: (String) -> Unit,
     label: String,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) {
     Column {
         TextField(
-            value = inputData.item,
+            value = inputData.item?.toString() ?: "",
             onValueChange = { onValueChange(it) },
             isError = inputData.errorId != null,
             label = { Text(label) },
