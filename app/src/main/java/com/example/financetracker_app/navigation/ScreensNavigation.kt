@@ -50,10 +50,12 @@ fun ScreensNavigation(
             val productId = navBackStackEntry.arguments?.getString(ProductDetails.productIdArg)
             if (productId != null) {
                 ProductDetailsScreen(
-                    id = productId,
+                    productId = productId,
                     goToUpdateScreen = {
                         navHostController.navigateToProductUpdate(productId)
-                    }
+                    },
+                    closeScreen = { navHostController.popBackStack() },
+                    showSnackbar = showSnackbar
                 )
             }
         }

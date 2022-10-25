@@ -19,7 +19,7 @@ interface FinanceTrackrApi {
     @GET("/product/{id}")
     suspend fun getProduct(@Path("id") id: String): Product
 
-    @DELETE("/product/delete/{id}")
+    @DELETE("/product/{id}")
     suspend fun deleteProduct(@Path("id") id: String): Response<Unit>
 
     @POST("/product/update")
