@@ -105,10 +105,11 @@ fun ProductDetailsCard(
                 showDeletionDialog.value = visibility
             },
             deletionConfirmation = { confirmation ->
-            if (confirmation) {
-                callProductDeletionApi.invoke()
+                if (confirmation) {
+                    callProductDeletionApi.invoke()
+                }
             }
-        })
+        )
     }
 
     // TODO: Add an image above the details card
