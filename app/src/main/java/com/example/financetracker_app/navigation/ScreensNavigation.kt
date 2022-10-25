@@ -93,7 +93,10 @@ fun ScreensNavigation(
                 ProductUpdateScreen(
                     productId = productId,
                     closeScreen = { navHostController.popBackStack() },
-                    showSnackbar = showSnackbar
+                    showSnackbar = showSnackbar,
+                    goToImageScreen = {
+                        navHostController.navigateToProductImage(productId)
+                    }
                 )
             }
         }

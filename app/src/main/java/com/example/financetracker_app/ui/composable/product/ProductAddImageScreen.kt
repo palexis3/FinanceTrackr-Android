@@ -1,5 +1,6 @@
 package com.example.financetracker_app.ui.composable.product
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -37,7 +38,8 @@ fun ProductAddImageScreen(
 
     ImagePicker(
         uriSelected = { uri ->
-            imageViewModel.uploadImage(ImagesViewModel.PRODUCT_TYPE, productId, uri)
+            Log.d("ProductAddImageScreen", "uri: $uri")
+//            imageViewModel.uploadImage(ImagesViewModel.PRODUCT_TYPE, productId, uri)
         },
         onCloseScreen = closeScreen
     )
