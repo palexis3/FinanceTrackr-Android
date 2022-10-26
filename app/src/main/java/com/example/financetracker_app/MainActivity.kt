@@ -32,7 +32,7 @@ fun ShowApp() {
 
         Scaffold(scaffoldState = appState.scaffoldState) { innerPadding ->
             ScreensNavigation(
-                navHostController = appState.navHostController,
+                navController = appState.navHostController,
                 modifier = Modifier.padding(innerPadding),
                 showSnackbar = { message, actionLabel ->
                     appState.showSnackBar(message, actionLabel)

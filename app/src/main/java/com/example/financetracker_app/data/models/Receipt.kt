@@ -18,3 +18,8 @@ data class ReceiptCreate(
     val price: Float,
     val store: String
 )
+
+data class ReceiptListResponse(
+    val items: List<Receipt>,
+    val total: Int
+)
