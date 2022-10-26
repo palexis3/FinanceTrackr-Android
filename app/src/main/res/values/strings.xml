@@ -17,6 +17,7 @@
 
     <string name="receipt">Receipt</string>
     <string name="receipt_list">Receipt List</string>
+    <string name="receipt_list_empty">There are no receipts.</string>
     <string name="receipt_list_error">Could not fetch receipt list. Try again</string>
 
     <string name="name_input_error">Name entered is incorrect.</string>

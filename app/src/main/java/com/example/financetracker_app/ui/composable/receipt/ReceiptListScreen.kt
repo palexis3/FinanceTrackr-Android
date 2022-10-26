@@ -9,12 +9,13 @@ import androidx.compose.material.ExtendedFloatingActionButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.financetracker_app.R
 import com.example.financetracker_app.data.models.Receipt
 import com.example.financetracker_app.ui.composable.common.ErrorTitle
@@ -66,8 +67,20 @@ fun ShowReceiptsState(
                 }
             }
             is ReceiptListUiState.Success -> {
-                items(uiState.receipts) { receipt ->
-                    ReceiptCard(receipt = receipt, goToReceiptDetailsScreen = goToReceiptDetailsScreen)
+                if (uiState.receipts.isEmpty()) {
+                    item {
+                        Text(
+                            text = stringResource(id = R.string.receipt_list_empty),
+                            style = MaterialTheme.typography.caption
+                        )
+                    }
+                } else {
+                    items(uiState.receipts) { receipt ->
+                        ReceiptCard(
+                            receipt = receipt,
+                            goToReceiptDetailsScreen = goToReceiptDetailsScreen
+                        )
+                    }
                 }
             }
         }
@@ -81,7 +94,8 @@ private fun ReceiptCard(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier.padding(12.dp)
+        modifier
+            .padding(12.dp)
             .clickable { goToReceiptDetailsScreen(receipt.id) }
     ) {
         Row(

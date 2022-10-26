@@ -1,6 +1,5 @@
 package com.example.financetracker_app.ui.viewmodel.product
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.financetracker_app.R
