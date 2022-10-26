@@ -1,7 +1,6 @@
 package com.example.financetracker_app.ui.viewmodel
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.financetracker_app.R
@@ -29,8 +28,6 @@ class ImagesViewModel @Inject constructor(
             val wasUploadSuccessful = imageUri?.let { uri ->
                 imageRepository.createImage(type, itemId, uri)
             } ?: false
-
-            Log.d("ImageViewModel", "wasUploadSuccessful: $wasUploadSuccessful")
 
             val screenEvent = if (wasUploadSuccessful) {
                 ScreenEvent.CloseScreen
