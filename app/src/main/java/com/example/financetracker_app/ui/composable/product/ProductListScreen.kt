@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -52,12 +51,12 @@ fun ProductListScreen(
             )
         }
         Divider(Modifier.height(1.dp))
-        ProductStateItem(uiState = uiState, goToProductDetailsScreen)
+        ShowProductsState(uiState = uiState, goToProductDetailsScreen)
     }
 }
 
 @Composable
-private fun ProductStateItem(
+private fun ShowProductsState(
     uiState: ProductListUiState,
     goToProductDetailsScreen: (String) -> Unit
 ) {
@@ -66,8 +65,7 @@ private fun ProductStateItem(
         contentPadding = PaddingValues(
             top = MediumPadding,
             bottom = MediumPadding
-        ),
-        state = rememberLazyListState()
+        )
     ) {
         when (uiState) {
             ProductListUiState.Error -> {

@@ -22,11 +22,12 @@ fun ProductAddImageScreen(
     imageViewModel: ImagesViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val imageUploadScreeEvent by imageViewModel.uploadImageScreenEvent.collectAsStateWithLifecycle()
+    val imageUploadScreenEvent by imageViewModel.uploadImageScreenEvent.collectAsStateWithLifecycle()
 
-    LaunchedEffect(imageUploadScreeEvent) {
-        when (val screenEvent = imageUploadScreeEvent.screenEvent) {
+    LaunchedEffect(imageUploadScreenEvent) {
+        when (val screenEvent = imageUploadScreenEvent.screenEvent) {
             is ScreenEvent.ShowSnackbar -> {
+                Log.d("ProductAddImageScreen", "ShowSnackbar called")
                 val message = context.getString(screenEvent.stringId)
                 val actionLabel = context.getString(R.string.ok)
                 showSnackbar(message, actionLabel)
@@ -39,7 +40,7 @@ fun ProductAddImageScreen(
     ImagePicker(
         uriSelected = { uri ->
             Log.d("ProductAddImageScreen", "uri: $uri")
-//            imageViewModel.uploadImage(ImagesViewModel.PRODUCT_TYPE, productId, uri)
+            imageViewModel.uploadImage(ImagesViewModel.PRODUCT_TYPE, productId, uri)
         },
         onCloseScreen = closeScreen
     )

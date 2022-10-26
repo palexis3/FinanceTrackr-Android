@@ -3,7 +3,8 @@
     <string name="finance_trackr">Finance Trackr</string>
     <string name="receipt">Receipt</string>
 
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
+    <string name="or">OR</string>
     <string name="product">Product</string>
     <string name="product_list">Product List</string>
     <string name="product_create">Product Create</string>
@@ -24,7 +25,8 @@
     <string name="image_upload_error">Error uploading image. Try again</string>
     <string name="take_photo">Take photo</string>
     <string name="selected_image">Selected image</string>
-    <string name="select_image">Select image</string>
+    <string name="select_image">Select an image</string>
+    <string name="upload">Upload</string>
 
     <string name="delete">Delete</string>
     <string name="close">Close</string>
