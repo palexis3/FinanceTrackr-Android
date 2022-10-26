@@ -1,15 +1,7 @@
-package com.example.financetracker_app.navigation.extensions
+package com.example.financetracker_app.navigation.product
 
 import androidx.navigation.NavHostController
-import com.example.financetracker_app.navigation.ProductDetails
-import com.example.financetracker_app.navigation.ProductImage
-import com.example.financetracker_app.navigation.ProductUpdate
-
-fun NavHostController.navigateSingleTopTo(route: String) =
-    this.navigate(route) {
-        launchSingleTop = true
-        restoreState = true
-    }
+import com.example.financetracker_app.navigation.extensions.navigateSingleTopTo
 
 fun NavHostController.navigateToProductDetails(productId: String) {
     this.navigateSingleTopTo("${ProductDetails.route}/$productId")
