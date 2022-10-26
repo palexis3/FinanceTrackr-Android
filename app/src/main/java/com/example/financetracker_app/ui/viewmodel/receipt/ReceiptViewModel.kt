@@ -1,4 +1,4 @@
-package com.example.financetracker_app.ui.viewmodel
+package com.example.financetracker_app.ui.viewmodel.receipt
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,10 +25,6 @@ sealed interface ReceiptListUiState {
     object Loading : ReceiptListUiState
 }
 
-data class ReceiptListScreenUiState(
-    val receiptListUiState: ReceiptListUiState
-)
-
 sealed interface ReceiptUiState {
     data class Success(val receipt: Receipt) : ReceiptUiState
     object Error : ReceiptUiState
@@ -44,18 +40,20 @@ class ReceiptViewModel @Inject constructor(
     private val receiptRepository: ReceiptRepository
 ) : ViewModel() {
 
-    val receiptListState: StateFlow<ReceiptListScreenUiState> = receiptRepository.getAllReceipts().asResult().map { result ->
-        val receiptListUiState: ReceiptListUiState = when (result) {
-            is Result.Success -> ReceiptListUiState.Success(result.data)
-            is Result.Loading -> ReceiptListUiState.Loading
-            is Result.Error -> ReceiptListUiState.Error
-        }
-        ReceiptListScreenUiState(receiptListUiState)
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = ReceiptListScreenUiState(ReceiptListUiState.Loading)
-    )
+    val receiptListState: StateFlow<ReceiptListUiState> = receiptRepository
+        .getAllReceipts()
+        .asResult()
+        .map { result ->
+            when (result) {
+                is Result.Success -> ReceiptListUiState.Success(result.data)
+                is Result.Loading -> ReceiptListUiState.Loading
+                is Result.Error -> ReceiptListUiState.Error
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = ReceiptListUiState.Loading
+        )
 
     private val _receiptState = MutableStateFlow(ReceiptScreenUiState(ReceiptUiState.Loading))
     val receiptState = _receiptState.asStateFlow()

@@ -9,36 +9,40 @@ import com.example.financetracker_app.navigation.extensions.navigateSingleTopTo
 import com.example.financetracker_app.navigation.extensions.navigateToProductDetails
 import com.example.financetracker_app.navigation.extensions.navigateToProductImage
 import com.example.financetracker_app.navigation.extensions.navigateToProductUpdate
+import com.example.financetracker_app.navigation.receipt.ReceiptRoot
+import com.example.financetracker_app.navigation.receipt.receiptScreensNavGraph
 import com.example.financetracker_app.ui.composable.HomeScreen
 import com.example.financetracker_app.ui.composable.product.*
 
 @Composable
 fun ScreensNavigation(
-    navHostController: NavHostController,
+    navController: NavHostController,
     modifier: Modifier = Modifier,
     showSnackbar: (String, String) -> Unit
 ) {
     NavHost(
-        navController = navHostController,
+        navController = navController,
         startDestination = Home.route,
         modifier = modifier
     ) {
         composable(route = Home.route) {
             HomeScreen(
                 onClickSeeAllProducts = {
-                    navHostController.navigateSingleTopTo(ProductList.route)
+                    navController.navigateSingleTopTo(ProductList.route)
                 },
-                onClickSeeAllReceipts = {}
+                onClickSeeAllReceipts = {
+                    navController.navigateSingleTopTo(ReceiptRoot.route)
+                }
             )
         }
 
         composable(route = ProductList.route) {
             ProductListScreen(
                 goToProductDetailsScreen = { id ->
-                    navHostController.navigateToProductDetails(id)
+                    navController.navigateToProductDetails(id)
                 },
                 goToProductCreateScreen = {
-                    navHostController.navigateSingleTopTo(ProductCreate.route)
+                    navController.navigateSingleTopTo(ProductCreate.route)
                 }
             )
         }
@@ -52,9 +56,9 @@ fun ScreensNavigation(
                 ProductDetailsScreen(
                     productId = productId,
                     goToUpdateScreen = {
-                        navHostController.navigateToProductUpdate(productId)
+                        navController.navigateToProductUpdate(productId)
                     },
-                    closeScreen = { navHostController.popBackStack() },
+                    closeScreen = { navController.popBackStack() },
                     showSnackbar = showSnackbar
                 )
             }
@@ -62,10 +66,10 @@ fun ScreensNavigation(
 
         composable(route = ProductCreate.route) {
             ProductCreateScreen(
-                closeScreen = { navHostController.popBackStack() },
+                closeScreen = { navController.popBackStack() },
                 showSnackbar = showSnackbar,
                 goToImageScreen = { id ->
-                    navHostController.navigateToProductImage(id)
+                    navController.navigateToProductImage(id)
                 }
             )
         }
@@ -77,7 +81,7 @@ fun ScreensNavigation(
             val productId = navBackStackEntry.arguments?.getString(ProductImage.productIdArg)
             if (productId != null) {
                 ProductAddImageScreen(
-                    closeScreen = { navHostController.popBackStack() },
+                    closeScreen = { navController.popBackStack() },
                     showSnackbar = showSnackbar,
                     productId = productId
                 )
@@ -92,10 +96,12 @@ fun ScreensNavigation(
             if (productId != null) {
                 ProductUpdateScreen(
                     productId = productId,
-                    closeScreen = { navHostController.popBackStack() },
+                    closeScreen = { navController.popBackStack() },
                     showSnackbar = showSnackbar
                 )
             }
         }
+
+        receiptScreensNavGraph(navController)
     }
 }
