@@ -9,6 +9,7 @@ import com.example.financetracker_app.navigation.extensions.navigateSingleTopTo
 import com.example.financetracker_app.navigation.extensions.navigateToProductDetails
 import com.example.financetracker_app.navigation.extensions.navigateToProductImage
 import com.example.financetracker_app.navigation.extensions.navigateToProductUpdate
+import com.example.financetracker_app.navigation.receipt.ReceiptRoot
 import com.example.financetracker_app.navigation.receipt.receiptScreensNavGraph
 import com.example.financetracker_app.ui.composable.HomeScreen
 import com.example.financetracker_app.ui.composable.product.*
@@ -30,7 +31,7 @@ fun ScreensNavigation(
                     navController.navigateSingleTopTo(ProductList.route)
                 },
                 onClickSeeAllReceipts = {
-                    navController.navigateSingleTopTo("receipt")
+                    navController.navigateSingleTopTo(ReceiptRoot.route)
                 }
             )
         }

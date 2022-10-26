@@ -7,7 +7,7 @@ import androidx.navigation.navigation
 import com.example.financetracker_app.ui.composable.receipt.ReceiptListScreen
 
 fun NavGraphBuilder.receiptScreensNavGraph(navController: NavController) {
-    navigation(startDestination = ReceiptList.route, route = "receipt") {
+    navigation(startDestination = ReceiptList.route, route = ReceiptRoot.route) {
         composable(route = ReceiptList.route) {
             ReceiptListScreen(goToReceiptDetailsScreen = {})
         }
