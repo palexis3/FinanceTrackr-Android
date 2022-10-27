@@ -21,15 +21,15 @@ class ReceiptRepositoryImpl @Inject constructor(
             while (true) {
                 val response = api.getAllReceipts()
                 // TODO: API should respond back with an empty list if there's no receipt
-//                val items = if (response.isSuccessful) {
-//                    response.body()?.items ?: listOf()
-//                } else listOf()
-                val items = listOf<Receipt>()
+                val items = if (response.body() != null) {
+                    response.body()?.items ?: listOf()
+                } else listOf()
+
                 emit(items)
                 delay(5_000)
             }
         }.catch { exception ->
-            Log.d(TAG, "$TAG getAllReceipts exception: $exception")
+            Log.d(TAG, "$TAG getAllReceipts() exception: $exception")
         }
 
     override fun getReceipt(id: String): Flow<Receipt> =

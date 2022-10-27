@@ -30,7 +30,7 @@ interface FinanceTrackrApi {
 
     // RECEIPTS
     @GET("/receipt")
-    suspend fun getAllReceipts(): Response<Unit>
+    suspend fun getAllReceipts(): Response<ReceiptListResponse>
 
     @GET("/receipt/{id}")
     suspend fun getReceipt(@Path("id") id: String): Receipt
