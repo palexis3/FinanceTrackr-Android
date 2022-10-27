@@ -19,16 +19,18 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.financetracker_app.R
 import com.example.financetracker_app.helper.ComposeFileProvider
+import java.io.File
 
 @Composable
 fun ImagePicker(
     modifier: Modifier = Modifier,
-    uriSelected: (Uri) -> Unit,
+    fileSelected: (File) -> Unit,
     onCloseScreen: () -> Unit
 ) {
     val context = LocalContext.current
     var imageExists by remember { mutableStateOf(false) }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
+    var file by remember { mutableStateOf<File?>(null) }
 
     val imagePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
@@ -54,7 +56,7 @@ fun ImagePicker(
                 Spacer(Modifier.width(4.dp))
                 Button(
                     onClick = {
-                        imageUri?.let { uriSelected(it) }
+                        file?.let { fileSelected(it) }
                         // reset mutable values to enable user to re-take a photo in case
                         // there was an exception
                         imageExists = false
@@ -88,9 +90,10 @@ fun ImagePicker(
             Button(
                 modifier = Modifier.padding(top = 8.dp),
                 onClick = {
-                    val uri = ComposeFileProvider.getImageUri(context)
-                    imageUri = uri
-                    cameraLauncher.launch(uri)
+                    val fileObject = ComposeFileProvider.getFileObjects(context)
+                    imageUri = fileObject.uri
+                    file = fileObject.file
+                    cameraLauncher.launch(fileObject.uri)
                 }
             ) {
                 Text(stringResource(id = R.string.take_photo))

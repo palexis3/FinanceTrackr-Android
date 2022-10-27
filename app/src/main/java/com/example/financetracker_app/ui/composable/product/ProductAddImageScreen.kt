@@ -1,6 +1,5 @@
 package com.example.financetracker_app.ui.composable.product
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,7 +26,6 @@ fun ProductAddImageScreen(
     LaunchedEffect(imageUploadScreenEvent) {
         when (val screenEvent = imageUploadScreenEvent.screenEvent) {
             is ScreenEvent.ShowSnackbar -> {
-                Log.d("ProductAddImageScreen", "ShowSnackbar called")
                 val message = context.getString(screenEvent.stringId)
                 val actionLabel = context.getString(R.string.ok)
                 showSnackbar(message, actionLabel)
@@ -38,9 +36,8 @@ fun ProductAddImageScreen(
     }
 
     ImagePicker(
-        uriSelected = { uri ->
-            Log.d("ProductAddImageScreen", "uri: $uri")
-            imageViewModel.uploadImage(ImagesViewModel.PRODUCT_TYPE, productId, uri)
+        fileSelected = { file ->
+            imageViewModel.uploadImage(ImagesViewModel.PRODUCT_TYPE, productId, file)
         },
         onCloseScreen = closeScreen
     )

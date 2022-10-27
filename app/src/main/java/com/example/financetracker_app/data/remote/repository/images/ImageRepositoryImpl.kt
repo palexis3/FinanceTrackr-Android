@@ -1,7 +1,6 @@
 package com.example.financetracker_app.data.remote.repository.images
 
 import android.content.Context
-import android.net.Uri
 import android.util.Log
 import com.example.financetracker_app.data.remote.FinanceTrackrApi
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -15,23 +14,20 @@ class ImageRepositoryImpl @Inject constructor(
     private val api: FinanceTrackrApi
 ) : ImageRepository {
 
-    override suspend fun createImage(type: String, itemId: String, imageUri: Uri): Boolean {
-//        val file = Uri.fromFile(
-//            context.contentResolver.getType(imageUri)?.let {
-//                File(
-//                    context.cacheDir,
-//                    it
-//                )
-//            }
-//        ).toFile()
-
+    override suspend fun createImage(type: String, itemId: String, file: File): Boolean {
         return try {
-            val file = File(imageUri.path)
+//            val file = Uri.fromFile(
+//                context.contentResolver.getType(imageUri)?.let {
+//                    File(
+//                        context.getExternalFilesDir(null),
+//                        it
+//                    )
+//                }
+//            ).toFile()
+
             val image = MultipartBody.Part.create(
-                file.asRequestBody("image/*".toMediaTypeOrNull())
+                file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
             )
-            Log.d("ImageRepositoryImpl", "file: $file")
-            Log.d("ImageRepositoryImpl", "image: $image")
             val response = api.uploadImage(type, itemId, image)
             response.isSuccessful
         } catch (exception: Exception) {
