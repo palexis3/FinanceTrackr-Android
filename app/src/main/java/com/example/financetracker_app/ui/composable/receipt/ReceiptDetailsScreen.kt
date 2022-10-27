@@ -1,9 +1,9 @@
 package com.example.financetracker_app.ui.composable.receipt
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -24,6 +24,7 @@ import com.example.financetracker_app.ui.viewmodel.receipt.ReceiptViewModel
 @Composable
 fun ReceiptDetailsScreen(
     receiptId: String,
+    closeScreen: () -> Unit,
     receiptViewModel: ReceiptViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
@@ -31,12 +32,13 @@ fun ReceiptDetailsScreen(
     }
 
     val uiState by receiptViewModel.receiptState.collectAsStateWithLifecycle()
-    ShowReceiptDetailsState(uiState)
+    ShowReceiptDetailsState(uiState, closeScreen)
 }
 
 @Composable
 fun ShowReceiptDetailsState(
-    uiState: ReceiptUiState
+    uiState: ReceiptUiState,
+    closeScreen: () -> Unit
 ) {
     when (uiState) {
         is ReceiptUiState.Loading -> {
@@ -50,17 +52,24 @@ fun ShowReceiptDetailsState(
             }
         }
         is ReceiptUiState.Success -> {
-            ReceiptDetailsCard(receipt = uiState.receipt)
+            ReceiptDetailsCard(receipt = uiState.receipt, closeScreen)
         }
     }
 }
 
 @Composable
-fun ReceiptDetailsCard(receipt: Receipt) {
+fun ReceiptDetailsCard(receipt: Receipt, closeScreen: () -> Unit) {
     // TODO: Add image on top of receipt details card
     Card {
         Column(Modifier.padding(12.dp)) {
-            SubScreenTitle(title = receipt.title)
+            Row(horizontalArrangement = Arrangement.Start) {
+                IconButton(onClick = closeScreen) {
+                    Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Go Back")
+                }
+                Spacer(Modifier.width(4.dp))
+                SubScreenTitle(title = receipt.title)
+            }
+
             Spacer(Modifier.height(16.dp))
 
             val formattedPrice = "$${receipt.price}"
