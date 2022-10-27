@@ -7,6 +7,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.AddCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,6 +35,7 @@ fun ProductUpdateScreen(
     productId: String,
     closeScreen: () -> Unit,
     showSnackbar: (String, String) -> Unit,
+    goToImageScreen: () -> Unit,
     updateValidationViewModel: ProductUpdateValidationViewModel = hiltViewModel(),
     productViewModel: ProductViewModel = hiltViewModel()
 ) {
@@ -92,6 +94,13 @@ fun ProductUpdateScreen(
             Text(stringResource(id = R.string.product_update))
         }
         Divider(Modifier.height(1.dp))
+
+        IconButton(onClick = { goToImageScreen.invoke() }) {
+            Icon(
+                imageVector = Icons.Outlined.AddCircle,
+                contentDescription = "Add Image"
+            )
+        }
 
         EmittableTextField(
             inputData = name,

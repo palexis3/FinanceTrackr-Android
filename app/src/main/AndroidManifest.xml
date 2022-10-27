@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".FinanceTrackrApp"
@@ -16,10 +17,13 @@
         android:theme="@style/Theme.FinanceTrackerApp"
         tools:targetApi="31">
         <provider
-            android:authorities="com.example.financetracker_app.fileProvider"
+            android:authorities="com.example.financetracker_app.fileprovider"
             android:name=".helper.ComposeFileProvider"
             android:grantUriPermissions="true"
             android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
         </provider>
         <activity
             android:name=".MainActivity"
