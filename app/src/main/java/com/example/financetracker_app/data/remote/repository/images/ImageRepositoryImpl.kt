@@ -25,6 +25,7 @@ class ImageRepositoryImpl @Inject constructor(
 //                }
 //            ).toFile()
 
+            // TODO: Must figure out how to properly construct the image file to be sent to API
             val image = MultipartBody.Part.create(
                 file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
             )
