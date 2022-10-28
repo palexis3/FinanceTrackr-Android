@@ -2,10 +2,12 @@ package com.example.financetracker_app.ui.viewmodel.receipt
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.financetracker_app.R
 import com.example.financetracker_app.data.models.Receipt
 import com.example.financetracker_app.data.models.ReceiptCreate
 import com.example.financetracker_app.data.remote.repository.receipt.ReceiptRepository
 import com.example.financetracker_app.helper.Result
+import com.example.financetracker_app.helper.ScreenEvent
 import com.example.financetracker_app.helper.asResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -23,6 +25,10 @@ sealed interface ReceiptUiState {
     object Error : ReceiptUiState
     object Loading : ReceiptUiState
 }
+
+data class ReceiptCreateApiScreenEventWrapper(
+    val screenEvent: ScreenEvent<Nothing>? = null
+)
 
 @HiltViewModel
 class ReceiptViewModel @Inject constructor(
@@ -47,8 +53,8 @@ class ReceiptViewModel @Inject constructor(
     private val _receiptState = MutableStateFlow<ReceiptUiState>(ReceiptUiState.Loading)
     val receiptState = _receiptState.asStateFlow()
 
-    private val _createReceiptFlow = MutableSharedFlow<Boolean>()
-    val createReceiptFlow = _createReceiptFlow.asSharedFlow()
+    private val _receiptCreateApiScreenEventWrapper = MutableStateFlow(ReceiptCreateApiScreenEventWrapper())
+    val receiptCreateApiScreenEvent = _receiptCreateApiScreenEventWrapper.asStateFlow()
 
     fun getReceipt(id: String) {
         viewModelScope.launch {
@@ -65,8 +71,14 @@ class ReceiptViewModel @Inject constructor(
 
     fun createReceipt(receiptCreate: ReceiptCreate) {
         viewModelScope.launch {
-            val response = receiptRepository.createReceipt(receiptCreate)
-            _createReceiptFlow.emit(response)
+            val wasReceiptCreateSuccessful = receiptRepository.createReceipt(receiptCreate)
+
+            val screenEvent = if (wasReceiptCreateSuccessful) {
+                ScreenEvent.CloseScreen
+            } else {
+                ScreenEvent.ShowSnackbar(stringId = R.string.receipt_create_error)
+            }
+            _receiptCreateApiScreenEventWrapper.update { screenEventWrapper -> screenEventWrapper.copy(screenEvent = screenEvent) }
         }
     }
 }

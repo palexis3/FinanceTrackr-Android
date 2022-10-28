@@ -10,7 +10,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.financetracker_app.R
 import com.example.financetracker_app.helper.ScreenEvent
 import com.example.financetracker_app.ui.composable.image.ImagePicker
-import com.example.financetracker_app.ui.viewmodel.ImagesViewModel
+import com.example.financetracker_app.ui.viewmodel.image.ImagesViewModel
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
