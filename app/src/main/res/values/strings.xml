@@ -27,6 +27,7 @@
     <string name="price_input_error">Price entered is incorrect.</string>
     <string name="store_input_error">Store entered is incorrect.</string>
     <string name="dropdown_selection_error">Dropdown item has error.</string>
+    <string name="title_input_error">Title entered is incorrect.</string>
 
     <string name="image_upload_error">Error uploading image. Try again</string>
     <string name="take_photo">Take photo</string>
