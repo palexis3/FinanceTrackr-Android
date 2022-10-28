@@ -1,13 +1,13 @@
 package com.example.financetracker_app.ui.composable.receipt
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Divider
-import androidx.compose.material.ExtendedFloatingActionButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -35,10 +35,16 @@ fun ReceiptListScreen(
 
     val uiState by receiptViewModel.receiptListState.collectAsStateWithLifecycle()
 
-    Column {
+    Column(Modifier.padding(12.dp)) {
         ScreenTitle(title = R.string.receipt_list)
-        ExtendedFloatingActionButton(text = { Text("Add") }, onClick = { /*TODO*/ })
-        Divider(Modifier.height(1.dp))
+        Spacer(Modifier.height(4.dp))
+        IconButton(onClick = { /*TODO*/ }) {
+            Row {
+                Text("Add")
+                Icon(imageVector = Icons.Default.Add, contentDescription = "Add Receipt")
+            }
+        }
+        Spacer(Modifier.height(12.dp))
         ShowReceiptsState(uiState, goToReceiptDetailsScreen)
     }
 }
@@ -63,11 +69,13 @@ fun ShowReceiptsState(
             }
             ReceiptListUiState.Loading -> {
                 item {
+                    Log.d("ReceiptListScreen", "Loading Icon shown")
                     LoadingIcon()
                 }
             }
             is ReceiptListUiState.Success -> {
                 if (uiState.receipts.isEmpty()) {
+                    Log.d("ReceiptListScreen", "uiState.receipts: ${uiState.receipts}")
                     item {
                         Text(
                             text = stringResource(id = R.string.receipt_list_empty),
@@ -93,21 +101,22 @@ private fun ReceiptCard(
     goToReceiptDetailsScreen: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier
-            .padding(12.dp)
-            .clickable { goToReceiptDetailsScreen(receipt.id) }
-    ) {
-        Row(
-            modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+    Card {
+        Column(
+            modifier
+                .clickable { goToReceiptDetailsScreen(receipt.id) }
         ) {
-            // Todo: Add image from imageUrl
-            Text(text = receipt.title, style = MaterialTheme.typography.h5)
-        }
-        Spacer(Modifier.height(4.dp))
+            Row(
+                modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                // Todo: Add image from imageUrl
+                Text(text = receipt.title, style = MaterialTheme.typography.h5)
+            }
+            Spacer(Modifier.height(4.dp))
 
-        val formattedAmount = "$${receipt.price}"
-        Text(text = formattedAmount, style = MaterialTheme.typography.subtitle2)
+            val formattedAmount = "$${receipt.price}"
+            Text(text = formattedAmount, style = MaterialTheme.typography.subtitle2)
+        }
     }
 }

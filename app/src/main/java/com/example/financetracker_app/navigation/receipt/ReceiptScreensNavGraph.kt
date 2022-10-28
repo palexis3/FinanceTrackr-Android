@@ -4,7 +4,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.financetracker_app.navigation.product.ProductDetails
 import com.example.financetracker_app.ui.composable.receipt.ReceiptDetailsScreen
 import com.example.financetracker_app.ui.composable.receipt.ReceiptListScreen
 
@@ -20,7 +19,7 @@ fun NavGraphBuilder.receiptScreensNavGraph(navController: NavHostController) {
             route = ReceiptDetails.routeWithArgs,
             arguments = ReceiptDetails.arguments
         ) { navBackStackEntry ->
-            val receiptId = navBackStackEntry.arguments?.getString(ProductDetails.productIdArg)
+            val receiptId = navBackStackEntry.arguments?.getString(ReceiptDetails.receiptIdArg)
             if (receiptId != null) {
                 ReceiptDetailsScreen(
                     receiptId = receiptId,
