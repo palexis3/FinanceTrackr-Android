@@ -4,7 +4,6 @@ import android.util.Log
 import com.example.financetracker_app.data.models.Receipt
 import com.example.financetracker_app.data.models.ReceiptCreate
 import com.example.financetracker_app.data.remote.FinanceTrackrApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -19,21 +18,25 @@ class ReceiptRepositoryImpl @Inject constructor(
     override fun getAllReceipts(): Flow<List<Receipt>> =
         flow {
             while (true) {
-                val response = api.getAllReceipts()
                 // TODO: API should respond back with an empty list if there's no receipt
-//                val items = if (response.isSuccessful) {
-//                    response.body()?.items ?: listOf()
-//                } else listOf()
-                val items = listOf<Receipt>()
+                val response = api.getAllReceipts()
+                val items = if (response.isSuccessful) {
+                    listOf()
+                } else listOf<Receipt>()
                 emit(items)
-                delay(5_000)
+//                val items =  response.body()?.items ?: listOf()
+//                delay(5_000)
             }
         }.catch { exception ->
-            Log.d(TAG, "$TAG getAllReceipts exception: $exception")
+            Log.d(TAG, "$TAG getAllReceipts() exception: $exception")
         }
 
     override fun getReceipt(id: String): Flow<Receipt> =
-        flow { api.getReceipt(id) }
+        flow {
+            emit(api.getReceipt(id))
+        }.catch { exception ->
+            Log.d(TAG, "$TAG getReceipt($id) exception: $exception")
+        }
 
     override suspend fun createReceipt(receiptCreate: ReceiptCreate): Boolean {
         val response = api.createReceipt(receiptCreate)

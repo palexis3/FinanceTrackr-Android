@@ -8,14 +8,7 @@ import com.example.financetracker_app.data.remote.repository.receipt.ReceiptRepo
 import com.example.financetracker_app.helper.Result
 import com.example.financetracker_app.helper.asResult
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,10 +23,6 @@ sealed interface ReceiptUiState {
     object Error : ReceiptUiState
     object Loading : ReceiptUiState
 }
-
-data class ReceiptScreenUiState(
-    val receiptUiState: ReceiptUiState
-)
 
 @HiltViewModel
 class ReceiptViewModel @Inject constructor(
@@ -55,7 +44,7 @@ class ReceiptViewModel @Inject constructor(
             initialValue = ReceiptListUiState.Loading
         )
 
-    private val _receiptState = MutableStateFlow(ReceiptScreenUiState(ReceiptUiState.Loading))
+    private val _receiptState = MutableStateFlow<ReceiptUiState>(ReceiptUiState.Loading)
     val receiptState = _receiptState.asStateFlow()
 
     private val _createReceiptFlow = MutableSharedFlow<Boolean>()
@@ -69,7 +58,7 @@ class ReceiptViewModel @Inject constructor(
                     is Result.Loading -> ReceiptUiState.Loading
                     is Result.Error -> ReceiptUiState.Error
                 }
-                _receiptState.value = ReceiptScreenUiState(receiptState)
+                _receiptState.update { receiptState }
             }
         }
     }
