@@ -1,6 +1,5 @@
 package com.example.financetracker_app.ui.composable.receipt
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -69,13 +68,11 @@ fun ShowReceiptsState(
             }
             ReceiptListUiState.Loading -> {
                 item {
-                    Log.d("ReceiptListScreen", "Loading Icon shown")
                     LoadingIcon()
                 }
             }
             is ReceiptListUiState.Success -> {
                 if (uiState.receipts.isEmpty()) {
-                    Log.d("ReceiptListScreen", "uiState.receipts: ${uiState.receipts}")
                     item {
                         Text(
                             text = stringResource(id = R.string.receipt_list_empty),
@@ -104,6 +101,7 @@ private fun ReceiptCard(
     Card {
         Column(
             modifier
+                .padding(top = 4.dp)
                 .clickable { goToReceiptDetailsScreen(receipt.id) }
         ) {
             Row(
