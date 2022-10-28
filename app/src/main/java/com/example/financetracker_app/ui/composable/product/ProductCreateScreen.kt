@@ -35,7 +35,6 @@ fun ProductCreateScreen(
     productViewModel: ProductViewModel = hiltViewModel(),
     inputValidationViewModel: ProductCreateValidationViewModel = hiltViewModel()
 ) {
-
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -90,6 +89,7 @@ fun ProductCreateScreen(
 
     Column(
         Modifier
+            .fillMaxWidth()
             .padding(12.dp)
             .verticalScroll(rememberScrollState())
     ) {
@@ -103,14 +103,14 @@ fun ProductCreateScreen(
             Spacer(modifier = Modifier.width(8.dp))
             ScreenTitle(title = R.string.product_create)
         }
-        Divider(Modifier.height(1.dp))
+        Spacer(Modifier.height(8.dp))
 
         EmittableTextField(
             inputData = name,
             onValueChange = inputValidationViewModel::onNameChange,
             label = "Name"
         )
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(4.dp))
 
         EmittableTextField(
             inputData = price,
@@ -118,15 +118,15 @@ fun ProductCreateScreen(
             label = "Price",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(4.dp))
+
         EmittableDropDownMenu(
             inputData = quantity,
             label = "Quantity",
             listOfOptions = quantityList,
             onValueChange = inputValidationViewModel::onQuantityChange
         )
-
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(4.dp))
 
         EmittableDropDownMenu(
             inputData = productCategory,
@@ -134,22 +134,22 @@ fun ProductCreateScreen(
             listOfOptions = productCategoryList,
             onValueChange = inputValidationViewModel::onProductCategoryChange
         )
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(4.dp))
 
         EmittableTextField(
             inputData = store,
             onValueChange = inputValidationViewModel::onStoreChange,
             label = "Store"
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(4.dp))
+
         EmittableDropDownMenu(
             inputData = storeCategory,
             label = "Store Category",
             listOfOptions = storeCategoryList,
             onValueChange = inputValidationViewModel::onStoreCategoryChange
         )
-
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(4.dp))
 
         Text("Expiration from now", style = MaterialTheme.typography.caption)
         EmittableTextField(
@@ -158,7 +158,8 @@ fun ProductCreateScreen(
             label = "Time Interval Num",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(4.dp))
+
         EmittableDropDownMenu(
             inputData = timeIntervalType,
             label = "Time Interval Type",

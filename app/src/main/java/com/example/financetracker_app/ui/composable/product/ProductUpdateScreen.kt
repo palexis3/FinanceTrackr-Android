@@ -80,6 +80,7 @@ fun ProductUpdateScreen(
 
     Column(
         Modifier
+            .fillMaxWidth()
             .padding(12.dp)
             .verticalScroll(rememberScrollState())
     ) {
@@ -93,7 +94,7 @@ fun ProductUpdateScreen(
             Spacer(Modifier.width(8.dp))
             Text(stringResource(id = R.string.product_update))
         }
-        Divider(Modifier.height(1.dp))
+        Spacer(Modifier.height(8.dp))
 
         IconButton(onClick = { goToImageScreen.invoke() }) {
             Icon(
@@ -107,7 +108,7 @@ fun ProductUpdateScreen(
             onValueChange = updateValidationViewModel::onNameChange,
             label = "Name"
         )
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(4.dp))
 
         EmittableTextField(
             inputData = price,
@@ -115,7 +116,7 @@ fun ProductUpdateScreen(
             label = "Price",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(4.dp))
 
         Text(
             "Product Expiration section - All below must be entered together",
@@ -129,14 +130,14 @@ fun ProductUpdateScreen(
             label = "Quantity",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(4.dp))
 
         EmittableTextField(
             inputData = timeIntervalNum,
             onValueChange = updateValidationViewModel::onTimeIntervalNumChange,
             label = "Time Interval Num"
         )
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(4.dp))
 
         EmittableDropDownMenu(
             inputData = timeIntervalType,

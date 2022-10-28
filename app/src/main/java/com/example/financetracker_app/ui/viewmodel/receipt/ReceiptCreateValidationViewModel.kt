@@ -52,7 +52,7 @@ class ReceiptCreateValidationViewModel @Inject constructor() : ViewModel() {
         _storeInput.update { inputData -> inputData.copy(item = input, errorId = errorId) }
     }
 
-    fun onClick() {
+    fun onContinueClick() {
         val screenEvent = when (val receiptCreate = getReceiptCreate()) {
             null -> ScreenEvent.ShowSnackbar(stringId = R.string.receipt_create_error)
             else -> ScreenEvent.ScreenEventWithContent(receiptCreate)
