@@ -32,13 +32,18 @@ fun ReceiptDetailsScreen(
     }
 
     val uiState by receiptViewModel.receiptState.collectAsStateWithLifecycle()
-    ShowReceiptDetailsState(uiState, closeScreen)
+    Column {
+        IconButton(onClick = closeScreen) {
+            Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Go Back")
+        }
+        Spacer(Modifier.height(4.dp))
+        ShowReceiptDetailsState(uiState)
+    }
 }
 
 @Composable
 fun ShowReceiptDetailsState(
-    uiState: ReceiptUiState,
-    closeScreen: () -> Unit
+    uiState: ReceiptUiState
 ) {
     when (uiState) {
         is ReceiptUiState.Loading -> {
@@ -52,38 +57,33 @@ fun ShowReceiptDetailsState(
             }
         }
         is ReceiptUiState.Success -> {
-            ReceiptDetailsCard(receipt = uiState.receipt, closeScreen)
+            ReceiptDetailsCard(receipt = uiState.receipt)
         }
     }
 }
 
 @Composable
-fun ReceiptDetailsCard(receipt: Receipt, closeScreen: () -> Unit) {
-    // TODO: Add image on top of receipt details card
-    Card {
-        Column(Modifier.padding(12.dp)) {
-            Row(horizontalArrangement = Arrangement.Start) {
-                IconButton(onClick = closeScreen) {
-                    Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Go Back")
-                }
-                Spacer(Modifier.width(4.dp))
+fun ReceiptDetailsCard(receipt: Receipt) {
+    Column {
+        // TODO: Add image on top of receipt details card
+        Card {
+            Column(Modifier.padding(12.dp)) {
                 SubScreenTitle(title = receipt.title)
+                Spacer(Modifier.height(16.dp))
+
+                val formattedPrice = "$${receipt.price}"
+                Text(text = formattedPrice, style = MaterialTheme.typography.body1)
+
+                Spacer(Modifier.height(8.dp))
+
+                val store = "Store: ${receipt.storeId}"
+                Text(text = store, style = MaterialTheme.typography.body1)
+
+                Spacer(Modifier.height(8.dp))
+
+                val createAt = "Created at: ${receipt.createdAt}"
+                Text(text = createAt, style = MaterialTheme.typography.body1)
             }
-
-            Spacer(Modifier.height(16.dp))
-
-            val formattedPrice = "$${receipt.price}"
-            Text(text = formattedPrice, style = MaterialTheme.typography.body1)
-
-            Spacer(Modifier.height(8.dp))
-
-            val store = "Store: ${receipt.storeId}"
-            Text(text = store, style = MaterialTheme.typography.body1)
-
-            Spacer(Modifier.height(8.dp))
-
-            val createAt = "Created at: ${receipt.createdAt}"
-            Text(text = createAt, style = MaterialTheme.typography.body1)
         }
     }
 }

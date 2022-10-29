@@ -10,7 +10,6 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -86,13 +85,12 @@ fun ReceiptCreateScreen(
             .padding(12.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = closeScreen) {
-                Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back")
-            }
-            Spacer(Modifier.width(8.dp))
-            ScreenTitle(title = R.string.receipt_create)
+        IconButton(onClick = closeScreen) {
+            Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back")
         }
+        Spacer(Modifier.width(4.dp))
+
+        ScreenTitle(title = R.string.receipt_create)
         Spacer(Modifier.height(8.dp))
 
         EmittableTextField(

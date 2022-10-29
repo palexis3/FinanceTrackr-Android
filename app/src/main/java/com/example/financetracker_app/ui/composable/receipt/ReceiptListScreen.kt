@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -28,6 +29,7 @@ private val MediumPadding = 16.dp
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun ReceiptListScreen(
+    closeScreen: () -> Unit,
     goToReceiptCreateScreen: () -> Unit,
     goToReceiptDetailsScreen: (String) -> Unit,
     receiptViewModel: ReceiptViewModel = hiltViewModel()
@@ -36,8 +38,14 @@ fun ReceiptListScreen(
     val uiState by receiptViewModel.receiptListState.collectAsStateWithLifecycle()
 
     Column(Modifier.padding(12.dp)) {
+        IconButton(onClick = closeScreen) {
+            Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Go Back")
+        }
+        Spacer(Modifier.height(4.dp))
+
         ScreenTitle(title = R.string.receipt_list)
         Spacer(Modifier.height(4.dp))
+
         IconButton(onClick = goToReceiptCreateScreen) {
             Row {
                 Text("Add")
@@ -45,6 +53,7 @@ fun ReceiptListScreen(
             }
         }
         Spacer(Modifier.height(12.dp))
+
         ShowReceiptsState(uiState, goToReceiptDetailsScreen)
     }
 }

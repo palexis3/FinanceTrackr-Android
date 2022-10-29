@@ -13,6 +13,7 @@ fun NavGraphBuilder.receiptScreensNavGraph(navController: NavHostController, sho
     navigation(startDestination = ReceiptList.route, route = ReceiptRoot.route) {
         composable(route = ReceiptList.route) {
             ReceiptListScreen(
+                closeScreen = { navController.popBackStack() },
                 goToReceiptDetailsScreen = { receiptId ->
                     navController.navigateToReceiptDetails(receiptId)
                 },
