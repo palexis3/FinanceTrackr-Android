@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.financetracker_app.data.models.Receipt
 import com.example.financetracker_app.data.models.ReceiptCreate
 import com.example.financetracker_app.data.remote.FinanceTrackrApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -20,12 +21,13 @@ class ReceiptRepositoryImpl @Inject constructor(
             while (true) {
                 // TODO: API should respond back with an empty list if there's no receipt
                 val response = api.getAllReceipts()
-                val items = if (response.isSuccessful) {
-                    listOf()
-                } else listOf<Receipt>()
+                val items = response.body()?.items ?: listOf()
                 emit(items)
-//                val items =  response.body()?.items ?: listOf()
-//                delay(5_000)
+                delay(5_000)
+
+//                val items = if (response.isSuccessful) {
+//                    listOf()
+//                } else listOf<Receipt>()
             }
         }.catch { exception ->
             Log.d(TAG, "$TAG getAllReceipts() exception: $exception")

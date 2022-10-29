@@ -22,6 +22,6 @@ fun ScreensNavigation(
     ) {
         homeScreensNavGraph(navController)
         productScreensNavGraph(navController, showSnackbar)
-        receiptScreensNavGraph(navController)
+        receiptScreensNavGraph(navController, showSnackbar)
     }
 }

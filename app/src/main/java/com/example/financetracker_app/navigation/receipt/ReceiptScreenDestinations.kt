@@ -21,3 +21,7 @@ object ReceiptDetails : LeafScreenDestination {
         navArgument(receiptIdArg) { type = NavType.StringType }
     )
 }
+
+object ReceiptCreate : LeafScreenDestination {
+    override val route = "receiptCreate"
+}

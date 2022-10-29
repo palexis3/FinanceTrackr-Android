@@ -1,4 +1,4 @@
-package com.example.financetracker_app.ui.viewmodel
+package com.example.financetracker_app.ui.viewmodel.image
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

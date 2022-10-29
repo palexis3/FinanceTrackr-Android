@@ -32,13 +32,13 @@ interface FinanceTrackrApi {
 
     // TODO: Refactor result type to ReceiptListResponse once backend response is fixed
     @GET("/receipt")
-    suspend fun getAllReceipts(): Response<Unit>
+    suspend fun getAllReceipts(): Response<ReceiptListResponse>
 
     @GET("/receipt/{id}")
     suspend fun getReceipt(@Path("id") id: String): Receipt
 
     @POST("/receipt/create")
-    suspend fun createReceipt(@Body receiptCreate: ReceiptCreate): Response<Receipt>
+    suspend fun createReceipt(@Body receiptCreate: ReceiptCreate): Response<Unit>
 
     // IMAGES
     @Multipart
