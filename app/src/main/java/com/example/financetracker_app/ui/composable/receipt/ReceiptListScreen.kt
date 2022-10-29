@@ -28,6 +28,7 @@ private val MediumPadding = 16.dp
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun ReceiptListScreen(
+    goToReceiptCreateScreen: () -> Unit,
     goToReceiptDetailsScreen: (String) -> Unit,
     receiptViewModel: ReceiptViewModel = hiltViewModel()
 ) {
@@ -37,7 +38,7 @@ fun ReceiptListScreen(
     Column(Modifier.padding(12.dp)) {
         ScreenTitle(title = R.string.receipt_list)
         Spacer(Modifier.height(4.dp))
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(onClick = goToReceiptCreateScreen) {
             Row {
                 Text("Add")
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add Receipt")
@@ -101,7 +102,6 @@ private fun ReceiptCard(
     Card {
         Column(
             modifier
-                .padding(top = 4.dp)
                 .clickable { goToReceiptDetailsScreen(receipt.id) }
         ) {
             Row(
@@ -109,12 +109,21 @@ private fun ReceiptCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 // Todo: Add image from imageUrl
-                Text(text = receipt.title, style = MaterialTheme.typography.h5)
+                Text(text = receipt.title, style = MaterialTheme.typography.h4)
             }
-            Spacer(Modifier.height(4.dp))
 
+            Spacer(Modifier.height(4.dp))
             val formattedAmount = "$${receipt.price}"
             Text(text = formattedAmount, style = MaterialTheme.typography.subtitle2)
+
+            Spacer(Modifier.height(4.dp))
+            val store = "Store: ${receipt.storeId}"
+            Text(text = store, style = MaterialTheme.typography.subtitle2)
+
+            Spacer(Modifier.height(4.dp))
+            val createdAt = "Created at: ${receipt.createdAt}"
+            Text(text = createdAt, style = MaterialTheme.typography.subtitle2)
         }
     }
+    Spacer(Modifier.height(12.dp))
 }

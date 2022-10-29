@@ -16,7 +16,7 @@ data class Receipt(
 data class ReceiptCreate(
     val title: String,
     val price: Float,
-    val store: String
+    val store: StoreCreate
 )
 
 data class ReceiptListResponse(
