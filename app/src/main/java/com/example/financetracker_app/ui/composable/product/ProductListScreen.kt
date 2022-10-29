@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -32,25 +34,28 @@ private val MediumPadding = 16.dp
 fun ProductListScreen(
     viewModel: ProductViewModel = hiltViewModel(),
     goToProductDetailsScreen: (String) -> Unit,
-    goToProductCreateScreen: () -> Unit
+    goToProductCreateScreen: () -> Unit,
+    closeScreen: () -> Unit
 ) {
     val uiState: ProductListUiState by viewModel.productListState.collectAsStateWithLifecycle()
 
-    Column {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(4.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            ScreenTitle(title = R.string.product_list)
-            ExtendedFloatingActionButton(
-                onClick = goToProductCreateScreen,
-                text = { Text("Add") }
-            )
+    Column(
+        Modifier.padding(12.dp)
+    ) {
+        IconButton(onClick = closeScreen) {
+            Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Go Back")
         }
-        Divider(Modifier.height(1.dp))
+        Spacer(Modifier.height(4.dp))
+
+        ScreenTitle(title = R.string.product_list)
+        Spacer(Modifier.height(4.dp))
+
+        ExtendedFloatingActionButton(
+            onClick = goToProductCreateScreen,
+            text = { Text("Add") }
+        )
+        Spacer(Modifier.height(8.dp))
+
         ShowProductsState(uiState = uiState, goToProductDetailsScreen)
     }
 }
@@ -96,7 +101,6 @@ private fun ProductCard(
 ) {
     Column(
         modifier
-            .padding(12.dp)
             .clickable { goToProductDetailsScreen(product.id) }
     ) {
         Row(
@@ -124,7 +128,7 @@ private fun ProductCard(
                 Text(text = product.category)
             }
         }
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(8.dp))
 
         val formattedAmount = "$${product.price}"
         val expirationDate = "Expires on: ${product.createdAt}"

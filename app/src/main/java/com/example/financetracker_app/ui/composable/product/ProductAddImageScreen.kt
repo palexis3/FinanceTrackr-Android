@@ -1,9 +1,19 @@
 package com.example.financetracker_app.ui.composable.product
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -35,10 +45,19 @@ fun ProductAddImageScreen(
         }
     }
 
-    ImagePicker(
-        fileSelected = { file ->
-            imageViewModel.uploadImage(ImagesViewModel.PRODUCT_TYPE, productId, file)
-        },
-        onCloseScreen = closeScreen
-    )
+    Column(
+        Modifier.padding(12.dp)
+    ) {
+        IconButton(onClick = closeScreen) {
+            Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back")
+        }
+        Spacer(Modifier.height(4.dp))
+
+        ImagePicker(
+            fileSelected = { file ->
+                imageViewModel.uploadImage(ImagesViewModel.PRODUCT_TYPE, productId, file)
+            },
+            onCloseScreen = closeScreen
+        )
+    }
 }
