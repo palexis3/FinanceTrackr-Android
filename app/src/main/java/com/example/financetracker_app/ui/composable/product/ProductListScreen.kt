@@ -19,7 +19,6 @@ import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.financetracker_app.R
 import com.example.financetracker_app.data.models.Product
-import com.example.financetracker_app.ui.composable.common.CommonDivider
 import com.example.financetracker_app.ui.composable.common.ErrorTitle
 import com.example.financetracker_app.ui.composable.common.LoadingIcon
 import com.example.financetracker_app.ui.composable.common.ScreenTitle
@@ -99,43 +98,45 @@ private fun ProductCard(
     goToProductDetailsScreen: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier
-            .clickable { goToProductDetailsScreen(product.id) }
-    ) {
-        Row(
+    Card {
+        Column(
             modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+                .clickable { goToProductDetailsScreen(product.id) }
         ) {
-            // Todo: Add image from imageUrl parameter
-            Text(text = product.name, style = MaterialTheme.typography.h5)
-            Chip(
-                onClick = {},
-                border = BorderStroke(
-                    ChipDefaults.OutlinedBorderSize,
-                    Color.Green
-                ),
-                colors = ChipDefaults.chipColors(
-                    backgroundColor = LightBlue,
-                    contentColor = Color.Black
-                ),
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .height(24.dp)
-                    .padding(2.dp)
+            Row(
+                modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = product.category)
+                // Todo: Add image from imageUrl parameter
+                Text(text = product.name, style = MaterialTheme.typography.h5)
+                Chip(
+                    onClick = {},
+                    border = BorderStroke(
+                        ChipDefaults.OutlinedBorderSize,
+                        Color.Green
+                    ),
+                    colors = ChipDefaults.chipColors(
+                        backgroundColor = LightBlue,
+                        contentColor = Color.Black
+                    ),
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .height(24.dp)
+                        .padding(2.dp)
+                ) {
+                    Text(text = product.category)
+                }
             }
+            Spacer(Modifier.height(8.dp))
+
+            val formattedAmount = "$${product.price}"
+            val expirationDate = "Expires on: ${product.createdAt}"
+
+            Text(text = formattedAmount, style = MaterialTheme.typography.subtitle2)
+            Spacer(Modifier.height(4.dp))
+            Text(text = expirationDate, style = MaterialTheme.typography.subtitle2)
         }
-        Spacer(Modifier.height(8.dp))
-
-        val formattedAmount = "$${product.price}"
-        val expirationDate = "Expires on: ${product.createdAt}"
-
-        Text(text = formattedAmount, style = MaterialTheme.typography.subtitle2)
-        Spacer(Modifier.height(4.dp))
-        Text(text = expirationDate, style = MaterialTheme.typography.subtitle2)
     }
-    CommonDivider()
+    Spacer(Modifier.height(12.dp))
 }

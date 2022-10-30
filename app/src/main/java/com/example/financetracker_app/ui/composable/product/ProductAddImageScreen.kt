@@ -1,13 +1,7 @@
 package com.example.financetracker_app.ui.composable.product
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -48,11 +42,6 @@ fun ProductAddImageScreen(
     Column(
         Modifier.padding(12.dp)
     ) {
-        IconButton(onClick = closeScreen) {
-            Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back")
-        }
-        Spacer(Modifier.height(4.dp))
-
         ImagePicker(
             fileSelected = { file ->
                 imageViewModel.uploadImage(ImagesViewModel.PRODUCT_TYPE, productId, file)

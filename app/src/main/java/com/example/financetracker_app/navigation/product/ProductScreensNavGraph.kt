@@ -16,7 +16,8 @@ fun NavGraphBuilder.productScreensNavGraph(navController: NavHostController, sho
                 },
                 goToProductCreateScreen = {
                     navController.navigateSingleTopTo(ProductCreate.route)
-                }
+                },
+                closeScreen = { navController.popBackStack() }
             )
         }
 
