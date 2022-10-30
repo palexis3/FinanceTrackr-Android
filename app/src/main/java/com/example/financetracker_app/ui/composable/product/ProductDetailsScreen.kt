@@ -3,6 +3,7 @@ package com.example.financetracker_app.ui.composable.product
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.*
@@ -52,13 +53,22 @@ fun ProductDetailsScreen(
         }
     }
 
-    ShowProductDetailsUiState(
-        uiState = uiState,
-        goToUpdateScreen = goToUpdateScreen,
-        callProductDeletionApi = {
-            viewModel.deleteProduct(productId)
+    Column(
+        Modifier.padding(12.dp)
+    ) {
+        IconButton(onClick = closeScreen) {
+            Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Go Back")
         }
-    )
+        Spacer(Modifier.height(4.dp))
+
+        ShowProductDetailsUiState(
+            uiState = uiState,
+            goToUpdateScreen = goToUpdateScreen,
+            callProductDeletionApi = {
+                viewModel.deleteProduct(productId)
+            }
+        )
+    }
 }
 
 @Composable
@@ -72,7 +82,6 @@ private fun ShowProductDetailsUiState(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .wrapContentSize(Alignment.Center)
             ) {
                 ErrorTitle(title = R.string.product_details_error)
             }
@@ -81,7 +90,6 @@ private fun ShowProductDetailsUiState(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .wrapContentSize(Alignment.Center)
             ) {
                 LoadingIcon()
             }

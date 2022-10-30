@@ -32,11 +32,12 @@ fun ReceiptDetailsScreen(
     }
 
     val uiState by receiptViewModel.receiptState.collectAsStateWithLifecycle()
-    Column {
+    Column(Modifier.padding(12.dp)) {
         IconButton(onClick = closeScreen) {
             Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Go Back")
         }
         Spacer(Modifier.height(4.dp))
+
         ShowReceiptDetailsState(uiState)
     }
 }

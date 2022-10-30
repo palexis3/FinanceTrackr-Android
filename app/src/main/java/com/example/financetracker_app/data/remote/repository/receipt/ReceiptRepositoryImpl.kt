@@ -24,10 +24,6 @@ class ReceiptRepositoryImpl @Inject constructor(
                 val items = response.body()?.items ?: listOf()
                 emit(items)
                 delay(5_000)
-
-//                val items = if (response.isSuccessful) {
-//                    listOf()
-//                } else listOf<Receipt>()
             }
         }.catch { exception ->
             Log.d(TAG, "$TAG getAllReceipts() exception: $exception")

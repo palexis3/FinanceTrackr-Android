@@ -88,7 +88,7 @@ fun ReceiptCreateScreen(
         IconButton(onClick = closeScreen) {
             Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back")
         }
-        Spacer(Modifier.width(4.dp))
+        Spacer(Modifier.height(4.dp))
 
         ScreenTitle(title = R.string.receipt_create)
         Spacer(Modifier.height(8.dp))

@@ -11,7 +11,6 @@ import androidx.compose.material.icons.outlined.AddCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -84,16 +83,15 @@ fun ProductUpdateScreen(
             .padding(12.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = closeScreen) {
-                Icon(
-                    imageVector = Icons.Filled.ArrowBack,
-                    contentDescription = "Back"
-                )
-            }
-            Spacer(Modifier.width(8.dp))
-            Text(stringResource(id = R.string.product_update))
+        IconButton(onClick = closeScreen) {
+            Icon(
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = "Back"
+            )
         }
+        Spacer(Modifier.width(4.dp))
+
+        Text(stringResource(id = R.string.product_update))
         Spacer(Modifier.height(8.dp))
 
         IconButton(onClick = { goToImageScreen.invoke() }) {
@@ -102,6 +100,7 @@ fun ProductUpdateScreen(
                 contentDescription = "Add Image"
             )
         }
+        Spacer(Modifier.height(12.dp))
 
         EmittableTextField(
             inputData = name,
