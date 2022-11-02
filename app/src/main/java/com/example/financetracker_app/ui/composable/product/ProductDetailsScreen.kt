@@ -60,7 +60,7 @@ fun ProductDetailsScreen(
         Spacer(Modifier.height(4.dp))
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(end = 12.dp),
             horizontalArrangement = Arrangement.End
         ) {
             Button(onClick = {

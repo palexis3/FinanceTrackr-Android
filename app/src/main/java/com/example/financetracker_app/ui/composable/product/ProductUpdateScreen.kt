@@ -6,8 +6,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.outlined.AddCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -105,14 +105,15 @@ fun ProductUpdateScreen(
             Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
-            IconButton(onClick = { goToImageScreen.invoke() }) {
-                Icon(
-                    imageVector = Icons.Outlined.AddCircle,
-                    contentDescription = "Add Image"
-                )
+            OutlinedButton(
+                onClick = { goToImageScreen.invoke() },
+                elevation = ButtonDefaults.elevation(8.dp)
+            ) {
+                Text("Add Image")
+                Icon(imageVector = Icons.Default.Add, contentDescription = "Add Image")
             }
         }
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(20.dp))
 
         EmittableTextField(
             inputData = name,
@@ -159,7 +160,10 @@ fun ProductUpdateScreen(
 
         Spacer(Modifier.height(28.dp))
 
-        Button(onClick = { updateValidationViewModel.onContinueClick(productId) }, enabled = inputsValid) {
+        Button(
+            onClick = { updateValidationViewModel.onContinueClick(productId) },
+            enabled = inputsValid
+        ) {
             Text("Continue")
         }
     }
