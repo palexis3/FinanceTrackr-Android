@@ -23,7 +23,6 @@ import java.io.File
 
 @Composable
 fun ImagePicker(
-    modifier: Modifier = Modifier,
     fileSelected: (File) -> Unit,
     onCloseScreen: () -> Unit
 ) {
@@ -47,13 +46,20 @@ fun ImagePicker(
         }
     )
 
-    Column(modifier = modifier) {
-        Row(horizontalArrangement = Arrangement.End) {
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(12.dp)
+    ) {
+        Row(
+            Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Button(onClick = onCloseScreen) {
                 Icon(imageVector = Icons.Default.Close, contentDescription = "Close Screen")
             }
             if (imageExists) {
-                Spacer(Modifier.width(4.dp))
                 Button(
                     onClick = {
                         file?.let { fileSelected(it) }
@@ -69,8 +75,8 @@ fun ImagePicker(
             }
         }
         Column(
-            modifier = Modifier
-                .padding(28.dp),
+            Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (imageExists && imageUri != null) {
@@ -79,16 +85,19 @@ fun ImagePicker(
                     modifier = Modifier.fillMaxWidth(),
                     contentDescription = stringResource(id = R.string.selected_image)
                 )
+                Spacer(Modifier.height(16.dp))
             }
             Button(
-                modifier = Modifier.padding(top = 16.dp),
                 onClick = { imagePicker.launch("image/*") }
             ) {
                 Text(stringResource(id = R.string.select_image))
             }
+
+            Spacer(Modifier.height(4.dp))
             Text(stringResource(id = R.string.or))
+            Spacer(Modifier.height(4.dp))
+
             Button(
-                modifier = Modifier.padding(top = 8.dp),
                 onClick = {
                     val fileObject = ComposeFileProvider.getFileObjects(context)
                     imageUri = fileObject.uri
