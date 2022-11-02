@@ -8,10 +8,12 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -21,7 +23,7 @@ import com.example.financetracker_app.R
 import com.example.financetracker_app.helper.ScreenEvent
 import com.example.financetracker_app.ui.composable.common.EmittableDropDownMenu
 import com.example.financetracker_app.ui.composable.common.EmittableTextField
-import com.example.financetracker_app.ui.composable.common.ScreenTitle
+import com.example.financetracker_app.ui.composable.common.SubScreenTitle
 import com.example.financetracker_app.ui.viewmodel.product.ProductCreateValidationViewModel
 import com.example.financetracker_app.ui.viewmodel.product.ProductViewModel
 
@@ -92,23 +94,28 @@ fun ProductCreateScreen(
             .padding(12.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        IconButton(onClick = closeScreen) {
-            Icon(
-                imageVector = Icons.Filled.ArrowBack,
-                contentDescription = "Back"
-            )
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = closeScreen) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = "Back"
+                )
+            }
+            Spacer(Modifier.width(8.dp))
+            SubScreenTitle(title = stringResource(R.string.product_create))
         }
-        Spacer(Modifier.height(4.dp))
 
-        ScreenTitle(title = R.string.product_create)
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(12.dp))
 
         EmittableTextField(
             inputData = name,
             onValueChange = inputValidationViewModel::onNameChange,
             label = "Name"
         )
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(8.dp))
 
         EmittableTextField(
             inputData = price,
@@ -116,7 +123,7 @@ fun ProductCreateScreen(
             label = "Price",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         EmittableDropDownMenu(
             inputData = quantity,
@@ -124,7 +131,7 @@ fun ProductCreateScreen(
             listOfOptions = quantityList,
             onValueChange = inputValidationViewModel::onQuantityChange
         )
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(8.dp))
 
         EmittableDropDownMenu(
             inputData = productCategory,
@@ -132,14 +139,14 @@ fun ProductCreateScreen(
             listOfOptions = productCategoryList,
             onValueChange = inputValidationViewModel::onProductCategoryChange
         )
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(8.dp))
 
         EmittableTextField(
             inputData = store,
             onValueChange = inputValidationViewModel::onStoreChange,
             label = "Store"
         )
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         EmittableDropDownMenu(
             inputData = storeCategory,
@@ -147,16 +154,17 @@ fun ProductCreateScreen(
             listOfOptions = storeCategoryList,
             onValueChange = inputValidationViewModel::onStoreCategoryChange
         )
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(8.dp))
 
         Text("Expiration from now", style = MaterialTheme.typography.caption)
+        Spacer(Modifier.height(2.dp))
         EmittableTextField(
             inputData = timeIntervalNum,
             onValueChange = inputValidationViewModel::onTimeIntervalNumChange,
             label = "Time Interval Num",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(8.dp))
 
         EmittableDropDownMenu(
             inputData = timeIntervalType,

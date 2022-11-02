@@ -7,7 +7,6 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -33,11 +32,12 @@ fun ProductDetailsScreen(
     viewModel: ProductViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
+    val showDeletionDialog = remember { mutableStateOf(false) }
 
     val uiState: ProductDetailsUiState by viewModel.productDetailsState.collectAsStateWithLifecycle()
     val productDeleteApiScreenEvent by viewModel.productDeleteApiScreenEvent.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(key1 = productId) {
         viewModel.getProduct(productId)
     }
 
@@ -53,35 +53,56 @@ fun ProductDetailsScreen(
         }
     }
 
-    Column(
-        Modifier.padding(12.dp)
-    ) {
+    Column {
         IconButton(onClick = closeScreen) {
             Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Go Back")
         }
         Spacer(Modifier.height(4.dp))
 
-        ShowProductDetailsUiState(
-            uiState = uiState,
-            goToUpdateScreen = goToUpdateScreen,
-            callProductDeletionApi = {
-                viewModel.deleteProduct(productId)
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(end = 12.dp),
+            horizontalArrangement = Arrangement.End
+        ) {
+            Button(onClick = {
+                goToUpdateScreen.invoke()
+            }) {
+                Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Product")
             }
-        )
+            Spacer(Modifier.width(4.dp))
+            Button(onClick = {
+                showDeletionDialog.value = true
+            }) {
+                Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete product")
+            }
+        }
+
+        ShowProductDetailsUiState(uiState = uiState)
+
+        if (showDeletionDialog.value) {
+            DeleteAlertDialog(
+                dialogVisibility = { visibility ->
+                    showDeletionDialog.value = visibility
+                },
+                deletionConfirmation = { confirmation ->
+                    if (confirmation) {
+                        viewModel.deleteProduct(productId)
+                    }
+                }
+            )
+        }
     }
 }
 
 @Composable
 private fun ShowProductDetailsUiState(
-    uiState: ProductDetailsUiState,
-    goToUpdateScreen: () -> Unit,
-    callProductDeletionApi: () -> Unit
+    uiState: ProductDetailsUiState
 ) {
     when (uiState) {
         ProductDetailsUiState.Error -> {
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Center
             ) {
                 ErrorTitle(title = R.string.product_details_error)
             }
@@ -89,81 +110,52 @@ private fun ShowProductDetailsUiState(
         ProductDetailsUiState.Loading -> {
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Center
             ) {
                 LoadingIcon()
             }
         }
         is ProductDetailsUiState.Success -> {
-            ProductDetailsCard(product = uiState.product, goToUpdateScreen, callProductDeletionApi)
+            ProductDetailsCard(
+                product = uiState.product
+            )
         }
     }
 }
 
 @Composable
 fun ProductDetailsCard(
-    product: Product,
-    goToUpdateScreen: () -> Unit,
-    callProductDeletionApi: () -> Unit
+    product: Product
 ) {
-    val showDeletionDialog = remember { mutableStateOf(false) }
-    if (showDeletionDialog.value) {
-        DeleteAlertDialog(
-            dialogVisibility = { visibility ->
-                showDeletionDialog.value = visibility
-            },
-            deletionConfirmation = { confirmation ->
-                if (confirmation) {
-                    callProductDeletionApi.invoke()
-                }
-            }
-        )
-    }
-
     // TODO: Add an image above the details card
-    Card {
-        Column {
-            Row(modifier = Modifier.padding(end = 8.dp)) {
-                Button(onClick = {
-                    goToUpdateScreen.invoke()
-                }) {
-                    Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Product")
-                }
-                Spacer(Modifier.width(4.dp))
-                Button(onClick = {
-                    showDeletionDialog.value = true
-                }) {
-                    Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete product")
-                }
-            }
-            Column(Modifier.padding(12.dp)) {
-                Row(
-                    Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    SubScreenTitle(product.name)
-                    val amountText = "$${product.price}"
-                    Text(
-                        text = amountText,
-                        style = MaterialTheme.typography.subtitle1
-                    )
-                }
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(12.dp),
+        elevation = 8.dp
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp)
+        ) {
+            SubScreenTitle(product.name)
+            Spacer(Modifier.height(8.dp))
 
-                Spacer(Modifier.height(12.dp))
+            val createdAt = "Created at: ${product.createdAt}"
+            val category = "Category: ${product.category}"
+            val amountText = "$${product.price}"
 
-                val createdAt = "Created at: ${product.createdAt}"
-                val category = "Category: ${product.category}"
-                Text(text = createdAt, style = MaterialTheme.typography.body1)
-                Spacer(Modifier.height(4.dp))
-                Text(text = category, style = MaterialTheme.typography.body1)
-            }
+            Text(text = amountText, style = MaterialTheme.typography.body1)
+            Spacer(Modifier.height(4.dp))
+            Text(text = createdAt, style = MaterialTheme.typography.body1)
+            Spacer(Modifier.height(4.dp))
+            Text(text = category, style = MaterialTheme.typography.body1)
         }
     }
 }
 
 @Composable
-private fun DeleteAlertDialog(dialogVisibility: (Boolean) -> Unit, deletionConfirmation: (Boolean) -> Unit) {
+fun DeleteAlertDialog(dialogVisibility: (Boolean) -> Unit, deletionConfirmation: (Boolean) -> Unit) {
     val context = LocalContext.current
 
     AlertDialog(

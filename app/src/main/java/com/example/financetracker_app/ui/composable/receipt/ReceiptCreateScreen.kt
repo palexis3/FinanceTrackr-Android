@@ -10,10 +10,12 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -23,7 +25,7 @@ import com.example.financetracker_app.R
 import com.example.financetracker_app.helper.ScreenEvent
 import com.example.financetracker_app.ui.composable.common.EmittableDropDownMenu
 import com.example.financetracker_app.ui.composable.common.EmittableTextField
-import com.example.financetracker_app.ui.composable.common.ScreenTitle
+import com.example.financetracker_app.ui.composable.common.SubScreenTitle
 import com.example.financetracker_app.ui.viewmodel.receipt.ReceiptCreateValidationViewModel
 import com.example.financetracker_app.ui.viewmodel.receipt.ReceiptViewModel
 
@@ -85,20 +87,26 @@ fun ReceiptCreateScreen(
             .padding(12.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        IconButton(onClick = closeScreen) {
-            Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back")
-        }
-        Spacer(Modifier.height(4.dp))
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = closeScreen) {
+                Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back")
+            }
+            Spacer(Modifier.width(8.dp))
 
-        ScreenTitle(title = R.string.receipt_create)
-        Spacer(Modifier.height(8.dp))
+            SubScreenTitle(title = stringResource(R.string.receipt_create))
+        }
+
+        Spacer(Modifier.height(12.dp))
 
         EmittableTextField(
             inputData = title,
             onValueChange = validationViewModel::onTitleChange,
             label = "Title"
         )
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(12.dp))
 
         EmittableTextField(
             inputData = price,
@@ -106,15 +114,16 @@ fun ReceiptCreateScreen(
             label = "Price",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(12.dp))
 
         Text("Store Information", style = MaterialTheme.typography.caption)
+        Spacer(Modifier.height(2.dp))
         EmittableTextField(
             inputData = store,
             onValueChange = validationViewModel::onStoreChange,
             label = "Store"
         )
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(12.dp))
 
         EmittableDropDownMenu(
             inputData = storeCategory,

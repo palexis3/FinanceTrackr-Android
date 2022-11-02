@@ -1,4 +1,4 @@
- 
+
 package com.example.financetracker_app.ui.composable.common
 
 import androidx.annotation.StringRes
@@ -30,7 +30,7 @@ fun BaseHomeRow(
     ) {
         Text(
             text = stringResource(id = title),
-            style = MaterialTheme.typography.h4,
+            style = MaterialTheme.typography.h6,
         )
         Icon(
             imageVector = Icons.Filled.ArrowForward,
@@ -44,13 +44,11 @@ fun BaseHomeRow(
 
 @Composable
 fun ScreenTitle(
-    modifier: Modifier = Modifier,
     @StringRes title: Int
 ) {
     Text(
         text = stringResource(id = title),
-        style = MaterialTheme.typography.h3,
-        modifier = modifier.padding(4.dp)
+        style = MaterialTheme.typography.h3
     )
 }
 
@@ -58,7 +56,7 @@ fun ScreenTitle(
 fun SubScreenTitle(title: String) {
     Text(
         text = title,
-        style = MaterialTheme.typography.h3
+        style = MaterialTheme.typography.h5
     )
 }
 

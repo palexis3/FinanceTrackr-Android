@@ -21,7 +21,7 @@ fun HomeScreen(
 ) {
     Column(
         modifier = Modifier
-            .padding(8.dp)
+            .padding(12.dp)
             .semantics { contentDescription = "Home Screen" }
     ) {
         ScreenTitle(title = R.string.finance_trackr)

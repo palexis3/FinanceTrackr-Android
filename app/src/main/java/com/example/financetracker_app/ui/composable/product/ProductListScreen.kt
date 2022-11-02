@@ -7,12 +7,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
@@ -21,12 +23,10 @@ import com.example.financetracker_app.R
 import com.example.financetracker_app.data.models.Product
 import com.example.financetracker_app.ui.composable.common.ErrorTitle
 import com.example.financetracker_app.ui.composable.common.LoadingIcon
-import com.example.financetracker_app.ui.composable.common.ScreenTitle
+import com.example.financetracker_app.ui.composable.common.SubScreenTitle
 import com.example.financetracker_app.ui.theme.LightBlue
 import com.example.financetracker_app.ui.viewmodel.product.ProductListUiState
 import com.example.financetracker_app.ui.viewmodel.product.ProductViewModel
-
-private val MediumPadding = 16.dp
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
@@ -38,21 +38,32 @@ fun ProductListScreen(
 ) {
     val uiState: ProductListUiState by viewModel.productListState.collectAsStateWithLifecycle()
 
-    Column(
-        Modifier.padding(12.dp)
-    ) {
-        IconButton(onClick = closeScreen) {
-            Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Go Back")
+    Column(Modifier.padding(12.dp)) {
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = closeScreen) {
+                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Go Back")
+            }
+            Spacer(Modifier.width(8.dp))
+            SubScreenTitle(title = stringResource(id = R.string.product_list))
         }
-        Spacer(Modifier.height(4.dp))
 
-        ScreenTitle(title = R.string.product_list)
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(2.dp))
 
-        ExtendedFloatingActionButton(
-            onClick = goToProductCreateScreen,
-            text = { Text("Add") }
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
+        ) {
+            IconButton(onClick = goToProductCreateScreen) {
+                Row {
+                    Text("Add")
+                    Icon(imageVector = Icons.Default.Add, contentDescription = "Add Product")
+                }
+            }
+        }
+
         Spacer(Modifier.height(8.dp))
 
         ShowProductsState(uiState = uiState, goToProductDetailsScreen)
@@ -67,8 +78,8 @@ private fun ShowProductsState(
     LazyColumn(
         verticalArrangement = Arrangement.SpaceEvenly,
         contentPadding = PaddingValues(
-            top = MediumPadding,
-            bottom = MediumPadding
+            top = 12.dp,
+            bottom = 12.dp
         )
     ) {
         when (uiState) {
@@ -95,21 +106,25 @@ private fun ShowProductsState(
 @Composable
 private fun ProductCard(
     product: Product,
-    goToProductDetailsScreen: (String) -> Unit,
-    modifier: Modifier = Modifier,
+    goToProductDetailsScreen: (String) -> Unit
 ) {
-    Card {
+    // Todo: Add image from imageUrl parameter
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(12.dp)
+            .clickable { goToProductDetailsScreen(product.id) },
+        elevation = 8.dp
+    ) {
         Column(
-            modifier
-                .clickable { goToProductDetailsScreen(product.id) }
+            modifier = Modifier
+                .padding(12.dp)
         ) {
             Row(
-                modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                // Todo: Add image from imageUrl parameter
-                Text(text = product.name, style = MaterialTheme.typography.h5)
+                SubScreenTitle(title = product.name)
                 Chip(
                     onClick = {},
                     border = BorderStroke(
@@ -138,5 +153,5 @@ private fun ProductCard(
             Text(text = expirationDate, style = MaterialTheme.typography.subtitle2)
         }
     }
-    Spacer(Modifier.height(12.dp))
+    Spacer(Modifier.height(8.dp))
 }
