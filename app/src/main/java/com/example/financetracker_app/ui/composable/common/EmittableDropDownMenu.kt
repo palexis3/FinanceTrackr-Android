@@ -1,5 +1,6 @@
 package com.example.financetracker_app.ui.composable.common
 
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,16 +27,20 @@ fun <T> EmittableDropDownMenu(
             expanded = !expanded
         }
     ) {
-        TextField(
-            modifier = modifier,
-            value = inputData.item?.toString() ?: "",
-            onValueChange = {},
-            label = { Text(label) },
-            trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-            },
-            colors = ExposedDropdownMenuDefaults.textFieldColors()
-        )
+        Row {
+            // Note: Place this textfield into a row because the `weight` attribute
+            // used in the modifier requires the scope of Column or Row
+            TextField(
+                modifier = modifier.weight(1f),
+                value = inputData.item?.toString() ?: "",
+                onValueChange = {},
+                label = { Text(label) },
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                },
+                colors = ExposedDropdownMenuDefaults.textFieldColors()
+            )
+        }
         ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }

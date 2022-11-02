@@ -11,6 +11,7 @@ import androidx.compose.material.icons.outlined.AddCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,6 +26,7 @@ import com.example.financetracker_app.R
 import com.example.financetracker_app.helper.ScreenEvent
 import com.example.financetracker_app.ui.composable.common.EmittableDropDownMenu
 import com.example.financetracker_app.ui.composable.common.EmittableTextField
+import com.example.financetracker_app.ui.composable.common.SubScreenTitle
 import com.example.financetracker_app.ui.viewmodel.product.ProductUpdateValidationViewModel
 import com.example.financetracker_app.ui.viewmodel.product.ProductViewModel
 
@@ -83,22 +85,32 @@ fun ProductUpdateScreen(
             .padding(12.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        IconButton(onClick = closeScreen) {
-            Icon(
-                imageVector = Icons.Filled.ArrowBack,
-                contentDescription = "Back"
-            )
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = closeScreen) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = "Back"
+                )
+            }
+            Spacer(Modifier.width(8.dp))
+            SubScreenTitle(title = stringResource(id = R.string.product_update))
         }
-        Spacer(Modifier.width(4.dp))
 
-        Text(stringResource(id = R.string.product_update))
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(4.dp))
 
-        IconButton(onClick = { goToImageScreen.invoke() }) {
-            Icon(
-                imageVector = Icons.Outlined.AddCircle,
-                contentDescription = "Add Image"
-            )
+        Row(
+            Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
+        ) {
+            IconButton(onClick = { goToImageScreen.invoke() }) {
+                Icon(
+                    imageVector = Icons.Outlined.AddCircle,
+                    contentDescription = "Add Image"
+                )
+            }
         }
         Spacer(Modifier.height(12.dp))
 
@@ -107,7 +119,7 @@ fun ProductUpdateScreen(
             onValueChange = updateValidationViewModel::onNameChange,
             label = "Name"
         )
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(8.dp))
 
         EmittableTextField(
             inputData = price,
@@ -115,13 +127,13 @@ fun ProductUpdateScreen(
             label = "Price",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(8.dp))
 
         Text(
             "Product Expiration section - All below must be entered together",
             style = MaterialTheme.typography.caption
         )
-        Spacer(Modifier.height(2.dp))
+        Spacer(Modifier.height(4.dp))
 
         EmittableTextField(
             inputData = quantity,
@@ -129,14 +141,14 @@ fun ProductUpdateScreen(
             label = "Quantity",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(8.dp))
 
         EmittableTextField(
             inputData = timeIntervalNum,
             onValueChange = updateValidationViewModel::onTimeIntervalNumChange,
             label = "Time Interval Num"
         )
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(8.dp))
 
         EmittableDropDownMenu(
             inputData = timeIntervalType,

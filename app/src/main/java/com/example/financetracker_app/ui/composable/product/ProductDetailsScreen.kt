@@ -37,7 +37,7 @@ fun ProductDetailsScreen(
     val uiState: ProductDetailsUiState by viewModel.productDetailsState.collectAsStateWithLifecycle()
     val productDeleteApiScreenEvent by viewModel.productDeleteApiScreenEvent.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(key1 = productId) {
         viewModel.getProduct(productId)
     }
 
@@ -53,9 +53,7 @@ fun ProductDetailsScreen(
         }
     }
 
-    Column(
-        Modifier.padding(12.dp)
-    ) {
+    Column {
         IconButton(onClick = closeScreen) {
             Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Go Back")
         }
@@ -81,7 +79,8 @@ private fun ShowProductDetailsUiState(
         ProductDetailsUiState.Error -> {
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Center
             ) {
                 ErrorTitle(title = R.string.product_details_error)
             }
@@ -89,13 +88,18 @@ private fun ShowProductDetailsUiState(
         ProductDetailsUiState.Loading -> {
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Center
             ) {
                 LoadingIcon()
             }
         }
         is ProductDetailsUiState.Success -> {
-            ProductDetailsCard(product = uiState.product, goToUpdateScreen, callProductDeletionApi)
+            ProductDetailsCard(
+                product = uiState.product,
+                goToUpdateScreen,
+                callProductDeletionApi
+            )
         }
     }
 }
@@ -121,9 +125,22 @@ fun ProductDetailsCard(
     }
 
     // TODO: Add an image above the details card
-    Card {
-        Column {
-            Row(modifier = Modifier.padding(end = 8.dp)) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(12.dp),
+        elevation = 8.dp
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp)
+        ) {
+            SubScreenTitle(product.name)
+            Spacer(Modifier.height(4.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
                 Button(onClick = {
                     goToUpdateScreen.invoke()
                 }) {
@@ -136,28 +153,18 @@ fun ProductDetailsCard(
                     Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete product")
                 }
             }
-            Column(Modifier.padding(12.dp)) {
-                Row(
-                    Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    SubScreenTitle(product.name)
-                    val amountText = "$${product.price}"
-                    Text(
-                        text = amountText,
-                        style = MaterialTheme.typography.subtitle1
-                    )
-                }
 
-                Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(12.dp))
 
-                val createdAt = "Created at: ${product.createdAt}"
-                val category = "Category: ${product.category}"
-                Text(text = createdAt, style = MaterialTheme.typography.body1)
-                Spacer(Modifier.height(4.dp))
-                Text(text = category, style = MaterialTheme.typography.body1)
-            }
+            val createdAt = "Created at: ${product.createdAt}"
+            val category = "Category: ${product.category}"
+            val amountText = "$${product.price}"
+
+            Text(text = amountText, style = MaterialTheme.typography.body1)
+            Spacer(Modifier.height(4.dp))
+            Text(text = createdAt, style = MaterialTheme.typography.body1)
+            Spacer(Modifier.height(4.dp))
+            Text(text = category, style = MaterialTheme.typography.body1)
         }
     }
 }
