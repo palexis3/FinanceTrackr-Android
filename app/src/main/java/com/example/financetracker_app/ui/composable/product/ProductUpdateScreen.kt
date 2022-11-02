@@ -99,7 +99,7 @@ fun ProductUpdateScreen(
             SubScreenTitle(title = stringResource(id = R.string.product_update))
         }
 
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(12.dp))
 
         Row(
             Modifier.fillMaxWidth(),

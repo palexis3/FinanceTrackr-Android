@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,7 +23,6 @@ import com.example.financetracker_app.R
 import com.example.financetracker_app.data.models.Product
 import com.example.financetracker_app.ui.composable.common.ErrorTitle
 import com.example.financetracker_app.ui.composable.common.LoadingIcon
-import com.example.financetracker_app.ui.composable.common.ScreenTitle
 import com.example.financetracker_app.ui.composable.common.SubScreenTitle
 import com.example.financetracker_app.ui.theme.LightBlue
 import com.example.financetracker_app.ui.viewmodel.product.ProductListUiState
@@ -50,16 +50,18 @@ fun ProductListScreen(
             SubScreenTitle(title = stringResource(id = R.string.product_list))
         }
 
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(2.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
-            ExtendedFloatingActionButton(
-                onClick = goToProductCreateScreen,
-                text = { Text("Add") }
-            )
+            IconButton(onClick = goToProductCreateScreen) {
+                Row {
+                    Text("Add")
+                    Icon(imageVector = Icons.Default.Add, contentDescription = "Add Product")
+                }
+            }
         }
 
         Spacer(Modifier.height(8.dp))
@@ -122,7 +124,7 @@ private fun ProductCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = product.name, style = MaterialTheme.typography.h6)
+                SubScreenTitle(title = product.name)
                 Chip(
                     onClick = {},
                     border = BorderStroke(

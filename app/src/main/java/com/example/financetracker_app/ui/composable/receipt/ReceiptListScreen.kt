@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -20,7 +21,7 @@ import com.example.financetracker_app.R
 import com.example.financetracker_app.data.models.Receipt
 import com.example.financetracker_app.ui.composable.common.ErrorTitle
 import com.example.financetracker_app.ui.composable.common.LoadingIcon
-import com.example.financetracker_app.ui.composable.common.ScreenTitle
+import com.example.financetracker_app.ui.composable.common.SubScreenTitle
 import com.example.financetracker_app.ui.viewmodel.receipt.ReceiptListUiState
 import com.example.financetracker_app.ui.viewmodel.receipt.ReceiptViewModel
 
@@ -38,21 +39,33 @@ fun ReceiptListScreen(
     val uiState by receiptViewModel.receiptListState.collectAsStateWithLifecycle()
 
     Column(Modifier.padding(12.dp)) {
-        IconButton(onClick = closeScreen) {
-            Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Go Back")
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = closeScreen) {
+                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Go Back")
+            }
+
+            Spacer(Modifier.width(8.dp))
+            SubScreenTitle(title = stringResource(R.string.receipt_list))
         }
-        Spacer(Modifier.height(4.dp))
 
-        ScreenTitle(title = R.string.receipt_list)
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(2.dp))
 
-        IconButton(onClick = goToReceiptCreateScreen) {
-            Row {
-                Text("Add")
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Add Receipt")
+        Row(
+            Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
+        ) {
+            IconButton(onClick = goToReceiptCreateScreen) {
+                Row {
+                    Text("Add")
+                    Icon(imageVector = Icons.Default.Add, contentDescription = "Add Receipt")
+                }
             }
         }
-        Spacer(Modifier.height(12.dp))
+
+        Spacer(Modifier.height(8.dp))
 
         ShowReceiptsState(uiState, goToReceiptDetailsScreen)
     }
@@ -108,17 +121,22 @@ private fun ReceiptCard(
     goToReceiptDetailsScreen: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Card {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(12.dp)
+            .clickable { goToReceiptDetailsScreen(receipt.id) },
+        elevation = 8.dp
+    ) {
         Column(
-            modifier
-                .clickable { goToReceiptDetailsScreen(receipt.id) }
+            modifier = Modifier.padding(12.dp)
         ) {
             Row(
                 modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 // Todo: Add image from imageUrl
-                Text(text = receipt.title, style = MaterialTheme.typography.h4)
+                SubScreenTitle(title = receipt.title)
             }
 
             Spacer(Modifier.height(4.dp))
@@ -134,5 +152,5 @@ private fun ReceiptCard(
             Text(text = createdAt, style = MaterialTheme.typography.subtitle2)
         }
     }
-    Spacer(Modifier.height(12.dp))
+    Spacer(Modifier.height(8.dp))
 }

@@ -1,4 +1,4 @@
- 
+
 package com.example.financetracker_app.ui.composable.common
 
 import androidx.annotation.StringRes
@@ -44,13 +44,11 @@ fun BaseHomeRow(
 
 @Composable
 fun ScreenTitle(
-    modifier: Modifier = Modifier,
     @StringRes title: Int
 ) {
     Text(
         text = stringResource(id = title),
-        style = MaterialTheme.typography.h3,
-        modifier = modifier.padding(4.dp)
+        style = MaterialTheme.typography.h3
     )
 }
 

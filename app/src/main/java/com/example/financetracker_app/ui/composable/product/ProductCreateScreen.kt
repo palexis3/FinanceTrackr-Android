@@ -23,7 +23,6 @@ import com.example.financetracker_app.R
 import com.example.financetracker_app.helper.ScreenEvent
 import com.example.financetracker_app.ui.composable.common.EmittableDropDownMenu
 import com.example.financetracker_app.ui.composable.common.EmittableTextField
-import com.example.financetracker_app.ui.composable.common.ScreenTitle
 import com.example.financetracker_app.ui.composable.common.SubScreenTitle
 import com.example.financetracker_app.ui.viewmodel.product.ProductCreateValidationViewModel
 import com.example.financetracker_app.ui.viewmodel.product.ProductViewModel
@@ -109,7 +108,7 @@ fun ProductCreateScreen(
             SubScreenTitle(title = stringResource(R.string.product_create))
         }
 
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(12.dp))
 
         EmittableTextField(
             inputData = name,
@@ -158,6 +157,7 @@ fun ProductCreateScreen(
         Spacer(Modifier.height(8.dp))
 
         Text("Expiration from now", style = MaterialTheme.typography.caption)
+        Spacer(Modifier.height(2.dp))
         EmittableTextField(
             inputData = timeIntervalNum,
             onValueChange = inputValidationViewModel::onTimeIntervalNumChange,
