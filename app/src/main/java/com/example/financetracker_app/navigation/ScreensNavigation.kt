@@ -4,8 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.example.financetracker_app.navigation.home.HomeRoot
-import com.example.financetracker_app.navigation.home.homeScreensNavGraph
+import com.example.financetracker_app.navigation.product.ProductRoot
 import com.example.financetracker_app.navigation.product.productScreensNavGraph
 import com.example.financetracker_app.navigation.receipt.receiptScreensNavGraph
 
@@ -18,9 +17,8 @@ fun ScreensNavigation(
     NavHost(
         navController = navController,
         modifier = modifier,
-        startDestination = HomeRoot.route
+        startDestination = ProductRoot.route
     ) {
-        homeScreensNavGraph(navController)
         productScreensNavGraph(navController, showSnackbar)
         receiptScreensNavGraph(navController, showSnackbar)
     }

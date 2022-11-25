@@ -1,6 +1,6 @@
 package com.example.financetracker_app.navigation
 
-import androidx.compose.material.BottomAppBar
+import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.SnackbarHostState
@@ -34,7 +34,8 @@ class FinanceTrackrAppState(
         get() = navController.currentDestination?.route
 
     val isBottomNavScreen: Boolean
-        @Composable get() = navController.currentBackStackEntryAsState().value?.destination?.route in bottomNavRoutes
+        @Composable get() =
+            navController.currentBackStackEntryAsState().value?.destination?.route in bottomNavRoutes
 
     fun navigateToScreen(route: String) {
         if (currentRoute != route) {
@@ -65,13 +66,14 @@ fun rememberFinanceTrackrAppState(
     FinanceTrackrAppState(navHostController, snackbarScope, scaffoldState)
 }
 
+// TODO: Add Material3 to use its NavigationBar: https://developer.android.com/jetpack/compose/designsystems/material2-material3
 @Composable
 fun BottomBar(
     bottomNavScreens: List<RootScreenDestination>,
     currentRoute: String,
     navigateToScreen: (String) -> Unit
 ) {
-    BottomAppBar {
+    BottomNavigation {
         bottomNavScreens.forEach { screen ->
             BottomNavigationItem(
                 selected = screen.route == currentRoute,
