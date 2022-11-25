@@ -9,8 +9,10 @@ package com.example.financetracker_app.navigation
 
 interface LeafScreenDestination {
     val route: String
+    val title: String
 }
 
 interface RootScreenDestination {
     val route: String
+    val title: String
 }
