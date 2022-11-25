@@ -8,6 +8,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.financetracker_app.navigation.BottomBar
 import com.example.financetracker_app.navigation.FinanceTrackrAppState
 import com.example.financetracker_app.navigation.ScreensNavigation
 import com.example.financetracker_app.navigation.rememberFinanceTrackrAppState
@@ -30,9 +31,20 @@ fun ShowApp() {
     FinanceTrackerAppTheme {
         val appState: FinanceTrackrAppState = rememberFinanceTrackrAppState()
 
-        Scaffold(scaffoldState = appState.scaffoldState) { innerPadding ->
+        Scaffold(
+            scaffoldState = appState.scaffoldState,
+            bottomBar = {
+                if (appState.isBottomNavScreen) {
+                    BottomBar(
+                        bottomNavScreens = appState.bottomNavScreens,
+                        currentRoute = appState.currentRoute!!,
+                        navigateToScreen = appState::navigateToScreen
+                    )
+                }
+            }
+        ) { innerPadding ->
             ScreensNavigation(
-                navController = appState.navHostController,
+                navController = appState.navController,
                 modifier = Modifier.padding(innerPadding),
                 showSnackbar = { message, actionLabel ->
                     appState.showSnackBar(message, actionLabel)

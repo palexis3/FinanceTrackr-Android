@@ -10,21 +10,37 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.financetracker_app.navigation.extensions.navigateSingleTopTo
 import com.example.financetracker_app.navigation.product.ProductRoot
 import com.example.financetracker_app.navigation.receipt.ReceiptRoot
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class FinanceTrackrAppState(
-    val navHostController: NavHostController,
+    val navController: NavHostController,
     val snackbarScope: CoroutineScope,
     val scaffoldState: ScaffoldState
 ) {
     val bottomNavScreens = listOf(
-        ProductRoot.route,
-        ReceiptRoot.route
+        ProductRoot,
+        ReceiptRoot
     )
+
+    private val bottomNavRoutes = bottomNavScreens.map { it.route }
+
+    val currentRoute: String?
+        get() = navController.currentDestination?.route
+
+    val isBottomNavScreen: Boolean
+        @Composable get() = navController.currentBackStackEntryAsState().value?.destination?.route in bottomNavRoutes
+
+    fun navigateToScreen(route: String) {
+        if (currentRoute != route) {
+            navController.navigateSingleTopTo(route)
+        }
+    }
 
     fun showSnackBar(message: String, actionLabel: String) {
         snackbarScope.launch {
