@@ -11,16 +11,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -120,7 +120,7 @@ fun ProductUpdateScreen(
         ) {
             OutlinedButton(
                 onClick = { goToImageScreen.invoke() },
-                elevation = ButtonDefaults.elevation(8.dp)
+                elevation = ButtonDefaults.buttonElevation(8.dp)
             ) {
                 Text("Add Image")
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add Image")
@@ -145,7 +145,7 @@ fun ProductUpdateScreen(
 
         Text(
             "Product Expiration section - All below must be entered together",
-            style = MaterialTheme.typography.caption
+            style = MaterialTheme.typography.labelSmall
         )
         Spacer(Modifier.height(4.dp))
 

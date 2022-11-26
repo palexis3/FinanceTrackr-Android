@@ -1,19 +1,24 @@
 package com.example.financetracker_app.ui.composable.product
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedAssistChip
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -101,7 +106,7 @@ private fun ShowProductsState(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ProductCard(
     product: Product,
@@ -113,7 +118,7 @@ private fun ProductCard(
             .fillMaxWidth()
             .padding(12.dp)
             .clickable { goToProductDetailsScreen(product.id) },
-        elevation = 8.dp
+        elevation = CardDefaults.cardElevation(8.dp)
     ) {
         Column(
             modifier = Modifier
@@ -124,31 +129,23 @@ private fun ProductCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 SubScreenTitle(title = product.name)
-                Chip(
+                ElevatedAssistChip(
                     onClick = {},
-                    border = BorderStroke(
-                        ChipDefaults.OutlinedBorderSize,
-                        Color.Green
-                    ),
-                    colors = ChipDefaults.chipColors(
-                        contentColor = Color.Black
-                    ),
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
                         .height(24.dp)
-                        .padding(2.dp)
-                ) {
-                    Text(text = product.category)
-                }
+                        .padding(2.dp),
+                    label = {  Text(text = product.category) }
+                )
             }
             Spacer(Modifier.height(8.dp))
 
             val formattedAmount = "$${product.price}"
             val expirationDate = "Expires on: ${product.createdAt}"
 
-            Text(text = formattedAmount, style = MaterialTheme.typography.subtitle2)
+            Text(text = formattedAmount, style = MaterialTheme.typography.bodyLarge)
             Spacer(Modifier.height(4.dp))
-            Text(text = expirationDate, style = MaterialTheme.typography.subtitle2)
+            Text(text = expirationDate, style = MaterialTheme.typography.bodyLarge)
         }
     }
     Spacer(Modifier.height(8.dp))
