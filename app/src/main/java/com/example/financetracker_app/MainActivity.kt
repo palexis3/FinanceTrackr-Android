@@ -20,7 +20,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ShowApp()
+            FinanceTrackerAppTheme {
+                ShowApp()
+            }
         }
     }
 }
@@ -28,28 +30,26 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 fun ShowApp() {
-    FinanceTrackerAppTheme {
-        val appState: FinanceTrackrAppState = rememberFinanceTrackrAppState()
+    val appState: FinanceTrackrAppState = rememberFinanceTrackrAppState()
 
-        Scaffold(
-            scaffoldState = appState.scaffoldState,
-            bottomBar = {
-                if (appState.isBottomNavScreen) {
-                    BottomBar(
-                        bottomNavScreens = appState.bottomNavScreens,
-                        currentRoute = appState.currentRoute!!,
-                        navigateToScreen = appState::navigateToScreen
-                    )
-                }
+    Scaffold(
+        scaffoldState = appState.scaffoldState,
+        bottomBar = {
+            if (appState.isBottomNavScreen) {
+                BottomBar(
+                    bottomNavScreens = appState.bottomNavScreens,
+                    currentRoute = appState.currentRoute!!,
+                    navigateToScreen = appState::navigateToScreen
+                )
             }
-        ) { innerPadding ->
-            ScreensNavigation(
-                navController = appState.navController,
-                modifier = Modifier.padding(innerPadding),
-                showSnackbar = { message, actionLabel ->
-                    appState.showSnackBar(message, actionLabel)
-                }
-            )
         }
+    ) { innerPadding ->
+        ScreensNavigation(
+            navController = appState.navController,
+            modifier = Modifier.padding(innerPadding),
+            showSnackbar = { message, actionLabel ->
+                appState.showSnackBar(message, actionLabel)
+            }
+        )
     }
 }
