@@ -1,11 +1,9 @@
 package com.example.financetracker_app.navigation
 
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.SnackbarHostState
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -20,8 +18,8 @@ import kotlinx.coroutines.launch
 
 class FinanceTrackrAppState(
     val navController: NavHostController,
-    val snackbarScope: CoroutineScope,
-    val scaffoldState: ScaffoldState
+    private val snackbarScope: CoroutineScope,
+    private val snackbarHostState: SnackbarHostState
 ) {
     val bottomNavScreens = listOf(
         ProductRoot,
@@ -45,7 +43,7 @@ class FinanceTrackrAppState(
 
     fun showSnackBar(message: String, actionLabel: String) {
         snackbarScope.launch {
-            scaffoldState.snackbarHostState.showSnackbar(
+            snackbarHostState.showSnackbar(
                 message = message,
                 actionLabel = actionLabel
             )
@@ -57,25 +55,21 @@ class FinanceTrackrAppState(
 fun rememberFinanceTrackrAppState(
     navHostController: NavHostController = rememberNavController(),
     snackbarScope: CoroutineScope = rememberCoroutineScope(),
-    scaffoldState: ScaffoldState = rememberScaffoldState(
-        snackbarHostState = remember {
-            SnackbarHostState()
-        }
-    )
-) = remember(navHostController, snackbarScope, scaffoldState) {
-    FinanceTrackrAppState(navHostController, snackbarScope, scaffoldState)
+    snackbarHostState: SnackbarHostState = SnackbarHostState()
+
+) = remember(navHostController, snackbarScope, snackbarHostState) {
+    FinanceTrackrAppState(navHostController, snackbarScope, snackbarHostState)
 }
 
-// TODO: Add Material3 to use its NavigationBar: https://developer.android.com/jetpack/compose/designsystems/material2-material3
 @Composable
 fun BottomBar(
     bottomNavScreens: List<RootScreenDestination>,
     currentRoute: String,
     navigateToScreen: (String) -> Unit
 ) {
-    BottomNavigation {
+    NavigationBar {
         bottomNavScreens.forEach { screen ->
-            BottomNavigationItem(
+            NavigationBarItem(
                 selected = screen.route == currentRoute,
                 onClick = { navigateToScreen(screen.route) },
                 label = { Text(screen.title) },
