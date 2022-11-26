@@ -24,7 +24,6 @@ import com.example.financetracker_app.data.models.Product
 import com.example.financetracker_app.ui.composable.common.ErrorTitle
 import com.example.financetracker_app.ui.composable.common.LoadingIcon
 import com.example.financetracker_app.ui.composable.common.SubScreenTitle
-import com.example.financetracker_app.ui.theme.LightBlue
 import com.example.financetracker_app.ui.viewmodel.product.ProductListUiState
 import com.example.financetracker_app.ui.viewmodel.product.ProductViewModel
 
@@ -132,7 +131,6 @@ private fun ProductCard(
                         Color.Green
                     ),
                     colors = ChipDefaults.chipColors(
-                        backgroundColor = LightBlue,
                         contentColor = Color.Black
                     ),
                     modifier = Modifier
