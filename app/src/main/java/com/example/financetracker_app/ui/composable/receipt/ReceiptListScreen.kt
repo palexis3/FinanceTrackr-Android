@@ -8,6 +8,12 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -99,7 +105,7 @@ fun ShowReceiptsState(
                     item {
                         Text(
                             text = stringResource(id = R.string.receipt_list_empty),
-                            style = MaterialTheme.typography.caption
+                            style = MaterialTheme.typography.labelSmall
                         )
                     }
                 } else {
@@ -126,7 +132,7 @@ private fun ReceiptCard(
             .fillMaxWidth()
             .padding(12.dp)
             .clickable { goToReceiptDetailsScreen(receipt.id) },
-        elevation = 8.dp
+        elevation = CardDefaults.cardElevation(8.dp)
     ) {
         Column(
             modifier = Modifier.padding(12.dp)
@@ -141,15 +147,15 @@ private fun ReceiptCard(
 
             Spacer(Modifier.height(4.dp))
             val formattedAmount = "$${receipt.price}"
-            Text(text = formattedAmount, style = MaterialTheme.typography.subtitle2)
+            Text(text = formattedAmount, style = MaterialTheme.typography.bodyMedium)
 
             Spacer(Modifier.height(4.dp))
             val store = "Store: ${receipt.storeId}"
-            Text(text = store, style = MaterialTheme.typography.subtitle2)
+            Text(text = store, style = MaterialTheme.typography.bodyMedium)
 
             Spacer(Modifier.height(4.dp))
             val createdAt = "Created at: ${receipt.createdAt}"
-            Text(text = createdAt, style = MaterialTheme.typography.subtitle2)
+            Text(text = createdAt, style = MaterialTheme.typography.bodyMedium)
         }
     }
     Spacer(Modifier.height(8.dp))

@@ -135,7 +135,7 @@ private fun ProductCard(
                         .align(Alignment.CenterVertically)
                         .height(24.dp)
                         .padding(2.dp),
-                    label = {  Text(text = product.category) }
+                    label = { Text(text = product.category) }
                 )
             }
             Spacer(Modifier.height(8.dp))
