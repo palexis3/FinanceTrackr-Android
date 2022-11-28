@@ -12,7 +12,7 @@ object ReceiptRoot : RootScreenDestination {
 
 object ReceiptList : LeafScreenDestination {
     override val route = "receipts"
-    override val title = "Receipt List"
+    override val title = "Receipts"
 }
 
 object ReceiptDetails : LeafScreenDestination {

@@ -5,7 +5,7 @@
     <string name="ok">OK</string>
     <string name="or">OR</string>
     <string name="product">Product</string>
-    <string name="product_list">Product List</string>
+    <string name="product_list">Products</string>
     <string name="product_create">Product Create</string>
     <string name="product_update">Product Update</string>
     <string name="product_create_error">Error creating product. Try again</string>
@@ -17,7 +17,7 @@
 
     <string name="receipt">Receipt</string>
     <string name="receipt_create">Receipt Create</string>
-    <string name="receipt_list">Receipt List</string>
+    <string name="receipt_list">Receipts</string>
     <string name="receipt_list_empty">There are no receipts.</string>
     <string name="receipt_list_error">Could not fetch receipt list. Try again</string>
     <string name="receipt_details_error">Could not fetch receipt details. Try again</string>

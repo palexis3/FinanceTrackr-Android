@@ -12,7 +12,7 @@ object ProductRoot : RootScreenDestination {
 
 object ProductList : LeafScreenDestination {
     override val route = "products"
-    override val title = "Product List"
+    override val title = "Products"
 }
 
 object ProductDetails : LeafScreenDestination {
