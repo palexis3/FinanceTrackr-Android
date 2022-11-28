@@ -12,14 +12,23 @@ import com.example.financetracker_app.navigation.receipt.receiptScreensNavGraph
 fun ScreensNavigation(
     navController: NavHostController,
     modifier: Modifier,
-    showSnackbar: (String, String) -> Unit
+    showSnackbar: (String, String) -> Unit,
+    title: (String) -> Unit
 ) {
     NavHost(
         navController = navController,
         modifier = modifier,
         startDestination = ProductRoot.route
     ) {
-        productScreensNavGraph(navController, showSnackbar)
-        receiptScreensNavGraph(navController, showSnackbar)
+        productScreensNavGraph(
+            navController,
+            showSnackbar,
+            title = title
+        )
+        receiptScreensNavGraph(
+            navController,
+            showSnackbar,
+            title = title
+        )
     }
 }

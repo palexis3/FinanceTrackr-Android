@@ -1,5 +1,11 @@
 package com.example.financetracker_app.navigation
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.SnackbarHostState
@@ -7,6 +13,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -40,6 +48,8 @@ class FinanceTrackrAppState(
             navController.navigateSingleTopTo(route)
         }
     }
+
+    fun closeScreen() = navController.popBackStack()
 
     fun showSnackBar(message: String, actionLabel: String) {
         snackbarScope.launch {
@@ -77,4 +87,33 @@ fun BottomBar(
             )
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopBar(
+    title: String,
+    isBottomNavScreen: Boolean,
+    closeScreen: () -> Unit
+) {
+    CenterAlignedTopAppBar(
+        title = {
+            Text(
+                text = title,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                fontWeight = FontWeight.ExtraBold
+            )
+        },
+        navigationIcon = {
+            if (isBottomNavScreen.not()) {
+                IconButton(onClick = closeScreen) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "Go Back"
+                    )
+                }
+            }
+        }
+    )
 }

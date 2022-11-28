@@ -10,6 +10,7 @@
     <string name="product_update">Product Update</string>
     <string name="product_create_error">Error creating product. Try again</string>
     <string name="product_list_error">Could not fetch product list. Try again</string>
+    <string name="product_details">Product Details</string>
     <string name="product_details_error">Could not fetch product details. Try again</string>
     <string name="product_update_error">Could not update product. Try again</string>
     <string name="product_delete_error">Could not delete product. Try again</string>
@@ -20,6 +21,7 @@
     <string name="receipt_list">Receipts</string>
     <string name="receipt_list_empty">There are no receipts.</string>
     <string name="receipt_list_error">Could not fetch receipt list. Try again</string>
+    <string name="receipt_details">Receipt Details</string>
     <string name="receipt_details_error">Could not fetch receipt details. Try again</string>
     <string name="receipt_create_error">Error creating receipt. Try again</string>
 
