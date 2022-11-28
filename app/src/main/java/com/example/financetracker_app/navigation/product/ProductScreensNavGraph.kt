@@ -12,11 +12,11 @@ import com.example.financetracker_app.ui.composable.product.*
 fun NavGraphBuilder.productScreensNavGraph(
     navController: NavHostController,
     showSnackbar: (String, String) -> Unit,
-    title: (String) -> Unit
+    onTitle: (String) -> Unit
 ) {
     navigation(startDestination = ProductList.route, route = ProductRoot.route) {
         composable(route = ProductList.route) {
-            title(stringResource(id = R.string.product_list))
+            onTitle(stringResource(id = R.string.product_list))
             ProductListScreen(
                 goToProductDetailsScreen = { id ->
                     navController.navigateToProductDetails(id)
@@ -33,7 +33,7 @@ fun NavGraphBuilder.productScreensNavGraph(
         ) { navBackStackEntry ->
             val productId = navBackStackEntry.arguments?.getString(ProductDetails.productIdArg)
             if (productId != null) {
-                title(stringResource(id = R.string.product_details))
+                onTitle(stringResource(id = R.string.product_details))
                 ProductDetailsScreen(
                     productId = productId,
                     goToUpdateScreen = {
@@ -46,7 +46,7 @@ fun NavGraphBuilder.productScreensNavGraph(
         }
 
         composable(route = ProductCreate.route) {
-            title(stringResource(id = R.string.product_create))
+            onTitle(stringResource(id = R.string.product_create))
             ProductCreateScreen(
                 showSnackbar = showSnackbar,
                 goToImageScreen = { id ->
@@ -75,7 +75,7 @@ fun NavGraphBuilder.productScreensNavGraph(
         ) { navBackStackEntry ->
             val productId = navBackStackEntry.arguments?.getString(ProductUpdate.productIdArg)
             if (productId != null) {
-                title(stringResource(id = R.string.product_update))
+                onTitle(stringResource(id = R.string.product_update))
                 ProductUpdateScreen(
                     productId = productId,
                     closeScreen = { navController.popBackStack() },

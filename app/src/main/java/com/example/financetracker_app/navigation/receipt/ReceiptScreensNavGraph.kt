@@ -14,11 +14,11 @@ import com.example.financetracker_app.ui.composable.receipt.ReceiptListScreen
 fun NavGraphBuilder.receiptScreensNavGraph(
     navController: NavHostController,
     showSnackbar: (String, String) -> Unit,
-    title: (String) -> Unit
+    onTitle: (String) -> Unit
 ) {
     navigation(startDestination = ReceiptList.route, route = ReceiptRoot.route) {
         composable(route = ReceiptList.route) {
-            title(stringResource(id = R.string.receipt_list))
+            onTitle(stringResource(id = R.string.receipt_list))
             ReceiptListScreen(
                 goToReceiptDetailsScreen = { receiptId ->
                     navController.navigateToReceiptDetails(receiptId)
@@ -35,7 +35,7 @@ fun NavGraphBuilder.receiptScreensNavGraph(
         ) { navBackStackEntry ->
             val receiptId = navBackStackEntry.arguments?.getString(ReceiptDetails.receiptIdArg)
             if (receiptId != null) {
-                title(stringResource(id = R.string.receipt_details))
+                onTitle(stringResource(id = R.string.receipt_details))
                 ReceiptDetailsScreen(
                     receiptId = receiptId
                 )
@@ -43,7 +43,7 @@ fun NavGraphBuilder.receiptScreensNavGraph(
         }
 
         composable(route = ReceiptCreate.route) {
-            title(stringResource(id = R.string.receipt_create))
+            onTitle(stringResource(id = R.string.receipt_create))
             ReceiptCreateScreen(
                 closeScreen = { navController.popBackStack() },
                 showSnackbar = showSnackbar

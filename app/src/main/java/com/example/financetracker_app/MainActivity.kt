@@ -66,7 +66,7 @@ fun ShowApp() {
             showSnackbar = { message, actionLabel ->
                 appState.showSnackBar(message, actionLabel)
             },
-            title = { item -> title = item }
+            onTitle = { item -> title = item }
         )
     }
 }

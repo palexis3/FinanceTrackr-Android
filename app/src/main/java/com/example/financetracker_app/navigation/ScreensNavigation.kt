@@ -13,7 +13,7 @@ fun ScreensNavigation(
     navController: NavHostController,
     modifier: Modifier,
     showSnackbar: (String, String) -> Unit,
-    title: (String) -> Unit
+    onTitle: (String) -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -23,12 +23,12 @@ fun ScreensNavigation(
         productScreensNavGraph(
             navController,
             showSnackbar,
-            title = title
+            onTitle = onTitle
         )
         receiptScreensNavGraph(
             navController,
             showSnackbar,
-            title = title
+            onTitle = onTitle
         )
     }
 }
