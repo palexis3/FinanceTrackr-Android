@@ -11,8 +11,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.financetracker_app.navigation.extensions.navigateSingleTopTo
-import com.example.financetracker_app.navigation.product.ProductRoot
-import com.example.financetracker_app.navigation.receipt.ReceiptRoot
+import com.example.financetracker_app.navigation.product.ProductList
+import com.example.financetracker_app.navigation.receipt.ReceiptList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -22,8 +22,8 @@ class FinanceTrackrAppState(
     private val snackbarHostState: SnackbarHostState
 ) {
     val bottomNavScreens = listOf(
-        ProductRoot,
-        ReceiptRoot
+        ProductList,
+        ReceiptList
     )
 
     private val bottomNavRoutes = bottomNavScreens.map { it.route }
@@ -63,7 +63,7 @@ fun rememberFinanceTrackrAppState(
 
 @Composable
 fun BottomBar(
-    bottomNavScreens: List<RootScreenDestination>,
+    bottomNavScreens: List<LeafScreenDestination>,
     currentRoute: String,
     navigateToScreen: (String) -> Unit
 ) {
