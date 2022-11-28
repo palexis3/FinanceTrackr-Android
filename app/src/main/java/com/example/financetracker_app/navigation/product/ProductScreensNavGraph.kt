@@ -23,8 +23,7 @@ fun NavGraphBuilder.productScreensNavGraph(
                 },
                 goToProductCreateScreen = {
                     navController.navigateSingleTopTo(ProductCreate.route)
-                },
-                closeScreen = { navController.popBackStack() }
+                }
             )
         }
 
@@ -49,7 +48,6 @@ fun NavGraphBuilder.productScreensNavGraph(
         composable(route = ProductCreate.route) {
             title(stringResource(id = R.string.product_create))
             ProductCreateScreen(
-                closeScreen = { navController.popBackStack() },
                 showSnackbar = showSnackbar,
                 goToImageScreen = { id ->
                     navController.navigateToProductImage(id)

@@ -20,7 +20,6 @@ fun NavGraphBuilder.receiptScreensNavGraph(
         composable(route = ReceiptList.route) {
             title(stringResource(id = R.string.receipt_list))
             ReceiptListScreen(
-                closeScreen = { navController.popBackStack() },
                 goToReceiptDetailsScreen = { receiptId ->
                     navController.navigateToReceiptDetails(receiptId)
                 },
@@ -38,8 +37,7 @@ fun NavGraphBuilder.receiptScreensNavGraph(
             if (receiptId != null) {
                 title(stringResource(id = R.string.receipt_details))
                 ReceiptDetailsScreen(
-                    receiptId = receiptId,
-                    closeScreen = { navController.popBackStack() }
+                    receiptId = receiptId
                 )
             }
         }

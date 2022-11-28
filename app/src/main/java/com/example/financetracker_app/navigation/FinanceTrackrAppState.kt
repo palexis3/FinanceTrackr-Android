@@ -19,6 +19,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.financetracker_app.navigation.extensions.navigateSingleTopTo
+import com.example.financetracker_app.navigation.product.ProductImage
 import com.example.financetracker_app.navigation.product.ProductList
 import com.example.financetracker_app.navigation.receipt.ReceiptList
 import kotlinx.coroutines.CoroutineScope
@@ -36,12 +37,20 @@ class FinanceTrackrAppState(
 
     private val bottomNavRoutes = bottomNavScreens.map { it.route }
 
+    private val nonTopBarRoutes = listOf(
+        ProductImage.routeWithArgs
+    )
+
     val currentRoute: String?
         get() = navController.currentDestination?.route
 
     val isBottomNavScreen: Boolean
         @Composable get() =
             navController.currentBackStackEntryAsState().value?.destination?.route in bottomNavRoutes
+
+    val isTopBarScreen: Boolean
+        @Composable get() =
+            navController.currentBackStackEntryAsState().value?.destination?.route !in nonTopBarRoutes
 
     fun navigateToScreen(route: String) {
         if (currentRoute != route) {

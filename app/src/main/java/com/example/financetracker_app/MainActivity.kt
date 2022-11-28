@@ -51,11 +51,13 @@ fun ShowApp() {
             }
         },
         topBar = {
-            TopBar(
-                title = title,
-                isBottomNavScreen = appState.isBottomNavScreen,
-                closeScreen = appState::closeScreen
-            )
+            if (appState.isTopBarScreen) {
+                TopBar(
+                    title = title,
+                    isBottomNavScreen = appState.isBottomNavScreen,
+                    closeScreen = appState::closeScreen
+                )
+            }
         }
     ) { innerPadding ->
         ScreensNavigation(

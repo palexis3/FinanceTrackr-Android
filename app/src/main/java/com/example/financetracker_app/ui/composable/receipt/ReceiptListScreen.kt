@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -16,7 +15,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -36,7 +34,6 @@ private val MediumPadding = 16.dp
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun ReceiptListScreen(
-    closeScreen: () -> Unit,
     goToReceiptCreateScreen: () -> Unit,
     goToReceiptDetailsScreen: (String) -> Unit,
     receiptViewModel: ReceiptViewModel = hiltViewModel()
@@ -45,20 +42,6 @@ fun ReceiptListScreen(
     val uiState by receiptViewModel.receiptListState.collectAsStateWithLifecycle()
 
     Column(Modifier.padding(12.dp)) {
-        Row(
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = closeScreen) {
-                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Go Back")
-            }
-
-            Spacer(Modifier.width(8.dp))
-            SubScreenTitle(title = stringResource(R.string.receipt_list))
-        }
-
-        Spacer(Modifier.height(2.dp))
-
         Row(
             Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End

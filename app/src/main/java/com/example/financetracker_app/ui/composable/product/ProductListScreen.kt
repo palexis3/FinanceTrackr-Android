@@ -6,7 +6,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedAssistChip
@@ -19,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
@@ -37,31 +35,19 @@ import com.example.financetracker_app.ui.viewmodel.product.ProductViewModel
 fun ProductListScreen(
     viewModel: ProductViewModel = hiltViewModel(),
     goToProductDetailsScreen: (String) -> Unit,
-    goToProductCreateScreen: () -> Unit,
-    closeScreen: () -> Unit
+    goToProductCreateScreen: () -> Unit
 ) {
     val uiState: ProductListUiState by viewModel.productListState.collectAsStateWithLifecycle()
 
     Column(Modifier.padding(12.dp)) {
         Row(
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = closeScreen) {
-                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Go Back")
-            }
-            Spacer(Modifier.width(8.dp))
-            SubScreenTitle(title = stringResource(id = R.string.product_list))
-        }
-
-        Spacer(Modifier.height(2.dp))
-
-        Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
             IconButton(onClick = goToProductCreateScreen) {
-                Row {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text("Add")
                     Icon(imageVector = Icons.Default.Add, contentDescription = "Add Product")
                 }

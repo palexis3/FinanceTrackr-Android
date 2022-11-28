@@ -1,12 +1,8 @@
 package com.example.financetracker_app.ui.composable.receipt
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,7 +25,6 @@ import com.example.financetracker_app.ui.viewmodel.receipt.ReceiptViewModel
 @Composable
 fun ReceiptDetailsScreen(
     receiptId: String,
-    closeScreen: () -> Unit,
     receiptViewModel: ReceiptViewModel = hiltViewModel()
 ) {
     LaunchedEffect(key1 = receiptId) {
@@ -38,14 +33,7 @@ fun ReceiptDetailsScreen(
 
     val uiState by receiptViewModel.receiptState.collectAsStateWithLifecycle()
 
-    Column {
-        IconButton(onClick = closeScreen) {
-            Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Go Back")
-        }
-        Spacer(Modifier.height(4.dp))
-
-        ShowReceiptDetailsState(uiState)
-    }
+    ShowReceiptDetailsState(uiState)
 }
 
 @Composable
