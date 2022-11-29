@@ -1,7 +1,12 @@
 package com.example.financetracker_app.ui.composable.common
 
 import androidx.compose.foundation.layout.Row
-import androidx.compose.material.*
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,7 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.example.financetracker_app.helper.InputData
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> EmittableDropDownMenu(
     modifier: Modifier = Modifier,
@@ -50,10 +55,9 @@ fun <T> EmittableDropDownMenu(
                     onClick = {
                         onValueChange(option)
                         expanded = false
-                    }
-                ) {
-                    Text(text = option)
-                }
+                    },
+                    text = { Text(text = option) }
+                )
             }
         }
     }

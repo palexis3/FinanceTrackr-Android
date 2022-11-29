@@ -1,9 +1,16 @@
 package com.example.financetracker_app.ui.composable.receipt
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -24,7 +31,6 @@ import com.example.financetracker_app.ui.viewmodel.receipt.ReceiptViewModel
 @Composable
 fun ReceiptDetailsScreen(
     receiptId: String,
-    closeScreen: () -> Unit,
     receiptViewModel: ReceiptViewModel = hiltViewModel()
 ) {
     LaunchedEffect(key1 = receiptId) {
@@ -33,14 +39,7 @@ fun ReceiptDetailsScreen(
 
     val uiState by receiptViewModel.receiptState.collectAsStateWithLifecycle()
 
-    Column {
-        IconButton(onClick = closeScreen) {
-            Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Go Back")
-        }
-        Spacer(Modifier.height(4.dp))
-
-        ShowReceiptDetailsState(uiState)
-    }
+    ShowReceiptDetailsState(uiState)
 }
 
 @Composable
@@ -77,24 +76,24 @@ fun ReceiptDetailsCard(receipt: Receipt) {
         Modifier
             .fillMaxWidth()
             .padding(12.dp),
-        elevation = 8.dp
+        elevation = CardDefaults.cardElevation(8.dp)
     ) {
         Column(Modifier.padding(12.dp)) {
             SubScreenTitle(title = receipt.title)
             Spacer(Modifier.height(12.dp))
 
             val formattedPrice = "$${receipt.price}"
-            Text(text = formattedPrice, style = MaterialTheme.typography.body1)
+            Text(text = formattedPrice, style = MaterialTheme.typography.bodyMedium)
 
             Spacer(Modifier.height(4.dp))
 
             val store = "Store: ${receipt.storeId}"
-            Text(text = store, style = MaterialTheme.typography.body1)
+            Text(text = store, style = MaterialTheme.typography.bodyMedium)
 
             Spacer(Modifier.height(4.dp))
 
             val createAt = "Created at: ${receipt.createdAt}"
-            Text(text = createAt, style = MaterialTheme.typography.body1)
+            Text(text = createAt, style = MaterialTheme.typography.bodyMedium)
         }
     }
 }

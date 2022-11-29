@@ -1,23 +1,33 @@
 package com.example.financetracker_app.navigation.product
 
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.example.financetracker_app.R
 import com.example.financetracker_app.navigation.extensions.navigateSingleTopTo
-import com.example.financetracker_app.ui.composable.product.*
+import com.example.financetracker_app.ui.composable.product.ProductAddImageScreen
+import com.example.financetracker_app.ui.composable.product.ProductCreateScreen
+import com.example.financetracker_app.ui.composable.product.ProductDetailsScreen
+import com.example.financetracker_app.ui.composable.product.ProductListScreen
+import com.example.financetracker_app.ui.composable.product.ProductUpdateScreen
 
-fun NavGraphBuilder.productScreensNavGraph(navController: NavHostController, showSnackbar: (String, String) -> Unit) {
+fun NavGraphBuilder.productScreensNavGraph(
+    navController: NavHostController,
+    showSnackbar: (String, String) -> Unit,
+    onTitle: (String) -> Unit
+) {
     navigation(startDestination = ProductList.route, route = ProductRoot.route) {
         composable(route = ProductList.route) {
+            onTitle(stringResource(id = R.string.product_list))
             ProductListScreen(
                 goToProductDetailsScreen = { id ->
                     navController.navigateToProductDetails(id)
                 },
                 goToProductCreateScreen = {
                     navController.navigateSingleTopTo(ProductCreate.route)
-                },
-                closeScreen = { navController.popBackStack() }
+                }
             )
         }
 
@@ -27,6 +37,7 @@ fun NavGraphBuilder.productScreensNavGraph(navController: NavHostController, sho
         ) { navBackStackEntry ->
             val productId = navBackStackEntry.arguments?.getString(ProductDetails.productIdArg)
             if (productId != null) {
+                onTitle(stringResource(id = R.string.product_details))
                 ProductDetailsScreen(
                     productId = productId,
                     goToUpdateScreen = {
@@ -39,8 +50,8 @@ fun NavGraphBuilder.productScreensNavGraph(navController: NavHostController, sho
         }
 
         composable(route = ProductCreate.route) {
+            onTitle(stringResource(id = R.string.product_create))
             ProductCreateScreen(
-                closeScreen = { navController.popBackStack() },
                 showSnackbar = showSnackbar,
                 goToImageScreen = { id ->
                     navController.navigateToProductImage(id)
@@ -68,6 +79,7 @@ fun NavGraphBuilder.productScreensNavGraph(navController: NavHostController, sho
         ) { navBackStackEntry ->
             val productId = navBackStackEntry.arguments?.getString(ProductUpdate.productIdArg)
             if (productId != null) {
+                onTitle(stringResource(id = R.string.product_update))
                 ProductUpdateScreen(
                     productId = productId,
                     closeScreen = { navController.popBackStack() },

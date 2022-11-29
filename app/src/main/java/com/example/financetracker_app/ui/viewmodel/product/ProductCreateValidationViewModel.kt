@@ -3,11 +3,19 @@ package com.example.financetracker_app.ui.viewmodel.product
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.financetracker_app.R
-import com.example.financetracker_app.data.models.*
+import com.example.financetracker_app.data.models.FromNow
+import com.example.financetracker_app.data.models.ProductCreate
+import com.example.financetracker_app.data.models.ProductExpiration
+import com.example.financetracker_app.data.models.StoreCreate
+import com.example.financetracker_app.data.models.TimeInterval
 import com.example.financetracker_app.helper.InputData
 import com.example.financetracker_app.helper.ScreenEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 data class ProductCreateInputScreenEventWrapper(
