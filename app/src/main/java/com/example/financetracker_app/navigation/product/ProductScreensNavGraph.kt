@@ -7,7 +7,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.financetracker_app.R
 import com.example.financetracker_app.navigation.extensions.navigateSingleTopTo
-import com.example.financetracker_app.ui.composable.product.*
+import com.example.financetracker_app.ui.composable.product.ProductAddImageScreen
+import com.example.financetracker_app.ui.composable.product.ProductCreateScreen
+import com.example.financetracker_app.ui.composable.product.ProductDetailsScreen
+import com.example.financetracker_app.ui.composable.product.ProductListScreen
+import com.example.financetracker_app.ui.composable.product.ProductUpdateScreen
 
 fun NavGraphBuilder.productScreensNavGraph(
     navController: NavHostController,

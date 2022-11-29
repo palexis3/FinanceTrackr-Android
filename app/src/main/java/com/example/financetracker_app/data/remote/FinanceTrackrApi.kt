@@ -1,6 +1,12 @@
 package com.example.financetracker_app.data.remote
 
-import com.example.financetracker_app.data.models.*
+import com.example.financetracker_app.data.models.Product
+import com.example.financetracker_app.data.models.ProductCreate
+import com.example.financetracker_app.data.models.ProductListResponse
+import com.example.financetracker_app.data.models.ProductUpdate
+import com.example.financetracker_app.data.models.Receipt
+import com.example.financetracker_app.data.models.ReceiptCreate
+import com.example.financetracker_app.data.models.ReceiptListResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
