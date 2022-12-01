@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -72,28 +70,25 @@ fun ShowReceiptDetailsState(
 @Composable
 fun ReceiptDetailsCard(receipt: Receipt) {
     // TODO: Add image on top of receipt details card
-    Card(
+    Column(
         Modifier
             .fillMaxWidth()
-            .padding(12.dp),
-        elevation = CardDefaults.cardElevation(8.dp)
+            .padding(12.dp)
     ) {
-        Column(Modifier.padding(12.dp)) {
-            SubScreenTitle(title = receipt.title)
-            Spacer(Modifier.height(12.dp))
+        SubScreenTitle(title = receipt.title)
+        Spacer(Modifier.height(12.dp))
 
-            val formattedPrice = "$${receipt.price}"
-            Text(text = formattedPrice, style = MaterialTheme.typography.bodyMedium)
+        val formattedPrice = "$${receipt.price}"
+        Text(text = formattedPrice, style = MaterialTheme.typography.bodyMedium)
 
-            Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(4.dp))
 
-            val store = "Store: ${receipt.storeId}"
-            Text(text = store, style = MaterialTheme.typography.bodyMedium)
+        val store = "Store: ${receipt.storeId}"
+        Text(text = store, style = MaterialTheme.typography.bodyMedium)
 
-            Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(4.dp))
 
-            val createAt = "Created at: ${receipt.createdAt}"
-            Text(text = createAt, style = MaterialTheme.typography.bodyMedium)
-        }
+        val createAt = "Created at: ${receipt.createdAt}"
+        Text(text = createAt, style = MaterialTheme.typography.bodyMedium)
     }
 }

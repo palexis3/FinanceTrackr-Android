@@ -14,8 +14,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -143,28 +141,23 @@ fun ProductDetailsCard(
     product: Product
 ) {
     // TODO: Add an image above the details card
-    Card(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(12.dp),
-        elevation = CardDefaults.cardElevation(8.dp)
+            .padding(12.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(12.dp)
-        ) {
-            SubScreenTitle(product.name)
-            Spacer(Modifier.height(8.dp))
+        SubScreenTitle(product.name)
+        Spacer(Modifier.height(8.dp))
 
-            val createdAt = "Created at: ${product.createdAt}"
-            val category = "Category: ${product.category}"
-            val amountText = "$${product.price}"
+        val createdAt = "Created at: ${product.createdAt}"
+        val category = "Category: ${product.category}"
+        val amountText = "$${product.price}"
 
-            Text(text = amountText, style = MaterialTheme.typography.bodyMedium)
-            Spacer(Modifier.height(4.dp))
-            Text(text = createdAt, style = MaterialTheme.typography.bodyMedium)
-            Spacer(Modifier.height(4.dp))
-            Text(text = category, style = MaterialTheme.typography.bodyMedium)
-        }
+        Text(text = amountText, style = MaterialTheme.typography.bodyMedium)
+        Spacer(Modifier.height(4.dp))
+        Text(text = createdAt, style = MaterialTheme.typography.bodyMedium)
+        Spacer(Modifier.height(4.dp))
+        Text(text = category, style = MaterialTheme.typography.bodyMedium)
     }
 }
 
