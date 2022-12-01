@@ -13,8 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -34,8 +33,6 @@ import com.example.financetracker_app.ui.composable.common.LoadingIcon
 import com.example.financetracker_app.ui.composable.common.SubScreenTitle
 import com.example.financetracker_app.ui.viewmodel.receipt.ReceiptListUiState
 import com.example.financetracker_app.ui.viewmodel.receipt.ReceiptViewModel
-
-private val MediumPadding = 16.dp
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
@@ -58,7 +55,7 @@ fun ReceiptListScreen(
             }
         }
 
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(16.dp))
 
         ShowReceiptsState(uiState, goToReceiptDetailsScreen)
     }
@@ -72,8 +69,8 @@ fun ShowReceiptsState(
     LazyColumn(
         verticalArrangement = Arrangement.SpaceEvenly,
         contentPadding = PaddingValues(
-            top = MediumPadding,
-            bottom = MediumPadding
+            top = 12.dp,
+            bottom = 12.dp
         )
     ) {
         when (uiState) {
@@ -114,36 +111,31 @@ private fun ReceiptCard(
     goToReceiptDetailsScreen: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(12.dp)
-            .clickable { goToReceiptDetailsScreen(receipt.id) },
-        elevation = CardDefaults.cardElevation(8.dp)
+            .clickable { goToReceiptDetailsScreen(receipt.id) }
     ) {
-        Column(
-            modifier = Modifier.padding(12.dp)
+        Row(
+            modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(
-                modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                // Todo: Add image from imageUrl
-                SubScreenTitle(title = receipt.title)
-            }
-
-            Spacer(Modifier.height(4.dp))
-            val formattedAmount = "$${receipt.price}"
-            Text(text = formattedAmount, style = MaterialTheme.typography.bodyMedium)
-
-            Spacer(Modifier.height(4.dp))
-            val store = "Store: ${receipt.storeId}"
-            Text(text = store, style = MaterialTheme.typography.bodyMedium)
-
-            Spacer(Modifier.height(4.dp))
-            val createdAt = "Created at: ${receipt.createdAt}"
-            Text(text = createdAt, style = MaterialTheme.typography.bodyMedium)
+            // Todo: Add image from imageUrl
+            SubScreenTitle(title = receipt.title)
         }
+
+        Spacer(Modifier.height(4.dp))
+        val formattedAmount = "$${receipt.price}"
+        Text(text = formattedAmount, style = MaterialTheme.typography.bodyMedium)
+
+        Spacer(Modifier.height(4.dp))
+        val store = "Store: ${receipt.storeId}"
+        Text(text = store, style = MaterialTheme.typography.bodyMedium)
+
+        Spacer(Modifier.height(4.dp))
+        val createdAt = "Created at: ${receipt.createdAt}"
+        Text(text = createdAt, style = MaterialTheme.typography.bodyMedium)
     }
-    Spacer(Modifier.height(8.dp))
+    Divider(Modifier.height(2.dp))
 }
