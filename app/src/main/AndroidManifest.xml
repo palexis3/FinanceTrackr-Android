@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera.any"/>
+
     <application
         android:name=".FinanceTrackrApp"
         android:allowBackup="true"
@@ -17,8 +20,8 @@
         android:theme="@style/Theme.FinanceTrackerApp"
         tools:targetApi="31">
         <provider
-            android:authorities="com.example.financetracker_app.fileprovider"
             android:name=".helper.ComposeFileProvider"
+            android:authorities="${applicationId}.provider"
             android:grantUriPermissions="true"
             android:exported="false">
             <meta-data

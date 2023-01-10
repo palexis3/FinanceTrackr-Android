@@ -1,6 +1,11 @@
 package com.example.financetracker_app.ui.composable.image
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.widget.Toast
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
 import com.example.financetracker_app.R
 import com.example.financetracker_app.helper.ComposeFileProvider
@@ -39,21 +45,40 @@ fun ImagePicker(
 ) {
     val context = LocalContext.current
     var imageExists by remember { mutableStateOf(false) }
-    var imageUri by remember { mutableStateOf<Uri?>(null) }
-    var file by remember { mutableStateOf<File?>(null) }
-
-    val imagePicker = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = { uri ->
-            imageExists = uri != null
-            imageUri = uri
-        }
-    )
+    var imageUri by remember { mutableStateOf<Uri?>(Uri.EMPTY) }
+    var imageFile by remember { mutableStateOf<File?>(null) }
 
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture(),
         onResult = { success ->
             imageExists = success
+        }
+    )
+
+    val permissionCheckResult = ContextCompat.checkSelfPermission(
+        context,
+        Manifest.permission.CAMERA
+    )
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { success ->
+            if (success) {
+                cameraLauncherHelper(context, cameraLauncher) { uri, file ->
+                    imageUri = uri
+                    imageFile = file
+                }
+            } else {
+                Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    )
+
+    val imagePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { imagePickedUri ->
+            imageExists = imagePickedUri != null
+            imageUri = imagePickedUri
         }
     )
 
@@ -73,7 +98,7 @@ fun ImagePicker(
             if (imageExists) {
                 Button(
                     onClick = {
-                        file?.let { fileSelected(it) }
+                        imageFile?.let { fileSelected(it) }
                         // reset mutable values to enable user to re-take a photo in case
                         // there was an exception
                         imageExists = false
@@ -110,14 +135,28 @@ fun ImagePicker(
 
             Button(
                 onClick = {
-                    val fileObject = ComposeFileProvider.getFileObjects(context)
-                    imageUri = fileObject.uri
-                    file = fileObject.file
-                    cameraLauncher.launch(fileObject.uri)
+                    if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
+                       cameraLauncherHelper(context, cameraLauncher) { uri, file ->
+                           imageUri = uri
+                           imageFile = file
+                       }
+                    } else {
+                        permissionLauncher.launch(Manifest.permission.CAMERA)
+                    }
                 }
             ) {
                 Text(stringResource(id = R.string.take_photo))
             }
         }
     }
+}
+
+fun cameraLauncherHelper(
+    context: Context,
+    cameraLauncher: ManagedActivityResultLauncher<Uri, Boolean>,
+    uriAndFile: (Uri, File) -> Unit
+) {
+    val fileObject = ComposeFileProvider.getFileObjects(context)
+    uriAndFile(fileObject.uri, fileObject.file)
+    cameraLauncher.launch(fileObject.uri)
 }
