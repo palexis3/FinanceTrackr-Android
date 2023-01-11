@@ -40,4 +40,8 @@
 
     <string name="delete">Delete</string>
     <string name="close">Close</string>
+
+    <string name="permission_denied">Permission Denied</string>
+    <string name="close_screen">Close Screen</string>
+    <string name="confirm_image">Confirm Image</string>
 </resources>

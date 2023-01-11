@@ -38,6 +38,11 @@ import com.example.financetracker_app.R
 import com.example.financetracker_app.helper.ComposeFileProvider
 import java.io.File
 
+/**
+ * ImagePicker is created to be nested in another composable screen to allow the image file
+ * that a user has selected whether it be taken or chosen from the gallery to be used for
+ * whatever reason.
+ */
 @Composable
 fun ImagePicker(
     fileSelected: (File) -> Unit,
@@ -69,7 +74,7 @@ fun ImagePicker(
                     imageFile = file
                 }
             } else {
-                Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.permission_denied, Toast.LENGTH_SHORT).show()
             }
         }
     )
@@ -79,6 +84,7 @@ fun ImagePicker(
         onResult = { imagePickedUri ->
             imageExists = imagePickedUri != null
             imageUri = imagePickedUri
+            imageFile = imageUri?.path?.let { File(it) }
         }
     )
 
@@ -88,12 +94,17 @@ fun ImagePicker(
             .padding(12.dp)
     ) {
         Row(
-            Modifier.fillMaxWidth(),
+            Modifier
+                .fillMaxWidth()
+                .padding(bottom = 4.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(onClick = onCloseScreen) {
-                Icon(imageVector = Icons.Default.Close, contentDescription = "Close Screen")
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = stringResource(id = R.string.close_screen)
+                )
             }
             if (imageExists) {
                 Button(
@@ -106,7 +117,10 @@ fun ImagePicker(
                     }
                 ) {
                     Text(stringResource(id = R.string.upload))
-                    Icon(imageVector = Icons.Default.Check, contentDescription = "Confirm Image")
+                    Icon(
+                        imageVector = Icons.Default.Check,
+                        contentDescription = stringResource(id = R.string.confirm_image)
+                    )
                 }
             }
         }
