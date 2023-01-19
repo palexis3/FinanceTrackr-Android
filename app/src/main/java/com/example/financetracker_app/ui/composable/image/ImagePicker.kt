@@ -150,10 +150,10 @@ fun ImagePicker(
             Button(
                 onClick = {
                     if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
-                       cameraLauncherHelper(context, cameraLauncher) { uri, file ->
-                           imageUri = uri
-                           imageFile = file
-                       }
+                        cameraLauncherHelper(context, cameraLauncher) { uri, file ->
+                            imageUri = uri
+                            imageFile = file
+                        }
                     } else {
                         permissionLauncher.launch(Manifest.permission.CAMERA)
                     }

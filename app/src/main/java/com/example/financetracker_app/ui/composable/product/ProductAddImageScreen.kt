@@ -27,16 +27,19 @@ fun ProductAddImageScreen(
     val context = LocalContext.current
     val imageUploadScreenEvent by imageViewModel.uploadImageScreenEvent.collectAsStateWithLifecycle()
 
-    LaunchedEffect(imageUploadScreenEvent) {
-        when (val screenEvent = imageUploadScreenEvent.screenEvent) {
-            is ScreenEvent.ShowSnackbar -> {
-                val message = context.getString(screenEvent.stringId)
-                val actionLabel = context.getString(R.string.ok)
-                showSnackbar(message, actionLabel)
-            }
-            ScreenEvent.CloseScreen -> closeScreen.invoke()
-            else -> {}
+    when (val screenEvent = imageUploadScreenEvent.screenEvent) {
+        is ScreenEvent.ShowSnackbar -> {
+            // TODO: Figure out why snackbar isn't popping up when it should
+            val message = context.getString(screenEvent.stringId)
+            val actionLabel = context.getString(R.string.ok)
+            showSnackbar(message, actionLabel)
         }
+        ScreenEvent.CloseScreen -> closeScreen.invoke()
+        else -> {}
+    }
+
+    LaunchedEffect(imageUploadScreenEvent) {
+        // Todo: Figure out how to re-emit error if they happen consecutively
     }
 
     Box(

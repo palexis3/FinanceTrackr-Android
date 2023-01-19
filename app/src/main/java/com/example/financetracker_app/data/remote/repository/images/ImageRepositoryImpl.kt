@@ -1,6 +1,5 @@
 package com.example.financetracker_app.data.remote.repository.images
 
-import android.content.Context
 import android.util.Log
 import com.example.financetracker_app.data.remote.FinanceTrackrApi
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -10,24 +9,24 @@ import java.io.File
 import javax.inject.Inject
 
 class ImageRepositoryImpl @Inject constructor(
-    private val context: Context,
     private val api: FinanceTrackrApi
 ) : ImageRepository {
 
+    companion object {
+        const val JPG = "jpg"
+        const val PNG = "png"
+        const val JPEG = "jpeg"
+    }
+
+    // TODO: Add image extension helper to specify and append the type before upload
+    fun getImageFileExtension() {}
+
     override suspend fun createImage(type: String, itemId: String, file: File): Boolean {
         return try {
-//            val file = Uri.fromFile(
-//                context.contentResolver.getType(imageUri)?.let {
-//                    File(
-//                        context.getExternalFilesDir(null),
-//                        it
-//                    )
-//                }
-//            ).toFile()
-
-            // TODO: Must figure out how to properly construct the image file to be sent to API
-            val image = MultipartBody.Part.create(
-                file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val image = MultipartBody.Part.createFormData(
+                "image",
+                file.path.split("/").last(),
+                file.asRequestBody("image/jpg".toMediaTypeOrNull())
             )
             val response = api.uploadImage(type, itemId, image)
             response.isSuccessful
