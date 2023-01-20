@@ -28,7 +28,9 @@ class ImageRepositoryImpl @Inject constructor(
                 file.path.split("/").last(),
                 file.asRequestBody("image/jpg".toMediaTypeOrNull())
             )
+            Log.d("XXX-imageUploadImage", "$image")
             val response = api.uploadImage(type, itemId, image)
+            Log.d("XXX-imageUploadResponse", "$response")
             response.isSuccessful
         } catch (exception: Exception) {
             Log.d("ImageRepositoryImpl", "createImage exception: $exception")

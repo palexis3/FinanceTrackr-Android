@@ -1,7 +1,9 @@
 package com.example.financetracker_app.helper
 
 import android.content.Context
+import android.database.Cursor
 import android.net.Uri
+import android.provider.OpenableColumns
 import androidx.core.content.FileProvider
 import com.example.financetracker_app.BuildConfig
 import com.example.financetracker_app.R
@@ -43,4 +45,23 @@ fun Context.createImageFile(): File {
         ".jpg",
         externalCacheDir
     )
+}
+
+fun Context.imageUriToFile(imageUri: Uri): File? {
+    return getFileName(this, imageUri)?.let { fileName ->
+        File((externalCacheDir?.path ?: filesDir.path) + File.separatorChar + fileName)
+    }
+}
+
+private fun getFileName(context: Context, imageUri: Uri): String? {
+    var cursor: Cursor? = null
+
+    try {
+        cursor = context.contentResolver.query(imageUri, null, null, null, null)
+        val fileColumnIndex = cursor?.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+        cursor?.moveToFirst()
+        return fileColumnIndex?.let { cursor?.getString(it) }
+    } finally {
+        cursor?.close()
+    }
 }
