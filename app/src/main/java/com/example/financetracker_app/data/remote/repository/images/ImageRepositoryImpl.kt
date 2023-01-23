@@ -13,24 +13,29 @@ class ImageRepositoryImpl @Inject constructor(
 ) : ImageRepository {
 
     companion object {
-        const val JPG = "jpg"
-        const val PNG = "png"
-        const val JPEG = "jpeg"
+        private const val JPG = "jpg"
+        private const val PNG = "png"
+        private const val JPEG = "jpeg"
     }
 
-    // TODO: Add image extension helper to specify and append the type before upload
-    fun getImageFileExtension() {}
+    private fun getImageFileExtension(file: File): String {
+        val imageExtensionSuffix = when (file.name.lowercase().split(".").last()) {
+            JPG -> JPG
+            PNG -> PNG
+            JPEG -> JPEG
+            else -> ""
+        }
+        return "image/$imageExtensionSuffix"
+    }
 
     override suspend fun createImage(type: String, itemId: String, file: File): Boolean {
         return try {
             val image = MultipartBody.Part.createFormData(
                 "image",
                 file.path.split("/").last(),
-                file.asRequestBody("image/jpg".toMediaTypeOrNull())
+                file.asRequestBody(getImageFileExtension(file).toMediaTypeOrNull())
             )
-            Log.d("XXX-imageUploadImage", "$image")
             val response = api.uploadImage(type, itemId, image)
-            Log.d("XXX-imageUploadResponse", "$response")
             response.isSuccessful
         } catch (exception: Exception) {
             Log.d("ImageRepositoryImpl", "createImage exception: $exception")
