@@ -6,9 +6,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -25,10 +28,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import com.example.financetracker_app.R
 import com.example.financetracker_app.data.models.Product
 import com.example.financetracker_app.ui.composable.common.ErrorTitle
@@ -101,7 +106,6 @@ private fun ProductCard(
     product: Product,
     goToProductDetailsScreen: (String) -> Unit
 ) {
-    // Todo: Add image from imageUrl parameter
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -109,32 +113,43 @@ private fun ProductCard(
             .clickable { goToProductDetailsScreen(product.id) },
         elevation = CardDefaults.cardElevation(8.dp)
     ) {
-        Column(
-            modifier = Modifier
-                .padding(12.dp)
+        Row(
+            modifier = Modifier.fillMaxSize()
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                SubScreenTitle(title = product.name)
-                ElevatedAssistChip(
-                    onClick = {},
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .height(24.dp)
-                        .padding(2.dp),
-                    label = { Text(text = product.category) }
+            product.imageUrl?.let { image ->
+                AsyncImage(
+                    modifier = Modifier.fillMaxHeight().width(150.dp),
+                    model = image,
+                    contentDescription = "${product.name} image",
+                    contentScale = ContentScale.Crop
                 )
+                Modifier.width(8.dp)
             }
-            Spacer(Modifier.height(8.dp))
 
-            val formattedAmount = "$${product.price}"
-            val expirationDate = "Expires on: ${product.createdAt}"
+            Column(
+                modifier = Modifier
+                    .padding(12.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    SubScreenTitle(title = product.name)
+                    ElevatedAssistChip(
+                        onClick = {},
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .height(24.dp)
+                            .padding(2.dp),
+                        label = { Text(text = product.category) }
+                    )
+                }
+                Spacer(Modifier.height(8.dp))
 
-            Text(text = formattedAmount, style = MaterialTheme.typography.bodyLarge)
-            Spacer(Modifier.height(4.dp))
-            Text(text = expirationDate, style = MaterialTheme.typography.bodyLarge)
+                Text(text = product.formattedPrice, style = MaterialTheme.typography.bodyLarge)
+                Spacer(Modifier.height(4.dp))
+                Text(text = product.formattedExpirationDate, style = MaterialTheme.typography.bodyLarge)
+            }
         }
     }
     Spacer(Modifier.height(8.dp))

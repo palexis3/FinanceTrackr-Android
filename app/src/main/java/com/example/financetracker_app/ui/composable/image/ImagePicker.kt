@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -118,7 +117,6 @@ fun ImagePicker(
             if (imageExists) {
                 Button(
                     onClick = {
-                        Log.d("XXX-ImagePicker-file", "$imageFile")
                         imageFile?.let { fileSelected(it) }
                         // reset mutable values to enable user to re-take a photo in case
                         // there was an exception

@@ -1,6 +1,7 @@
 package com.example.financetracker_app.ui.composable.product
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,11 +26,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import com.example.financetracker_app.R
 import com.example.financetracker_app.data.models.Product
 import com.example.financetracker_app.helper.ScreenEvent
@@ -142,28 +145,35 @@ private fun ShowProductDetailsUiState(
 fun ProductDetailsCard(
     product: Product
 ) {
-    // TODO: Add an image above the details card
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(12.dp),
         elevation = CardDefaults.cardElevation(8.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(12.dp)
-        ) {
-            SubScreenTitle(product.name)
-            Spacer(Modifier.height(8.dp))
+        Column {
+            product.imageUrl?.let { image ->
+                AsyncImage(
+                    model = image,
+                    modifier = Modifier.fillMaxWidth().height(200.dp),
+                    contentDescription = "${product.name} image",
+                    contentScale = ContentScale.Crop,
+                )
+                Spacer(Modifier.height(4.dp))
+            }
 
-            val createdAt = "Created at: ${product.createdAt}"
-            val category = "Category: ${product.category}"
-            val amountText = "$${product.price}"
+            Column(
+                modifier = Modifier.padding(12.dp)
+            ) {
+                SubScreenTitle(product.name)
+                Spacer(Modifier.height(8.dp))
 
-            Text(text = amountText, style = MaterialTheme.typography.bodyMedium)
-            Spacer(Modifier.height(4.dp))
-            Text(text = createdAt, style = MaterialTheme.typography.bodyMedium)
-            Spacer(Modifier.height(4.dp))
-            Text(text = category, style = MaterialTheme.typography.bodyMedium)
+                Text(text = product.formattedPrice, style = MaterialTheme.typography.bodyMedium)
+                Spacer(Modifier.height(4.dp))
+                Text(text = product.formattedCreatedDate, style = MaterialTheme.typography.bodyMedium)
+                Spacer(Modifier.height(4.dp))
+                Text(text = product.formattedCategory, style = MaterialTheme.typography.bodyMedium)
+            }
         }
     }
 }

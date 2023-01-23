@@ -15,7 +15,12 @@ data class Product(
     val createdAt: String,
     @Json(name = "productCategory")
     val category: String
-) : Parcelable
+) : Parcelable {
+    val formattedPrice = "$$price"
+    val formattedExpirationDate = "Expires on: $createdAt"
+    val formattedCreatedDate = "Created at: $createdAt"
+    val formattedCategory = "Category: $category"
+}
 
 @JsonClass(generateAdapter = true)
 data class ProductCreate(
