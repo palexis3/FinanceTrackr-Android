@@ -10,7 +10,11 @@ data class Receipt(
     val imageUrl: String? = null,
     val storeId: String,
     val createdAt: String
-)
+) {
+    val formattedPrice = "$$price"
+    val formattedStore = "Store: $storeId"
+    val formattedCreatedAt = "Created at: $createdAt"
+}
 
 @JsonClass(generateAdapter = true)
 data class ReceiptCreate(

@@ -6,9 +6,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -22,11 +25,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import com.example.financetracker_app.R
 import com.example.financetracker_app.data.models.Receipt
 import com.example.financetracker_app.ui.composable.common.ErrorTitle
@@ -111,8 +116,7 @@ fun ShowReceiptsState(
 @Composable
 private fun ReceiptCard(
     receipt: Receipt,
-    goToReceiptDetailsScreen: (String) -> Unit,
-    modifier: Modifier = Modifier
+    goToReceiptDetailsScreen: (String) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -121,28 +125,32 @@ private fun ReceiptCard(
             .clickable { goToReceiptDetailsScreen(receipt.id) },
         elevation = CardDefaults.cardElevation(8.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(12.dp)
+        Row(
+            modifier = Modifier.fillMaxSize()
         ) {
-            Row(
-                modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                // Todo: Add image from imageUrl
-                SubScreenTitle(title = receipt.title)
+            receipt.imageUrl?.let { image ->
+                AsyncImage(
+                    modifier = Modifier.fillMaxHeight().width(150.dp),
+                    model = image,
+                    contentDescription = "${receipt.title} image",
+                    contentScale = ContentScale.Crop
+                )
+                Modifier.width(8.dp)
             }
 
-            Spacer(Modifier.height(4.dp))
-            val formattedAmount = "$${receipt.price}"
-            Text(text = formattedAmount, style = MaterialTheme.typography.bodyMedium)
+            Column(
+                modifier = Modifier.padding(12.dp)
+            ) {
+                SubScreenTitle(title = receipt.title)
+                Spacer(Modifier.height(4.dp))
+                Text(text = receipt.formattedPrice, style = MaterialTheme.typography.bodyMedium)
 
-            Spacer(Modifier.height(4.dp))
-            val store = "Store: ${receipt.storeId}"
-            Text(text = store, style = MaterialTheme.typography.bodyMedium)
+                Spacer(Modifier.height(4.dp))
+                Text(text = receipt.formattedStore, style = MaterialTheme.typography.bodyMedium)
 
-            Spacer(Modifier.height(4.dp))
-            val createdAt = "Created at: ${receipt.createdAt}"
-            Text(text = createdAt, style = MaterialTheme.typography.bodyMedium)
+                Spacer(Modifier.height(4.dp))
+                Text(text = receipt.formattedCreatedAt, style = MaterialTheme.typography.bodyMedium)
+            }
         }
     }
     Spacer(Modifier.height(8.dp))
