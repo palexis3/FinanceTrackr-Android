@@ -108,6 +108,7 @@ private fun ProductCard(
 ) {
     Card(
         modifier = Modifier
+            .height(175.dp)
             .fillMaxWidth()
             .padding(12.dp)
             .clickable { goToProductDetailsScreen(product.id) },
@@ -118,7 +119,7 @@ private fun ProductCard(
         ) {
             product.imageUrl?.let { image ->
                 AsyncImage(
-                    modifier = Modifier.fillMaxHeight().width(150.dp),
+                    modifier = Modifier.fillMaxHeight().width(125.dp),
                     model = image,
                     contentDescription = "${product.name} image",
                     contentScale = ContentScale.Crop

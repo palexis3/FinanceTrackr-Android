@@ -144,41 +144,43 @@ private fun ShowProductDetailsUiState(
 fun ProductDetailsCard(
     product: Product
 ) {
-    Card(
-        modifier = Modifier
+    Column(
+        Modifier
             .fillMaxWidth()
-            .padding(12.dp),
-        elevation = CardDefaults.cardElevation(8.dp)
+            .padding(12.dp)
     ) {
-        Column {
-            product.imageUrl?.let { image ->
-                AsyncImage(
-                    model = image,
-                    modifier = Modifier.fillMaxWidth().height(200.dp),
-                    contentDescription = "${product.name} image",
-                    contentScale = ContentScale.Crop,
-                )
-                Spacer(Modifier.height(4.dp))
-            }
+        product.imageUrl?.let { image ->
+            AsyncImage(
+                model = image,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp),
+                contentDescription = "${product.name} image",
+                contentScale = ContentScale.Crop,
+            )
+            Spacer(Modifier.height(4.dp))
+        }
 
-            Column(
-                modifier = Modifier.padding(12.dp)
-            ) {
-                SubScreenTitle(product.name)
-                Spacer(Modifier.height(8.dp))
+        Column(
+            modifier = Modifier.padding(12.dp)
+        ) {
+            SubScreenTitle(product.name)
+            Spacer(Modifier.height(8.dp))
 
-                Text(text = product.formattedPrice, style = MaterialTheme.typography.bodyMedium)
-                Spacer(Modifier.height(4.dp))
-                Text(text = product.formattedCreatedDate, style = MaterialTheme.typography.bodyMedium)
-                Spacer(Modifier.height(4.dp))
-                Text(text = product.formattedCategory, style = MaterialTheme.typography.bodyMedium)
-            }
+            Text(text = product.formattedPrice, style = MaterialTheme.typography.bodyMedium)
+            Spacer(Modifier.height(4.dp))
+            Text(text = product.formattedCreatedDate, style = MaterialTheme.typography.bodyMedium)
+            Spacer(Modifier.height(4.dp))
+            Text(text = product.formattedCategory, style = MaterialTheme.typography.bodyMedium)
         }
     }
 }
 
 @Composable
-fun DeleteAlertDialog(dialogVisibility: (Boolean) -> Unit, deletionConfirmation: (Boolean) -> Unit) {
+fun DeleteAlertDialog(
+    dialogVisibility: (Boolean) -> Unit,
+    deletionConfirmation: (Boolean) -> Unit
+) {
     val context = LocalContext.current
 
     AlertDialog(
