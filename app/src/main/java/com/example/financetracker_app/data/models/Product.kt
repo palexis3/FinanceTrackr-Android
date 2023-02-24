@@ -19,6 +19,7 @@ data class Product(
     val category: String
 ) : Parcelable {
     val formattedPrice = "$$price"
+    val formattedName = name.replaceFirstChar { it.uppercase() }
     val formattedDate = createdAt.toDate()?.formatToReadableDate()
     val formattedExpirationDate = "Expires on: $formattedDate"
     val formattedCreatedDate = "Created at: $formattedDate"

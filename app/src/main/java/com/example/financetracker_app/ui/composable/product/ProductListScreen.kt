@@ -6,13 +6,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -33,8 +31,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -113,10 +111,10 @@ private fun ProductCard(
 ) {
     Card(
         modifier = Modifier
-            .heightIn(100.dp, 175.dp)
+            .heightIn(100.dp, 150.dp)
             .fillMaxWidth()
             .padding(12.dp)
-            .clickable { goToProductDetailsScreen(product.id, product.name) },
+            .clickable { goToProductDetailsScreen(product.id, product.formattedName) },
         elevation = CardDefaults.cardElevation(8.dp)
     ) {
         Row(
@@ -128,7 +126,7 @@ private fun ProductCard(
                         .wrapContentHeight()
                         .width(125.dp),
                     model = image,
-                    contentDescription = "${product.name} image",
+                    contentDescription = "${product.formattedName} image",
                     contentScale = ContentScale.Crop
                 )
                 Modifier.width(8.dp)
@@ -150,15 +148,18 @@ private fun ProductCard(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    SubScreenTitle(title = product.name, Modifier.widthIn(min = 32.dp))
+                    SubScreenTitle(title = product.formattedName, Modifier.widthIn(min = 32.dp))
                 }
-                Spacer(Modifier.height(8.dp))
-
-                Text(text = product.formattedPrice, style = MaterialTheme.typography.bodyLarge)
                 Spacer(Modifier.height(4.dp))
-                Text(text = product.formattedExpirationDate, style = MaterialTheme.typography.bodyLarge)
+
+                Text(text = product.formattedPrice, style = MaterialTheme.typography.bodyMedium)
+                Spacer(Modifier.height(2.dp))
+                Text(
+                    text = product.formattedExpirationDate,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.bodySmall
+                )
             }
         }
     }
-    Spacer(Modifier.height(8.dp))
 }
