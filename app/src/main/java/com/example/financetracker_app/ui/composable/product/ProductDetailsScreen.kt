@@ -14,8 +14,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -133,7 +131,7 @@ private fun ShowProductDetailsUiState(
             }
         }
         is ProductDetailsUiState.Success -> {
-            ProductDetailsCard(
+            ProductDetailsState(
                 product = uiState.product
             )
         }
@@ -141,13 +139,12 @@ private fun ShowProductDetailsUiState(
 }
 
 @Composable
-fun ProductDetailsCard(
+fun ProductDetailsState(
     product: Product
 ) {
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(12.dp)
     ) {
         product.imageUrl?.let { image ->
             AsyncImage(

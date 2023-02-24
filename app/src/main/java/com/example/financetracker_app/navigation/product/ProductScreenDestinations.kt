@@ -19,9 +19,11 @@ object ProductDetails : LeafScreenDestination {
     override val route = "product"
     override val title = "Product Details"
     const val productIdArg = "product_id"
-    val routeWithArgs = "$route/{$productIdArg}"
+    const val productNameArg = "name"
+    val routeWithArgs = "$route/{$productIdArg}?{$productNameArg}"
     val arguments = listOf(
-        navArgument(productIdArg) { type = NavType.StringType }
+        navArgument(productIdArg) { type = NavType.StringType },
+        navArgument(productNameArg) { type = NavType.StringType }
     )
 }
 

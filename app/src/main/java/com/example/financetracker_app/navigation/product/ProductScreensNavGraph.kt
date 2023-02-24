@@ -22,8 +22,8 @@ fun NavGraphBuilder.productScreensNavGraph(
         composable(route = ProductList.route) {
             onTitle(stringResource(id = R.string.product_list))
             ProductListScreen(
-                goToProductDetailsScreen = { id ->
-                    navController.navigateToProductDetails(id)
+                goToProductDetailsScreen = { id, name ->
+                    navController.navigateToProductDetails(id, name)
                 },
                 goToProductCreateScreen = {
                     navController.navigateSingleTopTo(ProductCreate.route)
@@ -37,7 +37,14 @@ fun NavGraphBuilder.productScreensNavGraph(
         ) { navBackStackEntry ->
             val productId = navBackStackEntry.arguments?.getString(ProductDetails.productIdArg)
             if (productId != null) {
-                onTitle(stringResource(id = R.string.product_details))
+
+                val productName = navBackStackEntry.arguments?.getString(ProductDetails.productNameArg)
+                if (productName != null) {
+                    onTitle.invoke(productName)
+                } else {
+                    onTitle(stringResource(id = R.string.product_details))
+                }
+
                 ProductDetailsScreen(
                     productId = productId,
                     goToUpdateScreen = {
