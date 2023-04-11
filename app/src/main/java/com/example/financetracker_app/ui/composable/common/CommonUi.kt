@@ -63,9 +63,10 @@ fun ScreenTitle(
 }
 
 @Composable
-fun SubScreenTitle(title: String) {
+fun SubScreenTitle(title: String, modifier: Modifier = Modifier) {
     Text(
         text = title,
+        modifier = modifier,
         style = MaterialTheme.typography.headlineMedium
     )
 }

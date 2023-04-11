@@ -14,8 +14,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,11 +23,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import com.example.financetracker_app.R
 import com.example.financetracker_app.data.models.Product
 import com.example.financetracker_app.helper.ScreenEvent
@@ -131,7 +131,7 @@ private fun ShowProductDetailsUiState(
             }
         }
         is ProductDetailsUiState.Success -> {
-            ProductDetailsCard(
+            ProductDetailsState(
                 product = uiState.product
             )
         }
@@ -139,37 +139,45 @@ private fun ShowProductDetailsUiState(
 }
 
 @Composable
-fun ProductDetailsCard(
+fun ProductDetailsState(
     product: Product
 ) {
-    // TODO: Add an image above the details card
-    Card(
-        modifier = Modifier
+    Column(
+        Modifier
             .fillMaxWidth()
-            .padding(12.dp),
-        elevation = CardDefaults.cardElevation(8.dp)
     ) {
+        product.imageUrl?.let { image ->
+            AsyncImage(
+                model = image,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp),
+                contentDescription = "${product.name} image",
+                contentScale = ContentScale.Crop,
+            )
+            Spacer(Modifier.height(4.dp))
+        }
+
         Column(
             modifier = Modifier.padding(12.dp)
         ) {
             SubScreenTitle(product.name)
             Spacer(Modifier.height(8.dp))
 
-            val createdAt = "Created at: ${product.createdAt}"
-            val category = "Category: ${product.category}"
-            val amountText = "$${product.price}"
-
-            Text(text = amountText, style = MaterialTheme.typography.bodyMedium)
+            Text(text = product.formattedPrice, style = MaterialTheme.typography.bodyMedium)
             Spacer(Modifier.height(4.dp))
-            Text(text = createdAt, style = MaterialTheme.typography.bodyMedium)
+            Text(text = product.formattedCreatedDate, style = MaterialTheme.typography.bodyMedium)
             Spacer(Modifier.height(4.dp))
-            Text(text = category, style = MaterialTheme.typography.bodyMedium)
+            Text(text = product.formattedCategory, style = MaterialTheme.typography.bodyMedium)
         }
     }
 }
 
 @Composable
-fun DeleteAlertDialog(dialogVisibility: (Boolean) -> Unit, deletionConfirmation: (Boolean) -> Unit) {
+fun DeleteAlertDialog(
+    dialogVisibility: (Boolean) -> Unit,
+    deletionConfirmation: (Boolean) -> Unit
+) {
     val context = LocalContext.current
 
     AlertDialog(

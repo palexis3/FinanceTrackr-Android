@@ -1,6 +1,8 @@
 package com.example.financetracker_app.data.models
 
 import android.os.Parcelable
+import com.example.financetracker_app.helper.formatToReadableDate
+import com.example.financetracker_app.helper.toDate
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
@@ -15,7 +17,14 @@ data class Product(
     val createdAt: String,
     @Json(name = "productCategory")
     val category: String
-) : Parcelable
+) : Parcelable {
+    val formattedPrice = "$$price"
+    val formattedName = name.replaceFirstChar { it.uppercase() }
+    val formattedDate = createdAt.toDate()?.formatToReadableDate()
+    val formattedExpirationDate = "Expires on: $formattedDate"
+    val formattedCreatedDate = "Created at: $formattedDate"
+    val formattedCategory = "Category: $category"
+}
 
 @JsonClass(generateAdapter = true)
 data class ProductCreate(

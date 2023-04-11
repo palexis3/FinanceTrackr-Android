@@ -35,7 +35,6 @@ interface FinanceTrackrApi {
     suspend fun createProduct(@Body productCreate: ProductCreate): Response<Product>
 
     // RECEIPTS
-
     // TODO: Refactor result type to ReceiptListResponse once backend response is fixed
     @GET("/receipt")
     suspend fun getAllReceipts(): Response<ReceiptListResponse>

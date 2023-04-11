@@ -1,5 +1,7 @@
 package com.example.financetracker_app.data.models
 
+import com.example.financetracker_app.helper.formatToReadableDate
+import com.example.financetracker_app.helper.toDate
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
@@ -10,7 +12,12 @@ data class Receipt(
     val imageUrl: String? = null,
     val storeId: String,
     val createdAt: String
-)
+) {
+    val formattedPrice = "$$price"
+    val formattedStore = "Store: $storeId"
+    val formattedDate = createdAt.toDate()?.formatToReadableDate()
+    val formattedCreatedAt = "Created at: $formattedDate"
+}
 
 @JsonClass(generateAdapter = true)
 data class ReceiptCreate(
